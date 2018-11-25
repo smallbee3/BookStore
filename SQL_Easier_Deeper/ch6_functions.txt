@@ -1,0 +1,983 @@
+[SQL더쉽게] Ch6 함수
+
+p.189
+[6-1 다양한 함수]
+
+학습 포인트
+* 함수에는 크게 산술 함수, 문자열 함수, 날짜 함수, 변환 함수, 집계 함수 가 있다.
+
+
+
+함수 종류
+이번 장에서는 관점을 조금 바꿔서 SQL이 가지고 있는 편리한 도구를 소개할 것이다. 그 중심이 되는 것이 '함수(funciton)'다.
+함수란 "어떤 값을 입력하면 그에 대응하는 값을 출력하는 기능'이다. 이때 입력을 '인수'라고 하며 출력을 '반환 값'이라고 한다.
+함수 종류는 크게 다음과 같이 분류할 수 있다.
+
+-산술 함수(수치 계산을 위한 함수)
+-문자열 함수(문자열 처리를 위한 함수)
+-날짜 함수(날짜 처리를 위한 함수)
+-변환 함수(데이터형이나 값을 변환하기 위한 함수)
+-집약 함수(데이터 집계를 위한 함수)
+
+... 집약함수는 기본적으로 COUNT, SUM, AVG, MAX, MIN 등 다섯 가지였지만, 이외에도 200가지가 넘는 종류가 있다.
+
+
+1 ) 산술 함수
+
+사칙 연산
++ (덧셈)
+- (뺄셈)
+* (곱셈)
+/ (나눗셈)
+
+데이터형 'NUMERIC'은 많은 DBMS가 가지고 있는 데이터형으로, 'NUMERIC(전체 자릿수, 소수 자릿수)' 형식으로 수치의 크기를 지정한다. 뒤에서 ROUND 함수를 소개하겠지만, PostgreSQL의 ROUND 함수에서는 NUMERIC처럼 제한된 데이터형만 사용할 수 있기 때문에 샘플에서는 이 데이터형을 사용하도록 한다.
+
+리스트 6-1
+```
+-- DDL
+CREATE TABLE SampleMath
+(m  NUMERIC (10,3),
+ n  INTEGER,
+ p  INTEGER);
+
+-- DML
+BEGIN TRANSACTION;
+
+INSERT INTO SampleMath(m, n, p) VALUES (500,  0,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (-180, 0,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, NULL, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 7,    3);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 5,    2);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 4,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (8,    NULL, 3);
+INSERT INTO SampleMath(m, n, p) VALUES (2.27, 1,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (5.555,2,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 1,    NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (8.76, NULL, NULL);
+
+COMMIT;
+```
+
+p.192
+ㅁ ABS - 절댓값
+ABS(수치)
+
+ABS는 절댓값을 구하는 함수다. 절댓값(absolute value)이란, 수치의 부호를 고려하지 않고 0에서부터 떨어진 거리를 나타내는 값이다. 구하는 방법은 0과 양수는 값 그대로 사용하고 음수는 부호를 제외하는 것이다.
+...
+ABS 함수의 인수가 NULL인 경우는 결과도 NULL이다. 이것은 ABS뿐만 아니라 거의 모든 함수가 NULL에 대해선 NULL을 반환하도록 정하고 있다.
+
+
+p.193
+ㅁ MOD - 나머지
+MOD(피제수, 제수)
+
+MOD는 나눗셈의 나머지 값을 구하는 함수로 modulo의 약자다. 예를들어 'MOD(7, 3) = 1'이 된다. 소수 값이 들어가면 '나머지'라는 개념이 없어지기 때문에 MOD 함수를 사용할 수 있는 것은 필연적으로 정수형 열로 제한한다.
+
+e.g.
+SELECT n, p,
+       MOD(n, p) AS mod_col
+  FROM SampleMath;
+
+
+[개별 구문]
+SQL Server에서 나머지를 구하려면 '%'라는 연산자를 사용한다.
+e.g.
+SELECT n, p,
+       n % p AS mod_col
+  FROM SampleMath;
+
+
+p.194
+ㅁ ROUND - 반올림
+ROUND(대상 수, 반올림 자릿수)
+
+반올림은 ROUND라는 함수를 사용한다. 반올림을 '다듬는다'라고도 하는데 영어도 그런 의미에서 round(둥글게 하다)라는 단어를 사용한다. 반올림 자릿수를 1로 지정하면 소수점 이하 두 번째 자리에서, 2를 지정하면 세 번째 자리에서 반올림한다
+
+e.g.
+SELECT m, n,
+       ROUND(m, n) AS round_col
+  FROM SampleMath;
+
+
+p.195
+문자열 함수
+...
+우리들은 일상에서 치환, 잘라내기, 단축 등의 문자열 처리를 숫자 처리만큼이나 많이 하고 있다.
+
+ㅁ || - 연결
+문자열1 || 문자열2
+
+e.g.
+SELECT str1, str2,
+       str1 || str2 AS str_concat
+  FROM SampleStr;
+
+SQL에서 문자열을 연결해야 할 경우 '||' 형태의 함수를 사용한다.
+문자열 연결의 경우도 결합하는 문자가 NULL이면 결과도 NULL이 된다. 이것은 '||'가 형태는 다를지라도 역시 함수이기 때문이다. 물론, 3개 이상의 문자열을 연결할 수도 있다.
+
+
+p.197
+여기서도 한 가지 주의사항이 있다.
+|| 함수는 SQL Server와 MySQL에서는 사용할 수 없다.
+
+[개별 구문]
+... MySQL에서는 CONCAT함수를 사용한다.
+e.g.
+SELECT str1, str2,
+       CONCAT(str1, str2) AS str_concat
+  FROM SampleStr;
+
+
+ㅁLENGTH - 문자열의 길이
+LENGTH(문자열)
+
+e.g.
+SELECT str1,
+       LENGTH(str1) AS len_str
+  FROM SampleStr;
+
+
+p.199
+[COLUMN]
+1문자를 길이 2이상으로 세는 LENGTH 함수도 있다
+LENGTH 함수에는 한 가지 더 특수한 주의사항이 있다. 초급 내용을 조금 넘어서는 얘기이지만, 그것은 이 함수가 무엇을 단위로 '1개'라고 세는지에 대한 것이다.
+영문자가 1바이트인 반면에 한글이나 한자 같은 경우는 2바이트 이상을 사용해서 표현하는 경우가 많다(멀티바이트 문자라고 한다). 이 때문에 MySQL의 LENGTH처럼 바이트 수를 세는경우 LENGTH('김')의 반환 값은 2가 된다. 같은 LENGTH라는 함수라도 DBMS에 따라서는 다른 동작을 보인다.
+
+
+[주 6-4]
+MySQL은 문자열 길이를 취득하기 위해서 CHAR_LENGTH라는 독자 함수를 제공한다.
+
+p.199
+ㅁ LOWER - 소문자화
+LOWER(문자열)
+
+LOWER은 알파벳에만 적용되는 함수로, 인수 문자열을 모두 소문자로 변환한다. 따라서 알파벳 이외에 적용하면 아무런 변화도 없다. 또한, 원 데이터가 소문자인 경우에도 영향을 끼치지 않는다.
+
+e.g.
+SELECT str1,
+       LOWER(str1) AS low_str
+  FROM SampleStr
+ WHERE str1 IN ('ABC', 'aBC', 'abc', '김');
+
+
+p.202
+ㅁ UPPER - 대문자화
+UPPER(문자열)
+
+
+
+p.200
+ㅁ REPLACE - 문자열 치환
+REPLACE(대상 문자열, 치환 전 문자열, 치환 후 문자열)
+
+REPLACE는 문자열 안에 있는 일부 문자열을 다른 문자열로 변경할 때 사용한다.
+
+e.g.
+SELECT str1, str2, str3,
+       REPLACE(str1, str2, str3) AS rep_str
+  FROM SampleStr;
+
+
+181121
+'대상 문자열, 치환 전 문자열, 치환 후 문자열' 중에 하나라도 NULL이 있으면 결과 값이 NULL이 된다.
+
+
+
+p.201
+ㅁ SUBSTRING - 문자열 잘라내기
+SUBSTRNG(대상 문자열 FROM 잘라내기 시작 위치 FOR 잘라낼 문자 수)
+
+SUBSTRING은 문자열에서 일부 문자열만 잘라내고 싶은 경우 사용한다(리스트 6-11). 잘라내기 시작 위치는 '좌측에서부터 몇 번째 문자'인지를 세는 것이다.
+이 SUBSTRING 함수 구문은 표준  SQL로 정해져 있는 정식 구문이지만, 현재 이용할 수 있는 것은 PostgreSQL와 MySQL밖에 없다.
+
+e.g.
+SELECT str1,
+       SUBSTRING(str1 FROM 3 FOR 2) AS sub_str
+  FROM SampleStr;
+
+[주 6-5]
+단, LENGTH 때와 마찬가지로 멀티 바이트 문자 문제가 존재하기 때문에 주의가 필요하다. 상세 내용은 199페이지의 칼럼 '1문자를 길이 2 이상으로 세는 LENGTH 함수도 있다' 참조.
+
+
+[개별 구문]
+* SQL Server
+SUBSTRNG(대상 문자열, 잘라내기 시작 위치, 잘라낼 문자 수)
+
+* Oracle, DB2
+SUBSTR(대상 문자열, 잘라내기 시작 위치, 잘라낼 문자 수)
+
+
+181122 index 1 is the first element in SUBSTRING func
+SUBSTRING function count number from 1 not 0, which is different from common programing language.
+
+
+
+2 ) 날짜 함수
+SQL에는 날짜를 다루는 많은 날짜 함수가 존재하지만, 그 대부분이 DBMS 별 개발 방법에 의존하고 있어서 제각각이다. 그래서 이번 절에서는 '표준 SQL에서 정하고 있으며 대부분의 DBMS에서 사용할 수 있는 것'을 추려서 다루도록 한다.
+
+
+
+p.203
+ㅁ CURRENT_DATE - 현재 날짜
+CURRENT_DATE
+
+CURRENT_DATE는 SQL을 실행한 날, 즉 이 함수가 실행된 날을 반환 값으로 출력한다. 인수가 없기 때문에 괄호가 필요 없다.
+
+e.g.
+SELECT CURRENT_DATE
+>>
+ current_date
+--------------
+ 2018-11-21
+
+[개별 구문]
+* SQL Server
+SELECT CAST(CURRENT_TIMESTAMP AS DATE) AS CUR_DATE;
+
+* Oracle
+SELECT CURRENT_DATE
+  FROM DUAL;
+
+* DB2
+SELECT CURRENT DATE
+  FROM SYSIBM.SYSDUMMY1;
+
+
+
+p.204
+ㅁ CURRENT_TIME - 현재 시간
+CURRENT_TIME
+
+CURRENT_DATE는 SQL을 실행한 시간, 즉 이 함수가 실행된 시간을 반환 값으로 출력한다. 인수가 없기 때문에 괄호가 필요 없다.
+
+e.g. SELECT CURRENT_TIME
+>>
+    current_time
+--------------------
+ 17:02:19.815879+09
+
+
+[개별 구문]
+* SQL Server
+SELECT CAST(CURRENT_TIMESTAMP AS TIME) AS CUR_TIME;
+
+* Oracle
+SELECT CURRENT_TIMESTAMP
+  FROM DUAL;
+
+* DB2
+SELECT CURRENT TIME
+  FROM SYSIBM.SYSDUMMY1;
+
+
+
+p.206
+ㅁ CURRENT_TIMESTAMP - 현재 일시
+CURRENT_TIMESTAMP
+
+CURRENT_TIMESTAMP는 CURREN_DATE + CURRENT_TIME 기능을 가진 함수다. 이 함수를 사용하면 현재 날짜와 시간을 함깨 취득할 수 있고, 취득한 결과로부터 날짜나 시간만 잘라낼 수도 있다(리스트 6-15).
+
+e.g.
+SELECT CURRENT_TIMESTAMP;
+>>
+       current_timestamp
+-------------------------------
+ 2018-11-21 17:08:56.540089+09
+
+
+[개별 구문]
+* Oracle
+SELECT CURRENT_TIMESTAMP
+  FROM DUAL;
+
+* DB2
+SELECT CURRENT TIMESTAMP
+  FROM SYSIBM.SYSDUMMY1;
+
+[주 6-7]
+앞서 본 것과 같이 SQL Server에서는 CURRENT_DATE와 CURRENT_TIME을 사용할 수 없다. 아마도 이 CURRENT_TIMESTAMP만 있으면 양쪽 기능을 모두 구현할 수 있다고 생각했기 때문일 것이다. 합리성 측면에서는 그럴 수도 있다.
+
+
+
+p.207
+ㅁ EXTRACT - 날짜 요소 추출하기
+EXTRACT(날짜 요소 FROM 날짜)
+
+EXTRACT 함수는 날짜 데이터에서 일부분을 추출하는것으로, 예를 들어 '년', '월' 또는 '시간'이나 '초'만을 추출할 때 사용한다(리스트 6-16). 반환 값은 날짜형이 아닌 숫자형이 된다.
+
+e.g.
+SELECT CURRENT_TIMESTAMP,
+       EXTRACT(YEAR   FROM CURRENT_TIMESTAMP) AS year,
+       EXTRACT(MONTH  FROM CURRENT_TIMESTAMP) AS month,
+       EXTRACT(DAY    FROM CURRENT_TIMESTAMP) AS day,
+       EXTRACT(HOUR   FROM CURRENT_TIMESTAMP) AS hour,
+       EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) AS minute,
+       EXTRACT(SECOND FROM CURRENT_TIMESTAMP) AS second;
+>>
+       current_timestamp      | year | month | day | hour | minute |  second
+---------------------------+----+-------+-----+-----+-------+-----------
+ 2018-11-21 17:14:17.          | 2018 |    11    |  21    |   17   |     14   | 17.320057
+320057+09
+
+
+[개별 구문]
+* SQL Server
+SELECT CURRENT_TIMESTAMP,
+       DATEPART(YEAR   , CURRENT_TIMESTAMP) AS year,
+       DATEPART(MONTH  , CURRENT_TIMESTAMP) AS month,
+       DATEPART(DAY    , CURRENT_TIMESTAMP) AS day,
+       DATEPART(HOUR   , CURRENT_TIMESTAMP) AS hour,
+       DATEPART(MINUTE , CURRENT_TIMESTAMP) AS minute,
+       DATEPART(SECOND , CURRENT_TIMESTAMP) AS second;
+
+* Oracle
+SELECT CURRENT_TIMESTAMP,
+       EXTRACT(YEAR   FROM CURRENT_TIMESTAMP) AS year,
+       EXTRACT(MONTH  FROM CURRENT_TIMESTAMP) AS month,
+       EXTRACT(DAY    FROM CURRENT_TIMESTAMP) AS day,
+       EXTRACT(HOUR   FROM CURRENT_TIMESTAMP) AS hour,
+       EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) AS minute,
+       EXTRACT(SECOND FROM CURRENT_TIMESTAMP) AS second
+FROM DUAL;
+
+* DB2
+SELECT CURRENT TIMESTAMP,
+       EXTRACT(YEAR   FROM CURRENT TIMESTAMP) AS year,
+       EXTRACT(MONTH  FROM CURRENT TIMESTAMP) AS month,
+       EXTRACT(DAY    FROM CURRENT TIMESTAMP) AS day,
+       EXTRACT(HOUR   FROM CURRENT TIMESTAMP) AS hour,
+       EXTRACT(MINUTE FROM CURRENT TIMESTAMP) AS minute,
+       EXTRACT(SECOND FROM CURRENT TIMESTAMP) AS second
+  FROM SYSIBM.SYSDUMMY1;
+
+
+p.208
+3 ) 변환 함수
+마지막으로 소개할 카테고리는 '변환 함수'라는 특수한 동작을 하는 함수 군이다. 특수하다고 해도 구문은 지금까지 봐 온 함수와 비슷하며, 종류도 많지 않아서 금방 배울 수 있을 것이다.
+
+'변환'이라는 용어가 가지는 의미가 많이 있지만, SQL에서는 크게 두 가지 의미가 있다.
+하나는 데이터형 변환으로, 줄여서 '형 변환'(영어로는 '캐스트(cast)'라고도 한다)이고, 다른 하나는 값 변환이다.
+
+
+ㅁ CAST - 형 변환
+CAST(변환 전 값 AS 변환할 데이터형)
+
+형 변환이 왜 필요하냐면, 데이터형에 맞지 않는 데이터를 테이블에 등록하거나 연산할 대 형이 일차하지 않으면 에러가 발생하거나 암묵적인 형 변환이 일어나서 처리 속도가 저하될 수도 있기 때문이다. 이런 경우에는 사전에 적절한 형으로 변환해 둘 필요가 있다.
+
+
+
+리스트 6-17  문자형을 숫자형으로 변환
+
+* PostgreSQL, SQL Server
+SELECT CAST('0001' AS INTEGER) AS int_col;
+>>
+ int_col
+---------
+       1
+
+* MySQL
+SELECT CAST('0001' AS SIGNED INTEGER) AS int_col;
+
+* Oracle
+SELECT CAST('0001' AS INTEGER) AS int_col
+  FROM DUAL;
+
+* DB2
+SELECT CAST('0001' AS INTEGER) AS int_col
+  FROM SYSIBM.SYSDUMMY1;
+
+
+리스트 6-18  문자형을 날짜형으로 변환
+
+* PostgreSQL, MySQL, SQL Server
+SELECT CAST('2009-12-14' AS DATE) AS date_col;
+>>
+  date_col
+------------
+ 2009-12-14
+
+* Oracle
+SELECT CAST('2009-12-14' AS DATE) AS date_col
+  FROM DUAL;
+
+
+* DB2
+SELECT CAST('2009-12-14' AS DATE) AS date_col FROM
+  SYSIBM.SYSDUMMY1;
+
+
+p.210
+ㅁ COALESCE - NULL을 값으로 변환
+COALESCE(데이터1, 데이터2, 데이터3 ⋅⋅⋅⋅⋅)
+
+COALESCE(퀄리스)는 SQL 독자 함수다. 복수 개의 인수를 가지며, 왼쪽부터 차례대로 인수를 보고 처음으로 NULL이 아닌 값이 나타났을 대 그 값을 반환한다. 복수 값을 지정할 수 있기 때문에 필요한 만큼 자유롭게 인수를 늘릴 수 있다.
+
+변형된 형태의 함수이지만 실제로는 매우 자주 사용된다. SQL 문에서 NULL을 별도의 값으로 변경해서 처리하고 싶은 경우에 사용한다(리스트 6-19, 6-20). 앞에서 배운 것처럼 NULL이 연산이나 함수 안에 포함되면 결과가 전부 NULL로 바뀐다. 이런 현상을 방지하고자 할 대 유용하게 사용되는 것이 COALESCE이다.
+NULL을 포함하는 열이라도 COALESCE로 별도 값으로 변환 후에 다른 함수나 연산에 입력함으로써 결과가 NULL이 되는 것을 방지할 수 있다.
+(참고로, 많은 DBMS가 이 COALESCE를 단순화한 독자 함수를 제공하고 있지만, DBMS별 개발 방법에 종속되기 때문에 어떤 DBMS에서도 사용하라 수 있는 COALESCE를 이용할 것을 권장한다.
+
+리스트 6-19
+
+* PostgreSQL, MySQL, SQL Server
+SELECT COALESCE(NULL, 1)                  AS col_1,
+       COALESCE(NULL, 'test', NULL)       AS col_2,
+       COALESCE(NULL, NULL, '2009-11-01') AS col_3;
+>>
+ col_1 | col_2 |   col_3
+---+-------+------------
+     1 | test  | 2009-11-01
+
+
+* Oracle
+SELECT COALESCE(NULL, 1)                  AS col_1,
+       COALESCE(NULL, 'test', NULL)       AS col_2,
+       COALESCE(NULL, NULL, '2009-11-01') AS col_3
+  FROM DUAL;
+
+
+* DB2
+SELECT COALESCE(NULL, 1)           AS col_1,
+       COALESCE(NULL, 'test', NULL)       AS col_2,
+       COALESCE(NULL, NULL, '2009-11-01') AS col_3
+  FROM SYSIBM.SYSDUMMY1;
+
+
+
+리스트 6-20  SampleStr 테이블 열을 사용한 샘플
+SELECT COALESCE(str2, 'NULL입니다')
+  FROM SampleStr;
+
+
+
+[6-2 술어]
+
+학습포인트
+* 술어란, 반환 값이 진릿값인 함수를 가리킨다.
+* LIKE의 세 가지 사용법인 전방 일치, 중간 일치, 후방 일치를 마스터하도록 하자
+* BETWEEN은 세 가지 인수를 가진다는 사실에 주의해야 한다
+* NULL 데이터를 선택하려면 IS NULL을 반드시 사용해야 한다
+* IN, EXISTS는 서브쿼리를 인수로 취할 수 있다
+
+
+
+술어란?
+'술어(predicate)'는 SQL에서 추출 조건을 기술할 때 필수적으로 사용하는 도구다.
+예를 들어 =, <, >, <> 등의 비교 연산자도 정확히는 비교 술어라는 술어의 일종이다.
+
+술어는 6-1절에서 소개한 함수의 일종이라 할 수 있다. 단, 특별한 조건을 만족하는 함수이어야 한다. 이 조건이란, '반환 값이 진릿값이어야 한다'는 것이다. 일반 함수는 반환 값이 숫자나 문자 또는 날짜 등 다양하지만 술어의 반환 값은 모두 (TRUE/FALSE/UNKNOWN)이다. 이것이 함수와 술어의 큰 차이점이다.
+이번 절에서 배울 술어는 다음과 같다.
+
+* LIKE
+* BETWEEN
+* IS NULL, IS NOT NULL
+* IN
+* EXISTS
+
+
+LIKE - 문자열 부분 일치 검색
+지금까지 문자열을 검색할 때는 문자열이 완전히 일치하는 경우에만 참(TRUE)가 되는 '='를 사용했었다. 반면, LIKE 술어는 문자열 부분 일치를 검색할 때 사용한다.
+
+* 전방 일치 : 'dddabc'가 선택된다 전방 일치란, 검색 조건이 되는 문자열(여기서는 'ddd')이 검색 대상 문자열의 가장 앞에 위치하고 있는 레코드만 선택하는 검색 구조다.
+
+* 중간 일치 : 'abcddd', 'dddabc', abdddc'가 선택된다 중간 일치란, 검색 조건이 되는 문자열('ddd')이 검색 대상 문자열의 '어딘가'에 포함되어 있으면 레코드가 선택되는 검색 구조다. 가장 앞이든, 가장 뒤든 또는 중간이든 상관없다.
+
+* 후방 일치 : 'abcddd'가 선택된다 후방 일치란, 전방 일치와 반대다. 즉, 검색 조건이 되는 문자열('ddd')이 문자열 가장 뒤에 오는 레코드만 선택하는 검색 구조다.
+
+가장 검색 조건이 느슨한 것, 즉 많은 레코드를 선택할 가능성이 있는 것은 중간 일치다. 이것은 중간 일치가 전방 일치와 후방 일치 모두를 포함하는 조건이기 때문이다.
+이와 같이 문자열을 그대로 '='로 지정하지 않고 문자열 안에 포함되는 규칙(여기서는 'ddd'를 포함한다'는 규칙)에 기반해서 검색하는 것을 '패턴 매칭'이라고 한다. 패턴이란, 이 규칙을 말한다.
+
+ㅁ 전방 일치 검색
+
+e.g.
+SELECT *
+  FROM SampleLike
+ WHERE strcol LIKE 'ddd%';
+
+
+ㅁ 중간 일치 검색
+
+e.g.
+SELECT *
+  FROM SampleLike
+ WHERE strcol LIKE '%ddd%';
+
+
+ㅁ 후방 일치 검색
+
+e.g.
+SELECT *
+  FROM SampleLike
+ WHERE strcol LIKE '%ddd';
+
+
+참고로, '%' 대신에 '_'(언더바)를 사용할 수도 있지만, %와는 다르게 '임의의 1문자'를 의미한다.
+
+
+
+BETWEEN - 범위 검색
+
+BETWEEN은 범위 검색을 수행한다. 이 술어가 다른 술어나 함수와 다른 점은 바로 인수를 3개 사용한다는 점이다. 예를 들어, Goods(상품) 테이블에서 판매단가(sell_price)가 100원부터 1000원까지인 상품(goods_name)을 선택하려면 리스트 6-27과 같이 작성한다.
+
+리스트 6-27
+SELECT goods_name, sell_price
+  FROM Goods
+ WHERE sell_price BETWEEN 100 AND 1000;
+
+BETWEEN의 특징은 100과 1000이라는 양극단의 값도 포함한다는 것이다. 만약 양극단의 값을 제외하고 싶다면 <와 >를 사용하면 된다(리스트 6-28).
+
+리스트 6-28
+SELECT goods_name, sell_price
+  FROM Goods
+  WHERE sell_price > 100
+  AND sell_price < 1000;
+
+
+
+IS NULL, IS NOT NULL - NULL 또는 비NULL 판정
+
+특정 열이 NULL인 행을 선택하려면 '='을 사용할 수 없다. 이때는 IS NULL이라는 특수한 술어를 사용할 필요가 있다(리스트 6-29).
+
+
+
+IN - OR의 간략 버전
+
+매입단가(buy_price)가 320원, 500원, 5000원인 상품을 선택해 보자. 앞에서 배운 OR을 사용해서 리스트 6-31과 같이 작성할 수 있다.
+
+리스트 6-31
+SELECT goods_name, buy_price
+  FROM Goods
+ WHERE buy_price =  320
+    OR buy_price =  500
+    OR buy_price = 5000;
+
+
+이 방법에는 약점이 있다. 즉, 선택 대상으로 지정할 값이 늘어날수록 SQL의 작성 길이도 늘어나서 가독성이 떨어지게 된다. 이때는 리스트 6-32와 같이 IN 술어를 사용해서 'IN (값, ⋅⋅⋅)' 형태로 바꿔주면 깔끔하게 정리가 된다.
+
+리스트 6-32
+SELECT goods_name, buy_price
+  FROM Goods
+ WHERE buy_price IN (320, 500, 5000);
+
+반대로, '매입단가가 320원, 500원, 5000원이 아닌 상품'을 선택하고 싶은 경우에는 부정형인 NOT IN을 사용한다(리스트 6-33)
+
+리스트 6-33
+SELECT goods_name, buy_price
+  FROM Goods
+ WHERE buy_price NOT IN (320, 500, 5000);
+
+단, IN과 NOT IN 둘 다 NULL을 선택할 수 없다는 것에 주의해야 한다. 실제로 어떤 결과에도 매입단가가 NULL인 포크와 볼펜이 포함되어 있지 않다. NULL은 어디까지나 IS NULL, IS NOT NULL을 사용해서 판별하는 것이 규칙이다.
+
+
+p.219
+[역주]
+IN이 복수의 값을 깔끔하게 지정해서 검색할 수 있다는 장점이 있지만, DBMS에 따라서는 지정할 수 있는 대상 수에 제한이 있다. 특정 DB의 경우, 지정 개수가 1,000개로 제한되어 있다. 많은 수의 특정 데이터를 선택해야 한다면(특히, 코딩을 통해 SQL을 생성하는 경우) IN 사용에 주의해야 한다. 역자의 경우도 실제 개발 현장에서 이 문제로 디버깅 시에 꽤 고생한 경험이 있다.
+
+
+IN 술어의 인수로 서브쿼리를 지정한다
+
+ㅁ IN과 서브쿼리
+IN 술어(NOT IN 술어)에는 다른 술어에는 없는 특별한 사용법이 있다. 바로 인수로 서브쿼리를 지정하는 방법이다. 서브쿼리는 5-2절에서 본 것처럼 SQL내부에 생성된 테이블이기 때문에 'IN은 테이블을 인수로 지정할 수 있다'고도 표현할 수 있다. 또한, 같은 의미로 'IN은 뷰를 지정할 수 있다'고도 말할 수 있다.
+
+구체적인 사용법을 보기 위해서 새로운 테이블을 추가하도록 한다. 지금까지는 상품 재고 일람인 Goods(상품) 테이블을 사용했지만, 현실에서는 개별 점포에서 상품이 판매되게 된다. 그래서 어느 점포가 어느 상품을 취급하고 있는지 나타내는 StoreGoods(점포상품) 테이블을 만들도록 한다(표 6-2)
+
+표 6-2
+ store_id | store_name | goods_id | num
+----------+------------+----------+-----
+ 000A     | 서울       | 0001     |  30
+ 000A     | 서울       | 0002     |  50
+ 000A     | 서울       | 0003     |  15
+ 000B     | 대전       | 0002     |  30
+ 000B     | 대전       | 0003     | 120
+ 000B     | 대전       | 0004     |  20
+ 000B     | 대전       | 0006     |  10
+ 000B     | 대전       | 0007     |  40
+ 000C     | 부산       | 0003     |  20
+ 000C     | 부산       | 0004     |  50
+ 000C     | 부산       | 0006     |  90
+ 000C     | 부산       | 0007     |  70
+ 000D     | 대구       | 0001     | 100
+
+이 테이블을 만들기 위한 SQL문은 리스트 6-34와 같다.
+
+리스트 6-34
+CREATE TABLE StoreGoods
+(store_id  CHAR(4)       NOT NULL,
+ store_name  VARCHAR(200) NOT NULL,
+ goods_id CHAR(4)       NOT NULL,
+ num     INTEGER       NOT NULL,
+ PRIMARY KEY (store_id, goods_id));
+
+점포와 상품을 조합한 것이 하나의 레코드가 된다.
+...
+이 CREATE TABLE 문의 특징은 주 키(primary key)를 2열 지정하고 있다는 점이다. 이유는 테이블에 포함된 특정 행을 중복 없이 지정하기 위해서는 점포 ID(store_id) 또는 상품ID(goods_id) 같은 1열만 사용해서 부족하다. 이를 위해선 점포와 상품을 조합할 필요가 있다.
+점포ID만으로 식별하려고 하면 '000A'라는 조건 지정으로 3행이 선택되고, 상품ID만으로 식별하려고 해도 '0001'의 경우 2행이 선택되어 버리는 문제가 있다.
+
+
+...
+'부산점(000C)에 있는 어떤 상품(goods_id)의 판매단가(sell_price)'를 구해보자.
+
+리스트 6-36
+SELECT goods_name, sell_price
+  FROM Goods
+ WHERE goods_id IN (SELECT goods_id
+                       FROM StoreGoods
+                      WHERE store_id = '000C');
+
+p.223
+[주 6-10]
+store_name = '부산'이라는 조건을 사용해도 같은 결과를 얻을 수 있지만, 일반적으로 데이터베이스에서 점포나 상품을 지정할 때에는 한글 명칭을 그대로 사용하지 않는다. 이 명칭들은 ID에 비해서 변경될 가능성이 높기 때문이다.
+
+
+
+p.224
+SELECT goods_name, sell_price
+  FROM Goods
+ WHERE goods_id IN ('0003', '0004', '0006', '0007');
+
+
+여기서 '('0003', '0004', '0006', '0007')과 같이 전개된 형태의결과를 얻을 수 있다면 서브쿼리 자체가 필요 없지 않냐'라고 반문하는 독자도 있을 것이다. 이 질문에 대한 대답은 'StoreGoods(점포상품) 테이블을 절대 변경할 수 없다는 조건'을 붙이다면 맞다고 할 수 있다. 하지만 실제로는 각 점포가 취급하는 상품이 계속 바꾸기 때문에 StoreGoods 테이블 내의 부산저미 보유하고 있는 상품도 변하기 마련이다. 이 경우 서브쿼리를 사용하지 않은 SELECT 문은 테이블이 변경될 때마다 SELECT 문을 수정해야만 한다. 이것은 끝이 없는 매우 번거로운 작업이다.
+
+한편, 서브쿼리를 사용해서 SELECT 문을 만들어 두면 데이터가 아무리 변해도 계속 동일한 SELECT 문을 사용할 수 있어서 반복 작업을 줄일 수 있다. 이와 같이 데이터 변경에 강한 면모를 보이는 프로그램을 '유지보수성이 우수하다' 또는 '정비 작업 프리(Maintenance Free)라고 한다. 이것은 시스템 개발에 있어서 매우 중요한 사고방식으로, 여러분들도 프로그래밍 학습 단계부터 유지보수성이 우수한 코드를 작성하도록 노력하자.
+
+[주6-11]
+여기서 '프리(free)'는 '택스 프리(Tax Free, 면세)' 등에서 사용하는 의미와 동일한 것으로 '불필요', '면제' 등의 의미다.
+
+
+
+EXISTS
+이번 절에서 마지막으로 배울 술어는 EXISTS다. 이것을 마지막에 배우는 이유로는 다음 세 가지가 있다.
+
+1 ) EXISTS는 지금까지 배운 술어와는 사용법이 다르다
+2 ) 구문을 직관적으로 이해하기 어렵다
+3 ) 사실은 EXISTS를 사용하지 않아도 IN(또는 NOT IN)을 통해 거의 동일한 결과를 얻을 수 있다.
+
+1)과 2)의 이유는 어떤 의미에서는 하나의 세트로, EXISTS는 익숙해지기 전까지는 사용법이 어려운 술어다. 특히 부정형인 NOT EXISTS를 사용한 SQL문은 능숙한 DB 엔지니어라도 바로 파악하기 어려운 경우가 있다. 또한, 3)에서도 언급했지만 IN을 대신 사용할 수 있는 경우가 많기 때문에(완전히 대체할 수 있는 것은 아니어서 어려운 부분이지만0 '기억하긴 했는데 잘 사용하지 않는다'는 사람이 많다. 단, EXISTS 술어를 능숙하게 사용하게 되면 매우 큰 힘을 발휘한다. 그런 의미에서 SQL 중급 레벨이 되면 꼭 마스터했으면 하는 도구이기도 하다. 이 책에서는 기본적인 사용법만 소개한다. 그러면 EXISTS에 대해 살펴보도록 하자.
+
+
+ㅁ EXISTS 사용법
+EXISTS 술어의 역할을 한마디로 말하면, '어떤 조건에 일치하는 레코드가 존재하는지 여부'를 조사하는 것이다. 그런 레코드가 존재하면 참(TRUE)을, 존재하지 않으면 거짓(FALSE)을 반환한다. EXISTS(존재한다)라는 술어의 주어는 '레코드'다.
+
+
+리스트 6-38
+SELECT goods_name, sell_price
+  FROM Goods AS S
+ WHERE EXISTS (SELECT *
+                 FROM StoreGoods AS TS
+                WHERE TS.store_id = '000C'
+                  AND TS.goods_id = S.goods_id);
+
+
+ㅁ EXISTS 인수
+앞에서 배운 술어들은 대부분 '열 LIKE 문자열' 또는 '열  BETWEEN 값1 AND 값2'와 같이 두 개 이상의 인수를 지정했었다. 하지만 EXISTS의 왼쪽에는 아무것도 없다. 형태가 약간 미묘하지만 EXISTS가 인수를 하나만 취하기 때문이다. EXISTS는 오른쪽에 하나의 인수만 지정한다. 그리고 그 인수는 항상 서브쿼리다. 앞의 예에서도 서브쿼리가 유일한 인수다.
+정확히는 'TS.goods_id = S.goods_id'라는 조건으로 Goods 테이블과 StoreGoods 테이블을 결합하고 있기 때문에 상관 서브쿼리가 인수다. EXISTS는 항상 상관 서브쿼리를 인수를 가진다.
+
+[주 6-12]
+엄밀히 말하면 구문상 상관 쿼리가 아닌 인수도 사용할 수 있지만, 현실에서는 거의 사용되지 않는다.
+
+
+ㅁ 서브쿼리 안의 SELECT *
+
+앞에서 서브쿼리 안에 'SELECT *'가 있는 것에 위화감을 느낄 수도 있지만, EXISTS는 레코드의 존재유무만을 확인하기 때문에 어떤 열이 반환되는 신경 쓰지 않는다. EXISTS는 서브쿼리 내의 WHERE 구에서 지정하고 있는 조건 '점포ID(strore_id)가 000C이고, 상품ID(goods_id)가 상품(Goods) 테이블과 점포상품(StoreGoods)에서 일치'하는 레코드가 존재하는지 여부만을 조사해서 해당 레코드가 존재하는 경우에만 참(TURE)을 반환한다. 따라서 리스트 6-39와 같이 작성해도 결과는 동일하다.
+
+리스트6-39
+SELECT goods_name, sell_price
+  FROM Goods AS S
+ WHERE EXISTS (SELECT 1
+                 FROM StoreGoods AS TS
+                WHERE TS.store_id = '000C'
+                  AND TS.goods_id = S.goods_id);
+
+EXISTS의 서브쿼리에 'SELECT *'라고 쓰는 것은 SQL 작성 시의 습관이라고 생각하면 된다.
+
+
+
+ㅁ NOT IN을 NOT EXISTS로 변경
+
+IN을 EXISTS로 바꿀 수 있듯이 NOT IN을 NOT EXITS로 변경하는 것도 가능하다.
+'서울점(000A)에 있는 상품(goods_id) 이외 상품의 판매단가(sell_price)'를 구하는 SELECT 문을 NOT EXISTS를 사용해서 작성해 보자(리스트 6-40).
+
+리스트 6-40
+SELECT goods_name, sell_price
+  FROM Goods AS S
+ WHERE NOT EXISTS (SELECT *
+                     FROM StoreGoods AS TS
+                    WHERE TS.store_id = '000A'
+                      AND TS.goods_id = S.goods_id);
+
+NOT EXISTS는 EXISTS와 반대로, 서브쿼리 내부에서 지정한 조건의 레코드가 '존재하지 않는' 경우에 참(TRUE)을 반환한다.
+
+
+p.230
+그러면 IN(리스트 6-36)과 EXISTS(리스트 6-38)를 비교해 보도록 하자. IN이 알기 쉽다고 느끼는 사람이 많을 것이다. 필자도 처음부터 무리하게 EXISTS를 사용할 필요는 없다고 생각한다. 하지만 EXISTS에는 IN에는 없는 편리함이 있고, 엄밀히 말하면 두 가지가 동일하지 않기 때문에 양쪽 다 마스터하는 것이 바람직하다. 때문에 중급 레벨이 되면 EXISTS를 깊이 있게 배우길 권한다.
+
+
+[6-3 CASE 식]
+
+학습 포인트
+* CASE 식에는 단순 CASE 식과 검색 CASE  식, 두 종류가 있다. 검색 CASE 식은 단순 CASE 식의 기능을 모두 포함한다.
+* CASE 식의 ELSE 구는 생략할 수 있지만, SQL 문을 알기 쉽게 하기 위해서 생략하지 않도록 한다.
+* CASE 식의 END는 생략할 수 없다.
+* CASE 식을 사용하면 SELECT 문 결과를 유연하게 재조합할 수 있다.
+* Oracle의 DECODE, MySQL의 IF 등 CASE 식을 간단히 만들어 독자 함수를 제공하는 DBMS도 있지만, 범용성이 낮고 기능도 제한되기 때문에 사용하지 않는 것이 좋다.
+
+
+CASE 식이란?
+
+이번 절에서 배우는 CASE 식은 '식'이라는 용어가 가리키듯이 '1+1'이나 '120/4'와 같은 식처럼 연산을 수행하는 기능이다. 그런 의미에서 CASE 식은 함수의 일종이기도 하다. SQL  기능 중에서 가장 중요한 기능이라 할 수 있는데, 이번에 제대로 익히도록 하자.
+
+CASE 식은 CASE(경우)라는 명칭이 가리키듯이 '경우 구분'을 기술할 때 사용한다. 이 경우구분을 프로그래밍에서는 '조건 분기'라고 일반적으로 부른다.
+
+
+CASE 식 구문
+CASE 식 구문에는 '단순 CASE 식'과 '검색 CASE 식', 두 가지가 있다. 단, 검색 CASE 식은 단순 CASE 식의 기능을 모두 포함하기 때문에 여기서는 검색 CASE 식만 다루도록 한다. 단순 CASE 식 구문에 대한 상세 내용을 알고 싶다면 잠시 뒤에 나오는 '단순 CASE 식' 칼럼을 참조하도록 한다. 그러면 바로 검색 CASE 구문을 살펴보도록 하자.
+
+구문 6-16  검색 CASE 식
+
+CASE WHEN <평가식> THEN <식>
+	  WHEN <평가식> THEN <식>
+	  WHEN <평가식> THEN <식>
+		.
+		.
+		.
+	ELSE  <식>
+END
+
+
+WHEN 구의 <평가식>이란, '열=값'과 같이 반환 값이 진릿값(TRUE/FALSE/UNKNOWN)이 되는 식을 말한다. =, !=이나 LIKE, BETWEEN 같은 술어를 사용해서 만든 식이라고 보면 된다.
+
+CASE 식 처리는 가장 처음에 나오는 WHEN 구의 '평가식'을 평가하면서 시작된다. 여기서 '평가'란, 해당 식의 진릿값을 조사하는 처리다. 조사 결과가 참(TRUE)이면 THEN 구에서 지정한 식이 반환되고, CASE 식 전체가 종료된다. 만약 참이 아니면 다음 WHEN 구를 평가하게 된다. 만약 이 작업을 마지막 WHEN 구까지도 반복해도 참이 되지 않을 때는 'ELSE'에서 지정한 식을 반환하고 CASE 식을 종료하게 된다.
+
+참고로, CASE 식은 '식'이란 명칭에서 알 수 있듯이 전체가 하나의 식을 구성하고 있다. 그리고 이 식이 최종적으로 하나의 값을 반환하기 때문에 SQL 문 실행 시에는 전체 식이 하나의 값으로 변환되는 것이다. 분기가 많은 CASE 식을 사용하면 수십 행에 이르는 식을 작성하는 경우도 있는데, 이런 방대한 CASE 식 전체가 결과적으로 '1'이나 '김철수'처럼 단순한 값을 반환하게 된다.
+
+
+CASE 식 사용법
+예를 들어, 다음과 같은 경우를 생각해 보자. 지금 Goods(상품) 테이블에는 의류, 사무용품, 주방용품 등 세 종류의 상품분류가 저장되어 있다. 이것을 다음과 같은 형식으로 변환해서 출력하는 방법을 알아보자.
+
+A: 의류
+B: 사무용품
+C: 주방용품
+
+테이블에 있는 레코드에는 'A:'나 'B:' 같은 문자열이 없기 때문에 SQL을 통해서 결합할 필요가 있다. 이를 위해선 6-1절에서 배운 문자열 결합 함수 '||'를 사용하면 된다.
+남은 문제는 'A:', 'B:', 'C:'를 적합한 레코드에 연결시키는 것이다. 이것을 CASE 식으로 구현할 수 있다.
+
+
+리스트 6-41
+SELECT goods_name,
+       CASE WHEN goods_classify = '의류'      THEN 'A:' || goods_classify
+            WHEN goods_classify = '사무용품'     THEN 'B:' || goods_classify
+            WHEN goods_classify = '주방용품'     THEN 'C:' || goods_classify
+            ELSE NULL
+       END AS abc_goods_classify
+  FROM Goods;
+
+
+181121  MYWAY (UPDATE the goods table)
+UPDATE goods
+SET goods_classify = (
+  CASE WHEN goods_classify = '의류'      THEN 'A:' || goods_classify
+            WHEN goods_classify = '사무용품'     THEN 'B:' || goods_classify
+            WHEN goods_classify = '주방용품'     THEN 'C:' || goods_classify
+       END);
+
+181121  'ELSE NULL' is default option
+Even leave ELSE <statement> vacant, it works as if 'ELSE NULL'
+So, the SQL violates NOT NULL constraint and the error occurs as below.
+ERROR:  null value in column "goods_classify" violates not-null constraint
+
+
+마지막의 'ELSE NULL'는 앞의 모든 WHEN 구를 만족하지 않으면 NULL을 반환한다는 의미다. ELSE 구에서는 WHEN 구에서 지정한 조건 이외의 레코드를 어떻게 처리할지를 기술한다.
+
+ELSE 구를 생략하는 것도 가능하며, 이 경우에는 'ELSE NULL'로 간주한다. 하지만 나중에 코드를 해석하는 사람이 놓칠 수도 있기 때문에 명시적으로 ELSE를 기술하는 것이 좋다.
+
+참고로, CASE 식 마지막에 있는 'END'는 생략 불가능하기 때문에 절대 빼먹지 않도록 주의하자. END를 빼먹어서 구문 에러가 발생하게 되는데, 이는 초보자가 자주 하기 쉬운 실수 중 하나다.
+
+
+ㅁ CASE 식을 기술할 수 있는 곳
+
+이 CASE식이 편리한 것은 바로 '식'이라는 점이다. 이것은 식을 사용할 수 있는 곳이라면 어디든지 CASE 식을 사용할 수있다는 것을 의미한다. 즉, '1+1'을 쓸 수 있는 곳이라면 어디든지 가능하다는 것이다. 예를 들어, CASE 식의 편리한 사용법 중 하나가 다음과 같이 SELEECT 문 결과를 행렬 변환하는 것이다.
+
+
+이것은 상품분류(goods_classify)별로 판매단가(sell_price)를 합한 결과다. 하지만 상품분류 열을 GROUP BY 구로 집약한다고 해도 결과는 '행'으로 출력되며, 열로 정렬해서 출력할 수는 없다(리스트 6-42).
+
+리스트 6-42
+SELECT goods_classify,
+       SUM(sell_price) AS sum_tanka
+  FROM Goods
+ GROUP BY goods_classify;
+>>
+ goods_classify | sum_tanka
+----------------+-----------
+ 의류           |      5000
+ 사무용품       |       600
+ 주방용품       |     11180
+
+
+'열'로 결과를 출력하려면 리스트 6-43과 같이 SUM 함수 안에 CASE 식을 사용해서 세 개 열을 생성하면 된다.
+
+
+MYWAY
+1 )
+SELECT
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '사무용품' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '주방용품' THEN SUM(sell_price) END)
+FROM Goods
+GROUP BY goods_classify;
+>>
+ case | case  | case
+------+------+-------
+ 5000 |           |
+      	   |  600  |
+      	   |           | 11180
+
+2 )
+SELECT
+  SUM(CASE WHEN goods_classify = '의류' THEN sell_price END),
+  SUM(CASE WHEN goods_classify = '사무용품' THEN sell_price END),
+  SUM(CASE WHEN goods_classify = '주방용품' THEN sell_price END)
+FROM Goods
+GROUP BY goods_classify;
+>>
+ case | case  | case
+------+------+-------
+ 5000 |           |
+      	   |  600  |
+      	   |           | 11180
+
+
+3 )
+So I became so curious why there are three records not just one.
+SQL below explains why.
+It was because GROUP BY clause.
+
+SELECT
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END)
+FROM Goods
+GROUP BY goods_classify;
+>>
+ case | case | case
+------+------+------
+ 5000 | 5000 | 5000
+      	   |           |
+           |           |
+
+
+4 )
+So I removed GROUP BY clause from the SQL
+
+SELECT
+  SUM(CASE WHEN goods_classify = '의류' THEN sell_price END),
+  SUM(CASE WHEN goods_classify = '사무용품' THEN sell_price END),
+  SUM(CASE WHEN goods_classify = '주방용품' THEN sell_price END)
+FROM Goods;
+>>
+ sum  | sum |  sum
+------+-----+-------
+ 5000 | 600 | 11180
+
+4-2)
+But, this SQL doesn't work with error code.
+
+SELECT
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END),
+  (CASE WHEN goods_classify = '의류' THEN SUM(sell_price) END)
+FROM Goods;
+>>
+column "goods.goods_classify" must appear in the GROUP BY clause or be used in an aggregate function
+
+
+리스트 6-43
+SELECT SUM(CASE WHEN goods_classify = '의류' THEN sell_price ELSE 0 END) AS sum_price_cloth,
+       SUM(CASE WHEN goods_classify = '사무용품' THEN sell_price ELSE 0 END) AS sum_price_kitchen,
+       SUM(CASE WHEN goods_classify = '주방용품' THEN sell_price ELSE 0 END) AS sum_price_office
+FROM Goods;
+
+이 CASE 식은 상품분류(goods_classify)가 '의류', '사무용품', '주방용품'인 경우 해당 상품의 판매단가(sell_price)를 출력하고, 그렇지 않으면 0을 출력하고 있다. 이 출력 결과를 다시 SUM이라는 함수를 이용해서 합계를 구함으로써 특정 상품분류의 판매단가 합계를 구할 수 있다.
+
+이와 같이 CASE 식은 SELECT 문의 결과를 유연하게 재조합해야 할 경우에 큰 힘을 발휘한다.
+
+
+p.236
+[COLUMN]
+단순 CASE 식
+CASE 식에는 두 종류가 있다. 첫 번째가 본문에서 다룬 '검색 CASE 식'이고, 두 번째가 이것을 단순화한 '단순 CASE 식'이다.
+
+단순 CASE 식은 검색CASE 식에 비해 작성법이 간단하다는 이점이 있지만, 기술할 수 있는 조건이 제한적이라는 것이 결점이다. 이 때문에 기본적으로 검색 CASE 식을 사용하는 것이 좋지만, 구문에 대해서만 간단히 짚고 넘어가도록 한다.
+
+구문 6-A  단순 CASE 식
+
+CASE  <식>
+	WHEN <식> THEN <식>
+	WHEN <식> THEN <식>
+	WHEN <식> THEN <식>
+		.
+		.
+		.
+	ELSE  <식>
+END
+
+첫 WHEN 구부터 평가를 시작해서 참이 되는 WHEN 구가 나올 때까지 차례로 WHEN 구를 평가한다는 점은 검색 CASE 식과 동일하다. 또한, 마지막까지 참이 되는 WHEN 구가 없는경우에 ELSE 구에서 지정한 식을 반환한다는 점도 같다. 차이점은 제일 처음에 나오는 'CASE 식'에서 평가 대상이 되는 식을 정해 버린다는 점이다.
+구체적인 예로, 검색 CASE 식과 단순 CASE식으로 같은 의미를 가지는 SQL 문을 작성해보도록 하자. 여기서 리스트 6-41에 있는 검색 CASE 식을 단순 CASE 식으로 변경하도록 한다(리스트 6-A).
+
+
+리스트 6-A
+
+-- 검색 CASE를 사용한 경우
+SELECT goods_name,
+       CASE WHEN goods_classify = '의류'  THEN 'A:' || goods_classify
+            WHEN goods_classify = '사무용품' THEN 'B:' || goods_classify
+            WHEN goods_classify = '주방용품' THEN 'C:' || goods_classify
+            ELSE NULL
+       END AS abc_goods_classify
+  FROM Goods;
+
+
+-- 단순 CASE를 사용한 경우
+SELECT goods_name,
+       CASE goods_classify
+            WHEN '의류'        THEN 'A:' || goods_classify
+            WHEN '사무용품'  THEN 'B:' || goods_classify
+            WHEN '주방용품' THEN 'C:' || goods_classify
+            ELSE NULL
+        END AS abc_goods_classify
+  FROM Goods;
+
+
+단순 CASE 식에서는 'CASE goods_classify'처럼 평가하고 싶은 식(여기서는 열 자체)을 기술한 후, WHEN 구에서 한 번 더 'goods_classify'를 기술할 필요가 없다. 이런 점이 편리하다고 할 수 있지만, 반대로 WHEN 구별로 다른 열에 대한 조건을 지정하고 싶은 경우 등은 단순 CASE 식으로 구현할 수 없다.
+
+
+
+p.238
+[COLUMN]
+CASE 식 개별 구문
+
+CASE 식은 표준 SQL이 인정하고 있는 기능이기 때문에 어떤 DBMS에서도 사용 가능하다. 하지만 DBMS  중에는 CASE 식을 단순화한 독자 함수를 제공하는 것도 있다. 예를 들어, Oracle은 DECODE, MySQL은 IF 등을 제공한다.
+
+* Oracle
+SELECT  goods_name,
+        DECODE(goods_classify,
+				'의류',         'A:' || goods_classify,
+                              '사무용품',     'B:' || goods_classify,
+                              '주방용품', 'C:' || goods_classify,
+               NULL) AS abc_goods_classify
+  FROM Goods;
+
+
+* MySQL
+SELECT  goods_name,
+        IF( IF( IF(goods_classify = '의류',  CONCAT('A:', goods_classify), NULL)
+            	    IS NULL AND goods_classify = '사무용품', CONCAT('B:', goods_classify),
+            	IF(goods_classify = '의류',  CONCAT('A:', goods_classify), NULL))
+                    IS NULL AND goods_classify = '주방용품', CONCAT('C:', goods_classify),
+                    IF( IF(goods_classify = '의류',  CONCAT('A:', goods_classify), NULL)
+            	    IS NULL AND goods_classify = '사무용품', CONCAT('B:', goods_classify),
+            	IF(goods_classify = '의류',  CONCAT('A:', goods_classify), NULL))) AS abc_goods_classify
+  FROM Goods;
+
+하지만 이 함수들은 특정 DBMS에서만 사용할 수 있고, 기술할 수 있는 조건도 CASE 식보다 제한되어 있어서 사용에 따른 이점이 크지 않다. 이런 이유로 개별 구문은 사용을 자제하는 것이 좋다.
+
+
+
