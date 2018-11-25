@@ -1,0 +1,70 @@
+[Learned]
+
+
+180920 (Ch6) Breadth-first Search
+
+import queue
+q = queue.Queue()
+vs
+from collections import deque
+q = deque()
+
+- deque가 queue에 비해 더 기능이 많음. ex) popleft() 
+- queue 본연의 FIFO만 생각한다면 queue가 더 적절해 보임. ex) get(), put()
+
+- queue는 그 자체로는 안되고 q.queue로 출력해야 que안의 원소를 확인가능한 반면 deque는 그냥 출력해도 무관함.
+
+
+
+180922 (Ch6) PRACTICE 6-2 최단경로 출력
+
+최단 경로를 출력해야하는 문제를 queue안에 들어가는 원소 자체를 경로를 표시하는 리스트를 넣는 방법으로 해결.
+ex) queue = [ [C,B,A], [D,B,A], [E,D,B,A].. ]
+                 C<-B<-A / D<-B<-A / E<-D<-B<-A
+
+
+
+18028 (Ch8) Power set
+
+In mathematics, the power set (or powerset) of any set S is the set of all subsets of S, including the empty set and S itself, variously denoted as P(S), 𝒫(S), ℘(S) (using the "Weierstrass p"), P(S), ℙ(S), or, identifying the powerset of S with the set of all functions from S to a given set of two elements, 2S. In axiomatic set theory (as developed, for example, in the ZFC axioms), the existence of the power set of any set is postulated by the axiom of power set.
+
+
+
+180929 탐욕 알고리즘 여부, greedy algorithm
+
+탐욕 알고리즘의 여부는 근사 알고리즘(approximate algorithm)인지 여부와 관계없이 문제를 해결해가는 알고리즘의 방법과 관계가 있다.
+p.216 8-4, 8-5
+
+
+180929 greedy algorithm's optimized conditions
+
+그리디 알고리즘은
+- greedy choice property
+- optimal substructure
+
+특성을 가지는 문제들을 해결하는데 강점이 있다.
+즉, 한번의 선택이 다음 선택에는 전혀 무관한 값이여야 하며,
+매 순간의 최적해가 문제에 대한 최적해여야 한다는 의미이다.
+https://namu.wiki/w/그리디%20알고리즘
+
+
+탐욕 알고리즘이 잘 작동하는 문제는 대부분 탐욕스런 선택 조건(greedy choice property)과 최적 부분 구조 조건(optimal substructure)이라는 두 가지 조건이 만족된다. 탐욕스런 선택 조건은 앞의 선택이 이후의 선택에 영향을 주지 않는다는 것이며, 최적 부분 구조 조건은 문제에 대한 최적해가 부분문제에 대해서도 역시 최적해라는 것이다.
+https://ko.wikipedia.org/wiki/탐욕_알고리즘
+
+
+
+180929 NP-완전문제
+
+NP-완전(NP-complete, NP-C, NPC)은 NP 집합에 속하는 결정 문제 중에서 가장 어려운 문제의 부분집합으로, 모든 NP 문제를 다항 시간 내에 NP-완전 문제로 환산할 수 있다.
+ NP-완전 문제 중 하나라도 P에 속한다는 것을 증명한다면 모든 NP 문제가 P에 속하기 때문에, P-NP 문제가 P=NP의 형태로 풀리게 된다. 반대로 NP-완전 문제 중의 하나가 P에 속하지 않는다는 것이 증명된다면 P=NP에 대한 반례가 되어 P-NP 문제는 P≠NP의 형태로 풀리게 된다.
+https://ko.wikipedia.org/wiki/NP-완전
+
+
+180929 P-NP 문제
+
+P versus NP problem  수학계의 최종 보스인 밀레니엄 문제 중 하나. 100만 달러가 걸린 문제인데, 알려진 지 40여 년이나 지났는데도 아직 풀리지 않고 있다.   P 집합과 NP 집합이 같은지 다른지를 증명하고자 한다. P집합은 이미 NP의 부분집합이므로, 모든 NP문제가 P인가를 증명하면 된다.   위 말을 일상적인 표현으로 바꾸면 "쉽게 검산할 수 있는 모든 문제들은 모두 쉽게 풀리는가?"이다. 만일 어느 한쪽으로 증명이 된다면 셋 중 하나의 결론을 도출하게 된다.
+* 같다: 쉽게 검산할 수 있는 풀기 어려운 공식은 풀기 쉬운 공식으로 변형될 수 있다.
+* 다르다: 풀기 쉬운 공식으로 변형될 수 없는 어려운 문제가 존재한다.
+* 증명할 수 없다.
+
+https://namu.wiki/w/P-NP%20문제
