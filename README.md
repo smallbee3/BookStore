@@ -8,6 +8,7 @@ Errata of the books one the list
 [3. Hello Coding 알고리즘](https://github.com/smallbee3/BookStore#3-hello-coding-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) \
 [4. 모던 웹을 위한 Javascript jQuery 입문](https://github.com/smallbee3/BookStore#4-%EB%AA%A8%EB%8D%98-%EC%9B%B9%EC%9D%84-%EC%9C%84%ED%95%9C-javascript-jquery-%EC%9E%85%EB%AC%B8) \
 [5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C)
+[6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8)
 
 
 <br><br><br><br><br><br>
@@ -15,6 +16,7 @@ Errata of the books one the list
 
 
 # 1. HTTP 완벽가이드
+
 
 ### p.87 아래서 5줄
 "세그먼트를 IP 패킷라고 불리는"
@@ -28,10 +30,6 @@ Errata of the books one the list
 
 # 2. Two Scoops of DJango
 
-### 6.1.4 데이터베이스 마이그레이션
-"생성되는 마이그레이션 개수에 연연하지 않는다."
-
-> ".. 개수에..."
 
 <br>
 <br>
@@ -39,6 +37,7 @@ Errata of the books one the list
 
 
 # 3. Hello Coding 알고리즘
+
 
 ### p.38
 "가수별로 몇 곡이"
@@ -109,16 +108,6 @@ O(n!)
 
 
 # 4. 모던 웹을 위한 Javascript jQuery 입문
-
-
-### p.134
-181020
-
-"...따라서 return 키워드를 사용하면 값을 지정하지 않아도 함수를 호출한 곳으로 돌아갑니다. ..."
-
-> "... 함수가 ..."
-
-<br>
 
 
 ### p.150
