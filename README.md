@@ -7,8 +7,9 @@ Errata of the books one the list
 [2. Two Scoops of DJango](https://github.com/smallbee3/BookStore#2-two-scoops-of-django) \
 [3. Hello Coding 알고리즘](https://github.com/smallbee3/BookStore#3-hello-coding-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) \
 [4. 모던 웹을 위한 Javascript jQuery 입문](https://github.com/smallbee3/BookStore#4-%EB%AA%A8%EB%8D%98-%EC%9B%B9%EC%9D%84-%EC%9C%84%ED%95%9C-javascript-jquery-%EC%9E%85%EB%AC%B8) \
-[5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C)
-[6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8)
+[5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C) \
+[6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8) \
+[7. 하루 3분 네트워크 교실]()
 
 
 <br><br><br><br><br><br>
@@ -19,7 +20,7 @@ Errata of the books one the list
 
 
 ### p.87 아래서 5줄
-"세그먼트를 IP 패킷라고 불리는"
+"세그먼트를 IP `패킷라고` 불리는"
 
 > "패킷이라고"
 
@@ -30,7 +31,7 @@ Errata of the books one the list
 
 # 2. Two Scoops of DJango
 
-
+<no content>
 <br>
 <br>
 
@@ -301,4 +302,46 @@ CREATE VIEW 뷰명 (<뷰의 열명1>, <뷰의 열명22>, ⋅⋅⋅)
 
 
 <br>
+<br>
+
+
+# 7. 하루 3분 네트워크 교실
+
+
+### p.105
+그림 15-3 MAC 주소 \
+48비트로 16진수 12자리로 표기되는 주소
+
+비트 16진수 표기 \
+00000000 00001101 01100001 `0110110` 01101101 01101110 \
+\t 00  \t 0D \t 61 \t 76 \t 6D \t 6E
+
+> 1110110
+
+<br>
+
+
+### p.141
+그렇지. `독립한` 네트워크 끼리라면 상관없다는 얘기야.
+
+> 독립된
+
+<br>
+
+
+### p.180
+(아래서6번째줄) \
+`RIP는` 국가나 지역별 단체에 위탁하는 경우가 있어요.
+
+> RIR은
+
+<br>
+
+
+### p.262
+(아래서10번째줄) \
+그래. 그럼 이번에는 사설 IP 주소에 대한 얘기를 하자. 보통 `사설 IP 주소는` ICANN이 관리하고 있다고 했었다.
+
+> (글로벌) IP 주소는
+
 <br>
