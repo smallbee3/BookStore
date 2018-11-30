@@ -1,0 +1,291 @@
+[2] URL과 리소스
+
+...
+  URL(Uniform Resource Locator)은 인터넷의 리소스를 가리키는 표준이름이다. URL은 전자정보 일부를 가리키고 그것이 어디에 있고 어떻게 접근할 수 있는지 알려준다.
+  이 장에서 우리는 다음과 같은 것들을 다룬다.
+	•	URL 문법, 여러 URL 컴포넌트가 어떤 의미를 가지며 무엇을 수행하는지.
+	•	여러 웹 클라이언트가 지원하는 상대 URL과 확장 URL 같은 단축 URL에 대해서.
+	•	URL의 인코딩과 문자 규칙.
+	•	여러 인터넷 정보 시스템에 적용되는 공통 URL 스킴.
+	•	기존 이름은 유지하면서 객체들을 다른 장소로 옮기는 것을 가능하게 해주는 URN(Uniform Resource Name)을 포함한 URL의 미래.
+
+
+2.1 인터넷의 리소스 탐색하기
+...
+사용자는 브라우저에 URL을 입력하고 브라우저는 화면 뒤에서 사요자가 원하는 리소스를 얻기 위해서 적절한 프로토콜을 사용하여 메시지를 전송한다.
+...
+
+http://www.joes-hardware.com/seasonal/index-fall.html이라는 URL을 불러오고 싶다고 해보자.
+
+	•	URL의 첫 부분인 http는 URL의 스킴이다. 스킴은 웹 클라이언트가 리소스에 어떻게 접근하는지 알려준다. 이 경우에, URL이 HTTP 프로토콜을 사용한다.
+	•	URL의 두 번째 부분인 www.joes-hardware.com은 서버의 위치다. 이는 웹 클라이언트가 리소스가 어디에 호스팅 되어 있는지 알려준다.
+	•	URL의 세 번째 부분인 /seasonal/inex-fall.html은 리소스의 경로다. 경로는 서버에 존재하는 로컬 리소스들 중에서 요청받은 리소스가 뭇인지 알려준다.
+
+그림 2-1을 보자.
+
+
+그림 2-1 URL이 브라우저, 컴퓨터, 서버, 서버 파일 시스템의 어디에 위치하고 어떻게 연결되는지 보여준다.
+
+URL은 HTTP 프로토콜이 아닌 다른 가용한 프로토콜을 사용할 수도 있다.
+
+  mailto:president@whitehouse.gov
+는 이메일 주소를 가리키며,
+
+  ftp://ftp.lots-o-books.com/pub/complete-price-list.xls
+는 FTP(File Transfer Protocol) 서버에 올라가 있는 파일을 가리키고,
+
+  rtsp://www.joes-hardware.com:554/interview/cto_video
+는 스트리밍을 제공하기 위해 비디오 서버에 호스팅하고 있는 영화를 가리킨다. 이렇게 URL은 인터넷에 있는 어떤 리소스든지 가리킬 수 있다.
+  URL을 사용하면 리소스를 일관된 방식으로 지칭할 수 있다. 대부분의 URL은 동일하게 '스킴://서버위치/경로' 구조로 이루어져 있다. 따라서 인터넷상의 모든 리소스를 가리키고 가져오기 위해, 그리고 모든 사람이 같은 방식으로 이름을 써서 리소스를 찾을 수 있도록, 단일 방식의 작명 규칙을 가진 것이다. 하지만 처음부터 일관된 명명 방식이 있었던 것은 아니다.
+
+
+2.1.1  URL이 있기 전 암흑의 시대
+...
+웹브라우저를 사용하면, 인터넷 뉴스를 읽으려고 뉴스 리더를 사용할 필요가 없고, FTP 서버에 있는 파일에 접근하려고 FTP 클라이언트를 사용할 필요가 없다. 이메일을 보내거나 받으려고 전자메일 프로그램을 쓸 필요도 없게 된다. URL은 브라우저가 더 영리하게 리소스에 접근하고 그것을 다루게 함으로써 온라인 세상을 단순화시킨다. 애플리케이션은 URL을 사용하여 정보에 쉽게 접근할 수 있다.
+  URL은 당신과 브라우저에게 정보 찾는데 필요한 모든 것을 제공하며, 당신이 원하는 리소스가 어디에 위치하고 어떻게 가져오는지 정의한다.
+
+(* 브라우저는 특정 리소스르 다루기 위해 별도의 애플리케이션을 사용하기도 한다. 예를 들어 인터넷 익스프롤러는 이메일 리소스를 식별하는 URL을 처리하려고 이메일 애플리케이션을 사용한다.)
+
+
+2.2 URL 문법
+URL로 인터넷상의 모든 리소스를 찾을 수 있지만, 그 리소스들은 다른 스킴(예를 들어 HTTP, FTP, SMTP)을 통해 접근할 수 있으며, URL 문법은 스킴에 따라서 달라진다.
+  다른 URL 스킴을 사용한다는 것이 전혀 다른 문법을 사용한다는 뜻일까? 사실은 그렇지 않다. 대부분의 URL은 일반 URL 문법을 따르며, 서로 다른 URL 스킴도 형태와 문법 면에서 매우 유사하다.
+대부분의 URL 스킴의 문법은 일반적으로 9개 부분으로 나뉜다.
+
+<scheme>://<user>:<password>@<host>:<port>/<path>;<params>?<query>#<frag>
+
+이 모든 컴포넌트를 가지는 URL은 거의 없다. URL의 가장 중요한 세 가지 컴포넌트는 스킴, 호스트, 경로다. 표 2-1은 URL 컴포넌트에 대한 설명이다.
+
+
+Table 2-1. General URL components
+컴포넌트
+설명
+기본값
+스킴
+(schme)
+리소스를 가져오려면 어떤 프로토콜을 사용하여 서버에 접근해야 하는지 가리킨다.
+없음
+사용자 이름
+(user)
+몇몇 스킴은 리소스에 접근을 하기 위해 사용자 이름을 필요로 한다.
+anonymous
+비밀번호
+(password)
+사용자의 비밀번호를 가리키며, 사용자 이름에 콜론(:)으로 이어서 기술한다.
+<이메일 주소>
+호스트
+(host)
+리소스를 호스팅하는 서버의 호스트 명이나 IP 주소.
+없음
+포트
+(port)
+리소스를 호스팅하는 서버가 열어놓은 포트번호. 많은 스킴이 기본 포트를 가지고 있다(HTTP의 기본 포트는 80이다.)
+스킴에 따라 다름
+경로
+(path)
+이전 컴포넌트와 빗금(/)으로 구분되어 있으며, 서버 내 리소스가 서버 어디에 있는지를 가리킨다. 경로 컴포넌트의 문법은 서버와 스킴에 따라 다르다. (이 장 뒤에서는 URL의 경로를 세그먼트로 나눌 수 있고, 각 세그먼트는 자체 컴포넌트를 가질 수 있다는 것을 알게 될 것이다.)
+없음
+파라미터
+(params)
+특정 스킴들에서 입력 파라미터를 기술하는 용도로 사용한다. 파라미터는 이름/값을 쌍으로 가진다. 파라미터는, 다른 파라미터나 경로의 일부와 세미콜론(:)을 구분하여 기술하며, 여러 개를 가질 수 있다.
+없음
+질의
+(query)
+스킴에서 애플리케이션(데이터베이스, 게시판, 검색엔진, 기타 인터넷 게이트웨이)에 파라미터를 전달하는데 쓰인다. 질의 컴포넌트를 작성하는데 쓰이는 공통 포맷은 없다. 이는 URL의 끝에 "?"로 구분한다.
+없음
+프래그먼트
+(frag)
+리소스의 조각이나 일부분을 가리키는 이름이다. URL이 특정 객체를 가리킬 경우에 프래그먼트 필드는 서버에 전달되지 않는다. 이는 클라이언트에서만 사용한다. URL의 끝에서 '#'문자로 구분한다.
+없음
+예를 들어 http://www.joes-hardware.com:80/index.html 이라는 URL이 있다고 해보자. 스킴은 'http', 호스트는 'www.joes-hardware.com', 포트는 '80', 경로는 '/index.html'이 된다.
+
+
+2.2.1 스킴: 사용할 프로토콜
+스킴은 주어진 리소스에 어떻게 접근하는지 알려주는 중요한 정보다. 이는 URL을 해석하는 애플리케이션이 어떤 프로토콜을 사용하여 리소스를 요청해야 하는지 알려준다. 위에서 예로 사용하고 있는 URL의 스킴은 'http'이다.
+  스킴 컴포넌트는 알파벳으로 시작해야 하고 URL의 나머지 부분들과 첫 번째 ':' 문자로 구분한다. 스킴 명은 대소문자를 가리지 않으므로 'http://www.joes-hardware.com'와 'HTTP://www.joes-hardware.com'는 같다.
+
+
+2.2.2 호스트와 포트
+애플리케이션이 인터넷에 있는 리소스를 찾으려면, 리소스를 호스팅하고 있는 장비와 그 장비 내에서 리소스에 접근할 수 있는 서버가 어디에 있는지 알아야 한다. URL의 호스트와 포트 컴포넌트는 그 두 가지 정보를 제공해준다.
+  호스트 컴포넌트는 접근하려고 하는 리소스를 가지고 있는 인터넷상의 호스트 장비를 가리킨다.
+  해당 값은 위에서와 같이('www.joes-hardware.com') 호스트 명이나 IP 주소로 제공한다. 예를 들어, 아래 두 개의 URL은 같은 리소스를 가리킨다. 첫 번째 호스트 명으로, 두 번째는 IP 주소로 가리킨다.
+
+http://www.joes-hardware.com:80/index.html
+http://161.58.228.45:80/index.html
+
+포트 컴포넌트는 서버가 열어놓은 네트워크 포트를 가리킨다. 내부적으로 TCP 프로토콜을 사용하는 HTTP는 기본 포트로 80을 사용한다.
+
+
+2.2.3 사용자 이름과 비밀번호
+더 흥미로운 컴포넌트는 사용자 이름과 비밀번호 컴포넌트다. 많은 서버가 자신이 가지고 있는 데이터에 접근을 허용하기 전에 사용자 이름과 비밀번호를 요구한다. FTP 서버가 좋은 예다. 여기 몇 가지 예가 있다.
+
+ftp://ftp.prep.ai.mit.edu/pub/gnu
+ftp://anonymous@ftp.prep.ai.mit.edu/pub/gnu
+ftp://anonymous:my_passwd@ftp.prep.ai.mit.edu/pub/gnu
+http://joe:joespasswd@www.joes-hardware.com/sales_info.txt
+
+첫 번째 예는 사용자 이름이나 비밀번호 컴포넌트가 없이 표준 스킴, 호스트, 경로만 있다. 애플리케이션이 FTP와 같이 사용자 이름과 비밀번호를 요구하는 URL 스킴을 사용한다면, 그 값들이 삽입되어 있지 않을 경우 기본 사용자 이름과 비밀번호 값을 넣어놓을 것이다. 예를 들어, 사용자 이름과 비밀번호를 기술하지 않고 FTP URL에 접근하면, 기본 사용자 이름 값으로 'anonymous'가, 비밀번호는 브라우저마다 가지고 있는 기본값을 사용한다(인터넷 익스플로러는 'IEUser'를, 크롬은 'chrome@example'을 넣는다).
+  두 번째 예에는 사용자 이름이 'anonymous'로 되어 있다. 호스트 컴포넌트와 나란히 기술되어 있는 사용자 이름은 단순한 이메일 주소처럼 보이기도 한다. '@' 문자는 URL로부터 사용자 이름과 비밀번호 컴포넌트를 분리한다.
+  세 번째 예는 사용자 이름('anonymous')과 비밀번호('my_password')를 ':' 문자로 분리하여 모두 기술하였다.
+
+
+2.2.4 경로
+URL의 경로 컴포넌트는 리소스가 서버의 어디에 있는지 알려준다. 해당 경로는 아래 예와 같이 계층적 파일 시스템 경로와 유사한 구조를 가진다.
+
+http://www.joes-hardware.com:80/seasonal/index-fall.html
+
+이 URL의 경로는 '/seasonal/index-fall.html'로 유닉스 파일 시스템의 파일 경로와 유사하다. 경로는 서버가 리소스의 위치를 찾는데 사용하는 정보다. HTTP URL에서 경로 컴포넌트는 '/' 문자를 기준으로 경로조각으로 나뉜다(다시 한번 말하지만, 유닉스 파일 시스템의 파일 경로와 유사하게). 각 경로조각은 자체만의 파라미터 컴포넌트를 가질 수 있다.
+
+
+2.2.5 파라미터
+많은 스킴이 객체에 대한 호스트 및 경로 정보만으로는 리소스를 찾지 못한다. 서버가 어떤 포트를 열어놓고 있는지, 리소스에 접근하기 위해 사용자 이름과 비밀번호를 명시했는지 여부 외에도 많은 프로토콜이 더 많은 정보를 요구한다.
+  URL을 사용하는 애플리케이션이 리소스에 접근하려면 프로토콜 파라미터가 필요하다. 프로토콜 파라미터가 없으면, 다른 한편에 있는 서버는 그 요청을 잘못 처리하거나 처리를 하지 않을 것이다. 바이너리와 텍스트, 총 두 개의 포맷을 지원하는 FTP를 예로 들어보자. 사용자는 바이너리 이미지가 텍스트 형식으로 전송되는 것을 원하지 않는다. 이미지가 엉망이 될 게 뻔하기 때문이다.
+  URL의 파라미터 컴포넌트는, 애플리케이션이 서버에 정확한 요청을 하기 위해 필요한 입력 파라미터를 받는데 사용한다. 이 컴포넌트는 이름/쌍 값의 리스트로 URL 나머지 부분들로부터 ';'문자로 구분하여 URL에 기술한다. 이를 통해 애플리케이션이 리소스에 접근하는데 필요한 어떤 추가 정보든 전달할 수 있다. 예를 들면 다음과 같다.
+
+ftp://prep.ai.mit.edu/pub/gnu;type=d
+
+이 경우 이름은 'type'이고, 값은 'd'인 'type=d라는 단 한 개의 파라미터를 전달한다. 앞서 언급했듯이, HTTP URL에서의 경로 컴포넌트는 경로조각으로 나눌 수 있다. 각 조각은 자체 파라미터를 가질 수 있다. 예를 들면 다음과 같다.
+
+http://www.joes-hardware.com/hammers;sale=false/index.html;graphics=true
+
+위 URL에는 hammers와 index.html이라는 두 개의 경로조각이 있다. hammers 경로조각은 값이 false인 sale이라는 파라미터를 가진다. index.html 경로조각은 값이 true인 graphics란 팔미터를 가진다.
+
+
+2.2.6 질의 문자열
+데이터베이스 같은 서비스들은 요청받을 리소스 형식의 범위를 좁히기 위해서 질문이나 질의를 받을 수 있다.
+  죠의 컴퓨터 가게가 판매되지 않은 상품의 재고 리스트가 있고, 어떤 상품들이 비축되어 있는지 조회할 수 있다고 해보자. 다음 URL은 아이템 번호 12731의 재고가 있는지 확인하기 위해서 웹 데이터베이스 게이트웨이에 질의하는데 사용된다.
+
+http://www.joes-hardware.com/inventory-check.cgi?item=12731
+
+이는 우리가 요청해오던 URL과 거의 유사하다. 다른 점은 물음표(?)의 우측에 있는 값들이다. 이를 질의 컴포넌트라고 부른다. URL의 질의 컴포넌트는 게이트웨이를 가리키는 URL의 경로 컴포넌트와 함께 전달하고 있다. 보통 게이트웨이는, 다른 애플리케이션에 접근하려고 할 때 거치는 통로라고 할 수 있다(게이트웨이에 대한 내용은 8장에서 자세히 다룬다).
+
+
+Figure 2-2. The URL query component is sent along to the gateway application
+
+  그림 2-2는 죠의 컴퓨터 가게에 재고 확인을 하기 위해 게이트웨이 서버로 전달하는 질의 컴포넌트의 예를 보여준다. 이 질의는 제품번호가 12731이고, 큰(large)치수에, 파란색인 물품의 재고가 있는지 검사한다.
+  이 장의 뒤에서 언급할 사용하면 안 되는 특정 문자들을 제외하고는 질의 컴포넌트 포맷에 제약사항은 없다. 편의상 많은 게이트웨이가 '&'로 나뉜 '이름=값' 쌍 형식의 질의 문자열을 원한다.
+
+http://www.joes-hardware.com/inventory-check.cgi?item=12731&color=blue
+
+이 예는 이름/값 쌍으로 된 두 개의 질의 컴포넌트가 존재한다. item=12731과 color=blue.
+
+
+2.2.7 프래그먼트
+HTML 같은 리소스 형식들은 본래의 수준보다 더 작게 나뉠 수 있다. 예를 들어 절(paragraph)이 포함된 용량이 큰 한 개의 텍스트 문서의 경우, 그 리소스에 대한 URL은 텍스트 문서 전체를 가리키겠지만, 이상적으로는 리소스 안에 있는 특정 절을 가리킬 수 있어야 한다.
+  리소스이 특정 부분을 가리킬 수 있도록, URL은 리소스 내의 조각을 가리킬 수 있는 프래그먼트 컴포넌트를 제공한다. 예를 들어 URL은 HTML 문서에 있는 특정 이미지나 일부분을 가리킬 수 있다.
+  프래그먼트는 URL의 오른쪽에 #문자에 이어서 온다. 예를 들면 다음과 같다.
+
+http://www.joes-hardware.com/tools.html#drills
+
+이 예에서 drills라는 프래그먼트는 죠의 컴퓨터 가게 웹 서버에 위치한 /tools.html  웹페이지의 일부를 가리킨다. 그 부분을 'drills'라고 기술하였다.
+  일반적으로 HTTP 서버는 객체 일부가 아닌 전체만 다루기 때문에, 클라이언트는 서버에 프래그먼트를 전달하지 않는다(그림 2-3 참고). 브라우저가 서버로부터 전체 리소스를 내려받은 후, 프래그먼트를 사용하여 당신이 보고자 하는 리소스의 일부를 보여준다.
+
+ Figure 2-3. The URL fragment is used only by the client, because the server deals with entire objects
+
+2.3 단축 URL
+웹 클라이언트는 몇몇 단축 URL을 인식하고 사용한다. 상대 URL은 리소스 안에 있는 리소스를 간결하게 기술하는데 사용할 수 있다. 많은 브라우저가 사용자가 기억하고 있는 URL 일부를 입력하면 나머지 부분을 자동으로 입력해주는 URL '자동 확장'을 지원한다. 이에 대해서는 'URL 확장'에서 다룬다.
+
+2.3.1 상대 URL
+URL은 상대 URL과 절대 URL 두 가지로 나뉜다. 지금까지 우리가 본 것들은 절대 URL뿐이었다. 절대 URL은 리소스에 접근하는데 필요한 모든 정보를 가지고 있다.
+  그와 달리 상대 URL은 모든 정보를 담고 있지는 않다. 상대 URL로 리소스에 접근하는데 필요한 모든 정보를 얻기 위해서는, 기저(base)라고 하는 다른 URL을 사용해야 한다.
+  상대 URL은 URL을 짧게 표기하는 방식이다. 직접 HTML을 작성해 본 경험이 있다면, 그것이 얼마나 HTML 작성을 손쉽게 해주는지 알 것이다. 예 2-1에서는 상대 URL이 포함된 HTML 문서의 예를 보여준다.
+
+예 2-1 상대 URL을 포함한 HTML 조각
+<HTML>
+<HEAD><TITLE>Joe's Tools</TITLE></HEAD>
+<BODY>
+<H1> Tools Page </H1>
+<H2> Hammers <H2>
+<P> Joe's Hardware Online has the largest selection of <A HREF="./hammers.html">hammers
+</BODY>
+</HTML>
+
+
+상대 URL문법에 따르면, HTML 작성자는 URL에 스킴과 호스트 그리고 다른 컴포넌트들을 모두 입력하지 않아도 된다. 그 정보는 컴포넌트가 포함된 리소스의 기저 URL에서 알아낼 수 있다. 다른 리소스에 대한 URL 역시 이 상대 URL로 기술할 수 있다.
+  예 2-1의 경우 기저 URL은 다음과 같다.
+
+http://www.joes-hardware.com/tools.html
+
+이 URL을 기저 URL로 사용하여, 상대 URL에서는 기술하지 않은 정보를 추측할 수 있다. 필요한 리소스가 ./hammmers.html이라는 것을 알지만 스킴이나 호스트는 모른다. 기저 URL을 사용하면 스킴은 http이고 호스트는 www.joes-hardware.com라는 것을 추측할 수 있다. 그림 2-4는 이것을 설명한다.
+
+
+Figure 2-4. Using a base URL
+
+
+상대 URL은 프래그먼트이거나 URL 일부다. URL을 처리하는 브라우저 같은 애플리케이션은 상대 URL과 절대 URL 간에 상호 변환을 할 수 있어야 한다.
+
+
+
+
+Figure 2-5. Converting relative to absolute URLs
+
+
+
+Table 2-4. Common scheme formats
+Scheme
+Description
+http
+The Hypertext Transfer Protocol scheme conforms to the general URL format, except that there is no username or password. The port defaults to 80 if omitted.
+Basic form:
+http://<host>:<port>/<path>?<query>#<frag>
+Examples:
+http://www.joes-hardware.com/index.html
+http://www.joes-hardware.com:80/index.html
+https
+The https scheme is a twin to the http scheme. The only difference is that the https scheme uses Netscape's Secure Sockets Layer (SSL), which provides end-to-end encryption of HTTP connections. Its syntax is identical to that of HTTP, with a default port of 443.
+Basic form:
+https://<host>:<port>/<path>?<query>#<frag>
+Example:
+https://www.joes-hardware.com/secure.html
+mailto
+Mailto URLs refer to email addresses. Because email behaves differently from other schemes (it does not refer to objects that can be accessed directly), the format of a mailto URL differs from that of the standard URL. The syntax for Internet email addresses is documented in Internet RFC 822.
+Basic form:
+mailto:<RFC-822-addr-spec>
+Example:
+mailto:joe@joes-hardware.com
+ftp
+File Transfer Protocol URLs can be used to download and upload files on an FTP server and to obtain listings of the contents of a directory structure on an FTP server.
+FTP has been around since before the advent of the Web and URLs. Web applications have assimilated FTP as a data-access scheme. The URL syntax follows the general form.
+Basic form:
+ftp://<user>:<password>@<host>:<port>/<path>;<params>
+Example:
+ftp://anonymous:joe%40joes-hardware.com@prep.ai.mit.edu:21/pub/gnu/
+rtsp, rtspu
+RTSP URLs are identifiers for audio and video media resources that can be retrieved through the Real Time Streaming Protocol.
+The "u" in the rtspu scheme denotes that the UDP protocol is used to retrieve the resource.
+Basic forms:
+rtsp://<user>:<password>@<host>:<port>/<path>
+rtspu://<user>:<password>@<host>:<port>/<path>
+Example:
+rtsp://www.joes-hardware.com:554/interview/cto_video
+file
+The file scheme denotes files directly accessible on a given host machine (by local disk, a network filesystem, or some other file-sharing system). The fields follow the general form. If the host is omitted, it defaults to the local host from which the URL is being used.
+Basic form:
+file://<host>/<path>
+Example:
+file://OFFICE-FS/policies/casual-fridays.doc
+news
+The news scheme is used to access specific articles or newsgroups, as defined by RFC 1036. It has the unusual property that a news URL in itself does not contain sufficient information to locate the resource.
+The news URL is missing information about where to acquire the resource—no hostname or machine name is supplied. It is the interpreting application's job to acquire this information from the user. For example, in your Netscape browser, under the Options menu, you can specify your NNTP (news) server. This tells your browser what server to use when it has a news URL.
+News resources can be accessed from multiple servers. They are said to be location-independent, as they are not dependent on any one source for access.
+The "@" character is reserved within a news URL and is used to distinguish between news URLs that refer to newsgroups and news URLs that refer to specific news articles.
+Basic forms:
+news:<newsgroup>
+news:<news-article-id>
+Example:
+news:rec.arts.startrek
+telnet
+The telnet scheme is used to access interactive services. It does not represent an object per se, but an interactive application (resource) accessible via the telnet protocol.
+Basic form:
+telnet://<user>:<password>@<host>:<port>/
+Example:
+telnet://slurp:webhound@joes-hardware.com:23/
+
+
+
+
+Figure 2-6. PURLs use a resource locator server to name the current location of a resource
+
+
+
+
