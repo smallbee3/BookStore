@@ -3,13 +3,13 @@ Errata of the books one the list
 
 <br>
 
-[1. HTTP 완벽가이드](https://github.com/smallbee3/BookStore#1-http-%EC%99%84%EB%B2%BD%EA%B0%80%EC%9D%B4%EB%93%9C) \
-[2. Two Scoops of DJango](https://github.com/smallbee3/BookStore#2-two-scoops-of-django) \
-[3. Hello Coding 알고리즘](https://github.com/smallbee3/BookStore#3-hello-coding-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) \
-[4. 모던 웹을 위한 Javascript jQuery 입문](https://github.com/smallbee3/BookStore#4-%EB%AA%A8%EB%8D%98-%EC%9B%B9%EC%9D%84-%EC%9C%84%ED%95%9C-javascript-jquery-%EC%9E%85%EB%AC%B8) \
-[5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C) \
-[6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8) \
-[7. 하루 3분 네트워크 교실]()
+[1. HTTP 완벽가이드](https://github.com/smallbee3/BookStore#1-http-%EC%99%84%EB%B2%BD%EA%B0%80%EC%9D%B4%EB%93%9C) &nbsp;&nbsp;&nbsp; (2쇄 기준, 2016.1.30) \
+[2. Two Scoops of DJango](https://github.com/smallbee3/BookStore#2-two-scoops-of-django) &nbsp;&nbsp;&nbsp; (초판 1쇄 기준, 2016.8.12) \
+[3. Hello Coding 알고리즘](https://github.com/smallbee3/BookStore#3-hello-coding-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) &nbsp;&nbsp;&nbsp; (3쇄 기준, 2018.4.20) \
+[4. 모던 웹을 위한 Javascript jQuery 입문](https://github.com/smallbee3/BookStore#4-%EB%AA%A8%EB%8D%98-%EC%9B%B9%EC%9D%84-%EC%9C%84%ED%95%9C-javascript-jquery-%EC%9E%85%EB%AC%B8) &nbsp;&nbsp;&nbsp; (3판 2쇄 기준, 2017.8.10) \
+[5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C) &nbsp;&nbsp;&nbsp; (3쇄 기준, 2017.8.31) \
+[6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8) &nbsp;&nbsp;&nbsp; (초판 1쇄 기준, 2018.10.24) \
+[7. 하루 3분 네트워크 교실](https://github.com/smallbee3/BookStore#7-%ED%95%98%EB%A3%A8-3%EB%B6%84-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B5%90%EC%8B%A4) &nbsp;&nbsp;&nbsp;
 
 
 <br><br><br><br><br><br>
@@ -17,6 +17,7 @@ Errata of the books one the list
 
 
 # 1. HTTP 완벽가이드
+*2쇄 기준, 2016.1.30*
 
 
 ### p.87 아래서 5줄
@@ -30,6 +31,7 @@ Errata of the books one the list
 
 
 # 2. Two Scoops of DJango
+*초판 1쇄 기준, 2016.8.12*
 
 <no content>
 <br>
@@ -38,6 +40,7 @@ Errata of the books one the list
 
 
 # 3. Hello Coding 알고리즘
+*3쇄 기준, 2018.4.20*
 
 
 ### p.38
@@ -109,6 +112,7 @@ O(n!)
 
 
 # 4. 모던 웹을 위한 Javascript jQuery 입문
+*3판 2쇄 기준, 2017.8.10*
 
 
 ### p.150
@@ -139,6 +143,7 @@ isNaN(number)	number가 NaN인지 확인합니다.
 
 
 # 5. SQL더쉽게더깊게
+*3쇄 기준, 2017.8.31*
 
 
 ### p.30 (아래서 두번 째)
@@ -308,13 +313,14 @@ CREATE VIEW 뷰명 (<뷰의 열명1>, <뷰의 열명22>, ⋅⋅⋅)
 # 7. 하루 3분 네트워크 교실
 
 
+
 ### p.105
 그림 15-3 MAC 주소 \
 48비트로 16진수 12자리로 표기되는 주소
 
 비트 16진수 표기 \
-00000000 00001101 01100001 `0110110` 01101101 01101110 \
-\t 00  \t 0D \t 61 \t 76 \t 6D \t 6E
+00000000  00001101 01100001 `0110110` 01101101 01101110 \
+&nbsp;&nbsp; 00 &nbsp;&nbsp; 0D &nbsp;&nbsp; 61 &nbsp;&nbsp; 76 &nbsp;&nbsp; 6D &nbsp;&nbsp; 6E
 
 > 1110110
 
