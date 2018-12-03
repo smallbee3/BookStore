@@ -1,0 +1,18 @@
+[3] HTTP 메시지
+
+￼
+Figure 3-1. Messages travel inbound to the origin server and outbound back to the client
+
+
+￼
+Figure 3-2. All messages flow downstream
+
+
+HTTP messages are simple, formatted blocks of data. Take a peek at Figure 3-3 for an example. Each message contains either a request from a client or a response from a server. They consist of three parts: a start line describing the message, a block of headers containing attributes, and an optional body containing data.
+
+
+￼
+Figure 3-3. Three parts of an HTTP message
+
+
+
