@@ -150,7 +150,37 @@ isNaN(number)	number가 NaN인지 확인합니다.
 <br>
 
 
+###  p.174
 
+NOTE_ 다른 프로그래밍 언어는 `두 가지` 차이가 있으므로 요소와 속성이라 불러 구분합니다.
+
+> 요소와 속성이 서로
+
+<br>
+
+
+### p.203
+
+NOTE_  바벨을 활용할 때의 객체 복제
+
+코드 6-38 전개 연산자를 사용한 객체 복제
+
+<script>
+
+    // `배열을` 선언합니다.  \
+    const originalObject = { \
+      name: '윤인성', \
+      birthDay: new Date(2016, 12 - 1, 9).toString() \
+    }; \
+
+    // `배열을` 복제합니다.
+    const newObject = {...originalObject}; \
+
+</script>
+
+> 객체를
+
+<br>
 
 
 # 5. SQL더쉽게더깊게
