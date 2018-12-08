@@ -1,0 +1,163 @@
+[Ch7 Constructor]
+
+
+p.207
+생성자 함수
+생성자 함수는 new 키워드로 객체를 생성할 수 있는 함수를 의미합니다. 물론 이전 장에서 함수를 객체로 생성했지만 new 키워드를 사용하지 않았으므로 생성자 함수라고 부를 수 없습니다.
+
+
+p.209
+NOTE_ 생성자 함수의 이름
+생성자 함수의 이름은 일반적으로 대문자로 시작합니다. 대문자로 시작하지 않아도 문제는 없지만 개발자 대부분이 지키는 규칙이므로 따라주세요. 자바스크립트에서 기본적으로 제공하는 생성자 함수도 모두 대문자로 시작합니다.
+
+
+p.211
+var student = new Student()
+   객체, 인스턴스       생성자 함수
+
+
+p.214
+prototype
+속성은 모든 객체가 다른 값을 갖지만 메서드는 모두 같은 값을 갖습니다. 각 객체를 생성할 때 마다 동일한 함수를 계속 생성했던 것입니다. 만약 다루는 자료의 수가 증가해 1,000개의 객체를 만든다면 같은 함수를 1,000번씩 생성하는 일이 발생합니다. 이는 메모리를 쓸데없이 잡아 먹는 굉장히 비효율적인 일입니다.
+이러한 문제를 해결하려고 자바스크립트는 프로토타입(prototype) 공간을 만들었습니다. 프로토타입은 생성자 함수로 생성된 객체가 공통으로 가지는 공간입니다. 객체 각각이 가진 메서드를 이 공간으로 옮기면 그림 7-4 형태가 됩니다.
+메서드를 하나만 생성해도 모든 객체가 해당 메서드를 사용할 수 있습니다. 따라서 생성자 함수로 객체를 만들 때는 생성자 함수 내부에 속성만 넣습니다.
+...
+메서드는 모두 프로토타입 안에 넣어줍니다. 함수 안에 자동으로 만들어지는 arguments와 마찬가지로 자바스크립트의 모든 함수는 그림 7-5처럼 변수 prototype을 갖습니다. prototype은 객체입니다.
+
+
+
+
+p.217
+...
+두 부분이 변경된 것을 확인할 수 있습니다. new 키워드를 사용하지 않았고, constructor 객체의 value 속성이 아니라 일반 변수 value를 사용했습니다. 무언가 이상해 보일 수 있겠지만 코드는 그림 7-6처럼 정상적으로 실행됩니다.
+
+"Hello"
+
+이전에 잠시 언급했듯이 일반적으로 this 키워드를 사용하면 window 객체를 나타냅니다. 따라서 일반적으로 함수를 호출하듯이 new 키워드를 사용하지 않으면, 함수를 실행하는 동안 window 객체에 속성을 추가한 것이 됩니다. 따라서 그림 7-6처럼 문자열 'Hello'가 출력됩니다.
+하지만 new 키워드로 함수를 호출하면 객체를 위한 공간을 만들고 this 키워드는 해당 공간을 의미하게 됩니다. 중요한 내용은 아니지만 궁금해 할 수도 있는 내용이라 잠시 살펴보았습니다.
+
+
+
+p.219
+7.4 캡슐화
+...
+캡슐화란 이렇게 잘못 사용될 수 있는 객체의 특정 부분을 사용자가 사용할 수 없게 막는 기술이라고 정의할 수 있습니다. 자바스크립트에서 캡슐화를 구현할 때는 5장에서 배운 클로져를 활용합니다.
+코드 7-13은 width 속성과 height 속성을 캡슐화했습니다.
+
+
+[code 7-13]
+<script>
+  function Rectangle2(w, h) {
+    var width = w;
+    var height = h;
+    this.getWidth = function () { return width; };
+    this.getHeight = function () { return height; };
+    this.setWidth = function (w) { width = w; };
+    this.setHeight = function (h) { height = h; };
+  }
+  // console.log(width); -> ReferenceError: width is not defined
+  // console.log(height); -> ReferenceError: height is not defined
+</script>
+
+코드 7-13의 생성자 함수 안에서 변수 width와 height를 정의했습니다. 이제 외부에서는 지역 변수 width와 height를 사용할 수 없고 오직 getOO() 형태의 메서드와 setOO() 형태의 메서드를 사용해야 합니다.
+...
+throw 키워드는 강제로 오류를 발생시키는 키워드입니다. 11장에서 다루겠지만 간단하게 사용해봅시다. setOO() 형태의 메서드를 사용할 때 매개변수로 입력받은 값이 0 이하이면 강제로 throw 키워드를 실행하게 했습니다.
+
+
+p.221
+일부 캡슐화의 개념을 잘못 알고 있는 초보 프로그래머는 게터와 세터를 만드는 것 자체가 캡슐화라고 생각하는 경우가 있습니다. 그것은 너무 단순한 생각입니다. 캡슐화는 만일의 상화을 대비해서 특정 속성이나 메서드를 사용자가 사용할 수 없게 숨겨놓는 것임을 기억해주세요.
+
+
+p.226
+7.6.1 클래스 in ECMAScript 6
+
+이번 장에서 생성자 함수를 배웠으므로 클래스가 무엇인지 비교하며 설명하도록 하겠습니다.
+
+클래스 선언과 속성
+[code 7-19]
+클래스 선언	생성자 함수 선언
+class Rectangle4 {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+}
+var rectangle = new Rectangle4(100,400);
+console.log(rectangle);	function Rectangle3(width, height) {
+  this.width = width;
+  this.height = height;
+}
+var rectangle = new Rectangle3(100, 300);
+console.log(rectangle);
+
+
+메서드 선언
+[code 7-20]
+클래스 메서드 선언	생성자 함수 메서드 선언
+class Rectangle4 {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+  getArea() {
+    return this.width * this.height;
+  }
+}
+const rectangle = new Rectangle4(100,400);
+console.log(rectangle);
+
+console.log(rectangle.getArea());	function Rectangle3(width, height) {
+  this.width = width;
+  this.height = height;
+}
+Rectangle.prototype.getArea = function() {
+  return this.width * this.height;
+};
+
+var rectangle = new Rectangle3(100, 300);
+console.log(rectangle);
+
+console.log(rectangle.getArea());
+
+게터와 세터
+[code 7-21]
+    class Rectangle4 {
+      ...
+      // getter
+      get width() {
+        return this._width;
+      }
+      get height() {
+        return this._height;
+      }
+      // setter
+      set width(input) {
+        this._width = input;
+      }
+      set height(input) {
+        this._height = input;
+      }
+      ...
+      }
+    }
+
+    var rectangle = new Rectangle4(100,400);
+    console.log('BEFORE WIDTH: ' + rectangle.width);
+    console.log('BEFORE AREA: ' + rectangle.getArea());
+
+    rectangle.width = 200;
+    console.log('AFTER WIDTH: ' + rectangle.width);
+    console.log('AFTER AREA: ' + rectangle.getArea());
+
+
+ECMAScript 6의 클래스는 변수를 숨길 수 없습니다. 그래서 일반적으로 "절대 개발한 나 말고 만지지 말아 주세요"라는 의미를 나타낼 때 변수 앞에 _를 붙입니다. 그래서 외부에서 건드리지 말라는 의미로 width와 height에 '_'를 붙여 선언했습니다.
+
+게터와 세터는 메서드를 선언할 때에 앞에 get 또는 set을 붙여 선언합니다. get을 붙여 만든 메서드는 rectangle.width처럼 '값을 가져오는 행위'를 할 때 자동으로 호출되며, set을 붙여 만든 메서드는 rectangle.width = 200 처럼 '값을 넣는 행위'를 할 때 자동으로 호출됩니다.
+
+기존의 자바스크립트에서 생성자 함수로 게터와 세터를 구현할 때보다 굉장히 간단합니다. 단, 참고로 2017년 4월 기준으로 게터와 세터를 사용하면 스택 추적(오류 확인)이 어렵고, 유지 보수가 어렵고, 메서드 체이닝(Method Chainning)에 활용하기 힘들다는 등의 이유로 에어비앤비 자바스크립트 가이드 등에서는 사용하지 말 것을 권합니다.
+
+
+상속
+상속은 코드 7-22처럼 extends 키워드로 구현합니다. 7.5의 코드 7-16보다 훨신 직관적입니다.
+
+[code 7-22]
