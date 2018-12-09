@@ -1,0 +1,289 @@
+[Ch8 Built-in object]
+
+p.236
+속성과 메서드는 객체가 가질 수 있는 것인데, 기본 자료형에도 속성과 메서드가 있습니다. 기본 자료형의 속성이나 메서드를 사용하면 기본 자료형이 자동으로 객체로 변환됩니다.
+
+예를 들어 기본 자료형 숫자의 속성이나 메서드를 사용할 때는 자동으로 Number 객체로 변환되므로 기본 자료형이 속성이나 메서드를 사용할 수 있는 것입니다. 따라서 기본 자료형과 객체의 차이점을 찾기 힘듭니다. 이 장에서 Number 객체라고 부르면 객체와 기본 자료형 모두 의미한다고 생각해주세요.
+굳이 차이점을 찾자면 기본 자료형은 객체가 아니므로 속성과 메서드를 추가할 수 없습니다.
+
+-> p.896 [PRACTICE 02]
+
+
+...
+기본 자료형을 객체로 변환하는 것은 일회용 옷을 입는다는 개념으로 생각하면 쉽습니다. 기본 자료형의 메서드를 사용한다는 것은 기본 자료형에 객체라는 일회용 옷을 입힌 다음 메서드를 사용하는 것입니다. 한 번 사용하면 곧바로 일회용 옷을 버립니다.
+
+
+
+p.237
+"그러면 기본 자료형은 속성이나 메서드를 추가할 수 없겠군요?"
+아닙니다. 프로토타입으로 일회용 옷 자체를 바꾸면 됩니다. 코드 8-3처럼 Number 생성자 함수의 프로토타입에 메서드를 추가해주세요.
+
+
+
+p.239
+8.2.2 속성과 메서드
+Object 객체에 있는 메서드를 정리하면 표 8-1과 같습니다.
+
+
+표 8-1  Object 객체의 메서드
+메서드 이름	설명
+constructor()	객체의 생성자 함수를 나타냄
+hasOwnProperty(name)	객체에 name 속성이 있는지 확인
+isPrototypeof(object)	객체가 object의 프로토타입인지 검사
+propertyIsEnumerable(name)	반복문으로 열거할 수 있는지 확인
+toLocaleString()	객체를 호스트 환경에 맞는 언어의 문자열로 변경
+toString()	객체를 문자열로 바꿈
+valueOf()	객체의 값을 나타냄
+
+
+p.242
+8.2.3 자료형 구분
+Object 객체에 있는 constructor() 메서드는 객체의 생성자 함수를 의미하며, 자료형을 검사할 때 유용하게 사용할 수 있습니다.
+"자료형을 검사할 때는 typeof 연산자를 사용하잖아요?"
+typeof 연산자로 자료형을 검사하면 문제가 발생할 수 있는 부분이 아주 조금 있습니다. 코드 8-7을 살펴봅시다.
+
+...
+두 변수 모두 숫자지만 생성자 함수로 만든 숫자는 개체이므로 경고장을 출력하지 않습니다. 이러한 두 대상을 같은 자료형을 취급하고 싶을 때는 constructor() 메서드를 사용해야 합니다.
+코드 8-9는 constructor() 메서드로 자료형을 비교합니다.
+
+[code 8-9]
+Comparison through 'constructor'
+
+<script>
+    var numberFromLiteral = 273;
+    var numberFromObject = new Number(273);
+
+    if (numberFromLiteral.constructor == Number) {
+      console.log('numberFromLiteral은 숫자입니다.');
+    }
+    if (numberFromObject.constructor == Number) {
+      console.log('numberFromLiteral은 숫자입니다.');
+    }
+</script>
+
+코드 8-9처럼 객체의 생성자 함수가 Number 생성자 함수인지 비교하면 쉽게 숫자인지 구분할 수 있습니다. 다른 자료형도 마찬가지므로 꼭 기억해주세요.
+
+
+
+8.2.4 모든 객체에 메서드 추가
+
+이전에 언급했듯이 Object 객체는 모든 자바스크립트 객체의 최상위 객체입니다. 따러서 Object  객체의 프로토타입에 속성 또는 메서드를 추가하면 모든 객체에서 활용할 수 있습니다.
+코드 8-10을 살펴봅시다. 코드 8-10은 Object.prototype 객체에 test() 메서드를 추가합니다. 이렇게 메서드를 추가하면 자바스크립트의 모든 객체에서 test() 메서드를 사용할 수 있습니다.
+
+[code 8-10]
+<script>
+    Object.prototype.test = function() {
+      console.log(this);
+      // alert(this);
+    }
+    var number = 273;
+    number.test();
+</script>
+
+
+
+8.3 Number 객체
+
+Number 객체는 자바스크립트에서 가장 단순한 객체로 숫자를 표현할 때 사용합니다. Number 객체는 코드 8-11처럼 두 가지 방법으로 생성합니다.
+
+<script>
+    var numberFromLiteral = 273;
+    var numberFromObject = new Number(273);
+
+    console.log(typeof(numberFromLiteral));
+    console.log(typeof(numberFromConstructor));
+</script>
+
+
+8.3.1 메서드
+Number 객체는 Object 객체가 가지는 일곱 가지 메서드는 물론이고, 표 8-2의 세 가지 메서드를 추가로 갖습니다.
+
+표 8-2  Number 객체의 메서드
+메서드 이름	설명
+toExponential(number)	숫자를 지수 표시로 나타낸 문자열을 리턴
+toFixed(number)	숫자를 고정 소수점 표시로 나타낸 문자열을 리턴
+toPrecision(number)	숫자를 길이에 따라 지수 표시 또는 고정 소수점 표시로 나타낸 문자열을 리턴
+
+표 8-2의 메서드는 모두 매개변수로 숫자를 하나 입력받습니다. toPrecision() 메서드는 유효 숫자의 자릿수를 의미하며, 그 이외의 메서드는 소수점 몇째 자리까지 나타낼 것인지를 의미합니다.
+
+
+// 1) toFixed
+var nubmer = 273.5210332;
+
+var output = ''
+output += number.toFixed(1) + '\n';
+output += number.toFixed(4);
+console.log(output);
+>> 273.5
+      273.5210
+
+// 1-2)
+// p.246
+// NOTE_ 직접 호출
+var fixedNumber = (273.5210332).toFixed(2);
+console.log(fixedNumber);
+
+
+// 2) toExponential
+console.log(nubmer.toExponential(1));
+console.log(nubmer.toExponential(2));
+>> 273.52
+>> 2.7e+2
+>> 2.74e+2
+
+
+// 3) toPrecision
+console.log(nubmer.toPrecision(1));
+console.log(nubmer.toPrecision(2));
+>> 3e+2
+>> 2.7e+2
+
+
+
+8.3.2 (생성자) 함수의 속성
+이 절의 제목이 조금 의아하죠? 객체의 속성이 아니라 생성자 함수의 속성을 알아봅니다. 우선 코드 8-14를 살펴봅시다. 함수에 속성과 메서드를 넣었습니다.
+
+[code 8-14] - Constructor
+<script>
+    function Constructor() {}
+    Constructor.property = 273;
+    Constructor.method = function () {};
+    console.log(Constructor.property);
+    console.log(Constructor.method);
+</script>
+>> 273
+>> ƒ () {}
+
+
+[TEST] - functoin
+<script>
+    function test() {}
+    test.property = 1;
+    test.method = function() { console.log('hi'); };
+
+    console.log(test.property);
+    console.log(test.method);
+    console.log(test.method());
+</script>
+>> 1
+>> ƒ () { console.log('hi'); }
+>> hi
+
+코드를 실행하면 함수의 property 속성을 정상적으로 출력합니다.
+이렇게 함수는 속성과 메서드를 가질 수 있습니다. Number 생성자 함수도 그림 8-12처럼 속성과 메서드가 있습니다.
+
+
+표 8-3 Number 생성자 함수의 속성
+속성 이름	설명
+MAX_VALUE	자바스크립트의 숫자가 나타낼 수 있는 최대 숫자
+MIN_VALUE	자바스크립트의 숫자가 나타낼 수 있는 최소 숫자
+NaN	자바스크립트의 숫자로 나타낼 수 없는 숫자
+POSITIVE_INFINITY	양의 무한대 숫자
+NEGATIVE_INFINITY	음의 무한대 숫자
+
+
+
+8.4 String 객체
+
+8.4.1 생성
+
+<script>
+    var stringFromLiteral = 'Hello World..!';
+    var stringFromConstructor = new String('Hello World..!');
+
+    console.log(typeof(stringFromLiteral));
+    console.log(typeof(stringFromConstructor));
+</script>
+
+
+8.4.2 기본 속성과 메서드
+
+표 8-4 String 객체의 속성
+속성 이름	설명
+length	문자열의 길이를 나타냅니다.
+
+
+
+표 8-4 String 객체의 속성
+메서드 이름	설명
+charAt(position)	position에 위치하는 문자를 리턴
+charCodeAt(position)	position에 위치하는 문자의 유니코드 번호를 리턴
+concat(args)	매개변수로 입력한 문자열을 이어서 리턴
+indexOf(searchString, position)	앞에서부터 일치하는 문자열의 위치를 리턴
+lastIndexOf(searchString, position)	뒤에서부터 일치하는 문자열의 위치를 리턴
+match(regExp)	문자열 안에 regExp가 있는지 확인
+replace(regExp, replacement)	regExp를 replacement로 바꾼 뒤 리턴
+search(regExp)	regExp와 일치하는 문자열의 위치를 리턴
+slice(start, end)	특정 위치의 문자열을 추출해 리턴
+split(separator, limit)	separator로 문자열을 잘라서 배열을 리턴
+substr(start, count)	start부터 count만큼 문자열을 잘라서 리턴
+substring(start, end)	start부터  end까지 문자열을 잘라서 리턴
+toLowerCase()	문자열을 소문자로 바꾸어 리턴
+toUpperCase()	문자열을 대문자로 바꾸어 리턴
+
+NOTE_ 정규 표현식과 관련된 메서드는 부록 B에서 다룹니다.
+
+
+[code 8-19] 잘못된 String 객체의 메서드 사용
+<script>
+    var string = 'abcdefg';
+    returned_string = string.toUpperCase();
+    console.log(string);
+    console.log(returned_string);
+</script>
+>> abcdefg
+>> ABCDEFG
+
+
+8.4.3  HTML 관련 메서드
+String 객체는 표 8-6과 같은 HTML 관련 메서드가 있습니다. 자기 자신을 변화시키지 않고 리턴한다는 점을 기억해주세요.
+
+표 8-6 String 객체의 HTML 관련 메서드
+메서드 이름	설명
+anchor()	a 태그로 문자열을 감싸 리턴
+big()	big 태그로  ″
+blink()	blink 태그로  ″
+bold()	b 태그로  ″
+fixed()	tt 태그로  ″
+fontcolor(colorString)	font 태그로 문자열을 감싸고 color 속성을 주어 리턴
+fontsize(fontSize)	font 태그로 문자열을 감싸고 size 속성을 주어 리턴
+italics()	| 태그로 문자열을 감싸 리턴
+link(linkRef)	a 태그에 href 속성을 지정해 리턴
+small()	small 태그로 문자열을 감싸 리턴
+strike()	strike 태그로  ″
+sub()	sub 태그로  ″
+sup()	sup 태그로  ″
+
+실제로 최근에는 표 8-6의 메서드를 사용하지 않습니다. 그러므로 간단하게 코드 8-21을 입력해서 실행해보고 이 절을 넘어갑시다.
+
+
+p.254
+NOTE_ 메서드 체이닝
+
+자바스크립트의 기술 중 메서드 체이닝(Method Chaining)이라는 기술이 있습니다. 간단하게 번역하면 메서드를 줄줄이 사용한다는 뜻입니다.
+
+코드 8-22는 String 객체의 메서드를 세 번 사용했습니다.
+
+[code 8-22]
+<script>
+    // without 'Method Chainning'
+    var output = 'Hello World..!';
+    output = output.toLowerCase();
+    output = output.substring(0, 10);
+    output = output.anchor('name');
+    console.log(output);
+</script>
+>> <a name="name">hello worl</a>
+
+String 객체의 메서드들은 자기 자신의 내용을 바꾸지 않고 리턴하므로 조금 귀찮지만 이렇게 사용해야 합니다. 왜 자기 자신을 바꾸지 않고 리턴하게 만든 것일까요?
+여러가지 이유가 있지만 메서드 체이닝을 그 이유 중 하나로 들 수 있습니다. String 객체의 메서드를 사용하면 String 객체를 리턴하므로 코드 8-23처럼 연속해서 메서드를 사용할 수 있습니다. 이렇게 메서드를 연속해서 사용하는 것을 메서드 체이닝이라고 합니다.
+
+
+[code 8-23]
+<script>
+    // with 'Method Chainning'
+    var output = 'Hello World..!';
+    output = output.toLowerCase().substring(0, 10).anchor('name');
+    console.log(output);
+</script>
+>> <a name="name">hello worl</a>
