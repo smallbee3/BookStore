@@ -10,7 +10,6 @@ p.209
 NOTE_ 생성자 함수의 이름
 생성자 함수의 이름은 일반적으로 대문자로 시작합니다. 대문자로 시작하지 않아도 문제는 없지만 개발자 대부분이 지키는 규칙이므로 따라주세요. 자바스크립트에서 기본적으로 제공하는 생성자 함수도 모두 대문자로 시작합니다.
 
-
 p.211
 var student = new Student()
    객체, 인스턴스       생성자 함수
@@ -28,6 +27,7 @@ prototype
 
 
 p.217
+new vs without new
 ...
 두 부분이 변경된 것을 확인할 수 있습니다. new 키워드를 사용하지 않았고, constructor 객체의 value 속성이 아니라 일반 변수 value를 사용했습니다. 무언가 이상해 보일 수 있겠지만 코드는 그림 7-6처럼 정상적으로 실행됩니다.
 
@@ -50,8 +50,8 @@ p.219
   function Rectangle2(w, h) {
     var width = w;
     var height = h;
-    this.getWidth = function () { return width; };
-    this.getHeight = function () { return height; };
+    this.getWidth = function () { return width; };  // -> Closure
+    this.getHeight = function () { return height; };  // -> Closure
     this.setWidth = function (w) { width = w; };
     this.setHeight = function (h) { height = h; };
   }
@@ -66,6 +66,13 @@ throw 키워드는 강제로 오류를 발생시키는 키워드입니다. 11장
 
 p.221
 일부 캡슐화의 개념을 잘못 알고 있는 초보 프로그래머는 게터와 세터를 만드는 것 자체가 캡슐화라고 생각하는 경우가 있습니다. 그것은 너무 단순한 생각입니다. 캡슐화는 만일의 상화을 대비해서 특정 속성이나 메서드를 사용자가 사용할 수 없게 숨겨놓는 것임을 기억해주세요.
+
+
+p.224
+"p.224
+참고로 생성자 함수 Square의 프로토타입 constructor() 메서드에 Square를 다시 넣는 부분이 없어도 정상적으로 작동합니다.
+하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangleㅇ르 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다."
+-> [3 error] 181208
 
 
 p.226
@@ -161,3 +168,26 @@ ECMAScript 6의 클래스는 변수를 숨길 수 없습니다. 그래서 일반
 상속은 코드 7-22처럼 extends 키워드로 구현합니다. 7.5의 코드 7-16보다 훨신 직관적입니다.
 
 [code 7-22]
+<script>
+    class Square2 extends Rectangle4 {
+      constructor(length) {
+        super(length, length);
+        console.log(this);
+        // alert(this);
+      }
+      set width(input) {
+        this._width = input;
+        this._height = input;
+      }
+      set height(input) {
+        this._width = input;
+        this._height = input;
+      }
+    }
+
+    const square2 = new Square2(100);
+    console.log(square2);
+    console.log(square2.width); // -> undefined
+    console.log(square2._width);
+    console.log(square2.getArea());
+</script>
