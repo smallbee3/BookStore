@@ -1,0 +1,487 @@
+[Ch8 Built-in object2]
+
+표 8-8 Array 객체의 속성
+속성 이름	설명
+length	요소의 개수를 알아냅니다.
+
+표 8-9 Array 객체의 메서드
+메서드 이름	설명
+concat()	매개변수로 입력한 배열의 요소를 모두 합쳐 배열을 만들어 리턴
+join()	배열 안의 모든 요소를 문자열로 만들어 리턴
+pop()*	배열의 마지막 요소를 제거하고 리턴
+push()*	배열의 마지막에 새로운 요소를 추가
+reverse()*	배열의 요소 순서를 뒤집음
+slice(num, num)	요소의 지정한 부분을 리턴
+sort()*
+sort(function(...) {...})*	배열의 요소를 정렬
+splice()*	요소의 지정한 부분을 삭제하고 삭제한 요소를 리턴
+NOTE_ * 표시된 메서드는 자기 자신을 변화시킵니다.
+
+
+
+p.258
+[code 8-26]
+<script>
+    var array = [52, 273, 103, 32];
+
+    array.sort();
+    console.log(array);
+
+    array.reverse();
+    console.log(array);
+</script>
+
+>> [103, 273, 32, 52]
+>> [52, 32, 273, 103]
+
+
+sort() 메서드를 사용하면 모든 요소를 문자열 오름차순으로 정렬합니다. 따라서 그림 8-17처럼 Array 객체가 문자열 오름차순으로 정렬됩니다. 숫자 오름차순이 아니라 문자열 오름차순으로 정렬된다는 점에 주의하세요.
+
+
+8.5.3 정렬
+Array 객체의 sort() 메서드의 정렬 방법에 변화를 주고 싶을 때는 sort() 메서드의 매개변수로 함수를 넣어줍니다. sort() 메서드의 매개변수로 넣는 함수는 기본적응로 다음과 같이 매개변수 두 개를 받을 수 있어야 합니다.
+
+array.sort(function(left,right){
+
+});
+
+웹 브라우저는 이 함수를 이용해 퀵 소트 또는 머지 소트 같은 정렬을 진행합니다. 간단하게 말하면 정렬 기준은 매개변수로 입력한 함수가 리턴하는 숫자의 부호에 따라 정렬 방식이 결정됩니다. 배열의 자료를 정렬하는 경우는 대부분 숫자를 정렬하는 경우가 많으므로 다음 형태의 함수를 많이 사용합니다.
+
+오름차순 정렬	내림차순 정렬
+function (left, right) {
+    return left - right;
+}	function (left, right) {
+    return right - left;
+}
+
+
+[code 8-27]
+<script>
+    var array = [52, 273, 103, 32];
+
+    array.sort(function (left, right) { return left - right; });
+    console.log(array);
+
+   array.sort(function (left, right) { return right - left; });
+    console.log(array);
+
+    array.reverse(function (left, right) { return left - right; });
+    console.log(array);
+</script>
+
+>> [32, 52, 103, 273]
+>> [273, 103, 52, 32]
+>> [32, 52, 103, 273]
+
+
+p.261
+sort() 메서드는 정렬한 배열을 리턴하므로 코드 8-30처럼 메서드 체이닝을 사용할 수도 있습니다.
+
+[code 8-29]
+<script>
+    students.sort(function (left, right) {
+    // return left.getSum() - right.getSum();
+    return left.getAverage() - right.getAverage();
+    });
+    students = students.slice(0, 3);
+</script>
+
+
+[code 8-30] - Method Chaininig
+<script>
+    students = students.sort(function (left, right) {
+      // return left.getSum() - right.getSum();
+      return left.getAverage() - right.getAverage();
+    }).slice(0, 3);
+</script>
+
+
+
+
+p.261
+8.5.4 요소 제거
+Array 객체의 메소드에는 특정 요소를 제거하는 메서드가 따로 없습니다. 대신 splice() 메서드를 사용하면 특정 요소를 제거하는 기능을 쉽게 만들 수 잇으며, 코드 8-31처럼 프로토타입에 remove() 메서드를 추가하면 배열의 요소를 쉽게 제거할 수 있습니다.
+
+[code 8-31]
+
+<script>
+    Array.prototype.remove = function (index) {
+      this.splice(index, 1);
+    }
+    students.remove(2);
+
+
+    var output = '이름\t총점\t평균\n';
+    for (var i in students) {
+        output += students[i].toString();
+    }
+    console.log(output);
+</script>
+
+>>
+이름	총점	평균
+서준서	326	81.5
+윤명월	345	86.25
+function (index) {
+      this.splice(index, 1);
+    }
+
+
+p.262
+반복문으로 특정 조건에 맞는 Array 객체의 요소를 제거할 때는 주의사항이 있으므로 살펴봅시다. 코드 8-32의 결과를 직접 예측해보세요.
+
+
+[code 8-32]
+<script>
+    var array = [52, 273, 103, 32, 274, 129];
+
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] > 100) {
+        array.remove(i);
+      }
+    }
+    console.log(array);
+</script>
+>> REMOVED(WRONG): [52, 103, 32, 129]
+
+
+
+[Myway]
+<script>
+    var array = [52, 273, 103, 32, 274, 129];
+    // 1) find the indexes of element to delete.
+    remove_list = [];
+    for (var i in array) {
+      if (array[i] > 100) {
+        remove_list.push(i);
+      }
+    }
+    // 2) Sort & reverse the remove_list
+    remove_list = remove_list.sort(function(left, right) {return left - right; }).reverse();
+    console.log('REMOVE_LIST: ' + remove_list);
+    // 3) delete the indexes using element in the remove_list
+    for (var i of remove_list) {
+      array.remove(i);
+    }
+    console.log('REMOVED(RIGHT): ' + array);
+</script>
+>> REMOVE_LIST: 5,4,2,1
+>> REMOVED(RIGHT): 52,32
+
+
+[code 8-33]
+<script>
+    var array = [52, 273, 103, 32, 274, 129];
+
+    for (var i = array.length - 1; i >= 0; i--) {
+      if (array[i] > 100) {
+        array.remove(i);
+      }
+    }
+    console.log('REMOVED(RIGHT)2: ' + array);
+</script>
+>> REMOVED(RIGHT)2: 52,32
+
+
+
+
+8.6 Date 객체
+
+8.6.1 생성
+
+1) 현재 시각
+생성자 함수에 어떠한 매개변수도 입력하지 않으면 현재 시각으로 초기화합니다.
+<script>
+    var date = new Date();
+    console.log(date);
+</script>
+>> Mon Dec 10 2018 16:04:44 GMT+0900 (Korean Standard Time)
+
+
+웹 브라우저에 따라 기본 설정이 GMT(Greenwich Mean Time)일 수도 있고, UTC(Universal Time Coordinated)일 수도 있습니다. 현재(2017년) 최신 웹 브라우저 대부분은 GMT 시간으로 표시되며, 인터넷 익스플로러 8 이하에서는 UTC 시간으로 표시됩니다. GMT 시간과 UTC 시간의 시간 차이는 1초 미만이므로 크게 신경 쓰지 않아도 됩니다.
+
+
+2) 문자열
+...
+코드 8-35처럼 문자열로 시간을 초기화할 수도 있습니다.
+
+[code 8-35]
+<script>
+    var date = new Date('December 9, 1991');
+    console.log(date);
+
+    var date = new Date('December 9, 1991 02:24:23');
+    console.log(date);
+</script>
+>> Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
+>> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+
+
+3) 매개변수에 숫자를 입력
+문자열을 입력하는 것 이외에도 매개변수에 숫자를 (연, 월-1, 일, 시, 분, 초, 밀리 초) 순서로 입력해 Date 객체를 생성할 수 있습니다.
+
+[code 8-36]
+<script>
+    var date = new Date(1991, 11, 9);
+    console.log(date);
+
+    var date = new Date(1991, 11, 9, 2, 24, 23);
+    console.log(date);
+
+    var date = new Date(1991, 11, 9, 2, 24, 23, 12);
+    console.log(date);
+</script>
+>> Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
+>> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+>> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+
+
+p.265
+NOTE_
+월을 입력하는 것이 아니라 월-1을 입력하는 것이므로 코드 8-36의 new Date(1991, 11, 9)는 1991년 12월 9일을 나타냅니다. 자주 실수하는 부분이므로 주의하세요.
+
+
+4) 매개변수에 Unix time을 입력
+마지막으로 Unix time을 사용하는 방법도 있습니다. Unix time은 1971년 1월 1일 12시 자정을 기준으로 경과한 시간을 밀리 초 단위로 나타내는 방식입니다.
+
+[code 8-37]
+<script>
+    var date = new Date(2732741033257);
+    console.log(date);
+</script>
+
+
+
+8.6.2 메서드
+
+Date 객체의 메서드는 세 가지로 분류할 수 있습니다. 우선 Date 객체는 그림 8-23처럼 getOO() 형태의 메서드와 setOO() 형태의 메서드를 가집니다. getOO() 형태의 메서드를 게터(getter)라고 하고, setOO() 형태의 메서드를 세터(setter)라고 합니다.
+
+getter	setter
+getDate	setDate
+getDay
+getFullYear	setFullYear
+getHours	setHours
+getMilliseconds	setMilliseconds
+getMinutes	setMinutes
+getMonth	setMonth
+getSeconds	setSeconds
+getTime	setTime
+
+
+이제 일주일 후의 시간을 구하는 예제를 작성해봅시다. 코드 8-38처럼 getDate()와 setDate() 메서드를 사용하면 일주일 후의 시간을 쉽게 구할 수 있습니다. 굉장히 많이 사용하는 코드이므로 정리하고 기억해주세요.
+
+[code 8-38]
+
+<script>
+    // One week later
+    var date = new Date();
+    date.setDate(date.getDate() + 7);
+    console.log('ONE WEEK LATER: ' + date)
+
+    // One hour later
+    var date = new Date();
+    date.setHours(date.getHours() + 1);
+    console.log('ONE HOUR LATER: ' + date)
+
+    // One year later (getYear, setYear)
+    var date = new Date();
+    date.setYear(date.getYear() + 1);
+    console.log('ONE YEAR LATER: ' + date)
+
+    // One year later (getFullYear, setFullYear)
+    var date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    console.log('ONE YEAR LATER2: ' + date)
+
+</script>
+
+>> Mon Dec 17 2018 16:42:25 GMT+0900 (Korean Standard Time)
+>> Mon Dec 10 2018 17:42:25 GMT+0900 (Korean Standard Time)
+>> Sun Dec 10 0119 16:42:25 GMT+0827 (Korean Standard Time)
+>> Tue Dec 10 2019 16:46:38 GMT+0900 (Korean Standard Time)
+
+
+
+p.267
+NOTE_
+연도와 관련된 메서드 중 이름이 비슷한 getYear() 메서드와 getFullYear() 메서드가 있습니다. getYear() 메서드는 웹 브라우저에 따라 조금씩 다른 결과를 출력하므로 getFullYear() 메서드를 사용하는 것이 좋습니다.
+
+
+
+
+Date 객체는 게터와 세터 이외에 toOOString() 형태의 메서드도 있습니다.
+
+메서드 이름
+toDateString
+toGMTString
+toLocaleDateString
+toLocaleString
+toLocaleTimeString
+toString
+toTimeString
+toUTCString
+
+
+
+[code 8-39]
+
+<script>
+    var date = new Date(1991, 11, 9);
+    var output = '';
+    output += '★toDateString: ' + date.toDateString() + '\n';
+    output += '★toGMTString: ' + date.toGMTString() + '\n';
+    output += '★toLocaleDateString: ' + date.toLocaleDateString() + '\n';
+    output += '★toLocaleString: ' + date.toLocaleString() + '\n';
+    output += '★toLocaleTimeString: ' + date.toLocaleTimeString() + '\n';
+    output += '★toString: ' + date.toString() + '\n';
+    output += '★toTimeString: ' + date.toTimeString() + '\n';
+    output += '★toUTCString: ' + date.toUTCString() + '\n';
+</script>
+
+>>
+★toDateString: Mon Dec 09 1991
+★toGMTString: Sun, 08 Dec 1991 15:00:00 GMT
+★toLocaleDateString: 12/9/1991
+★toLocaleString: 12/9/1991, 12:00:00 AM
+★toLocaleTimeString: 12:00:00 AM
+★toString: Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
+★toTimeString: 00:00:00 GMT+0900 (Korean Standard Time)
+★toUTCString: Sun, 08 Dec 1991 15:00:00 GMT
+
+
+
+8.6.3 시간 간격 계산
+
+Date 객체는 D-Day를 구할 때도 활용할 수 있습니다. 날짜 간격을 구할 때는 getTime() 함수를 사용합니다.
+
+getTime() 함수를 사용하면 1970년 1월 1일 자정부터 지난 밀리 초를 구합니다. 이를 사용해 두 시간 사이의 초 간격을 구하고 다시 날짜로 바꾸는 예제입니다.
+
+
+[code 8-40]
+<script>
+    var now = new Date();
+    var before = new Date('December 9, 1991');
+
+    var interval = now.getTime() - before.getTime();
+    interval = Math.floor(interval / (1000 * 60 * 60 * 24));
+
+    console.log('Interval: ' + interval + '일');
+</script>
+>> Interval: 9863일
+
+
+
+코드 8-41처럼 Date 객체의 프로토타입에 메서드를 넣으면 쉽고 편리하게 날짜 간격을 구할 수 있습니다.
+
+[Myway] - this : before
+<script>
+    Date.prototype.getInerval = function () {
+      var now = new Date();
+      var interval = now.getTime() - this.getTime();
+      interval = Math.floor(interval / (1000 * 60 * 60 * 24));
+      return interval;
+    }
+
+    var before = new Date('December 9, 2991');
+    console.log('Interval: ' + before.getInerval() + '일');
+</script>
+>> Interval(myway): -355380일
+
+
+
+[code 8-41] - this : now
+<script>
+    Date.prototype.getInterval = function (otherDate) {
+      var interval;
+      if (this > otherDate) {
+        var interval = this.getTime() - otherDate.getTime();
+      } else {
+        var interval = otherDate.getTime() - this.getTime();
+      }
+      return Math.floor(interval / (1000 * 60 * 60 * 24));
+    }
+
+    var now = new Date();
+    var before = new Date('December 9, 2991');
+    console.log('Interval(code 841): ' + now.getInterval(before) + '일');
+</script>
+>> Interval(code 8-41): 3553879일
+
+
+
+8.7 Math 객체
+
+Math 객체는 자바스크립트의 기본 내장 객체 중 유일하게 생성자 함수를 사용하지 않는 객체입니다.
+Math 객체는 이름 그대로 수학과 관련된 속성과 메서드를 갖는 객체 입니다. Math 객체는 표 8-10의 속성을 갖습니다.
+
+속성 이름	값
+E	2.718281828459045
+LN2	0.6931471805599453
+LN10	2.302585092994046
+LOG2E	1.4426950408889634
+LOG10E	0.4342944819032518
+PI	3.141592653589793
+SQRT1_2	0.7071067811865476
+SQRT2	1.4142135623730951
+
+Math 객체는 생성자 함수가 아니라 그냥 객체이므로 코드 8-42처럼 사용합니다.
+
+[code 8-42]
+
+<script>
+    console.log(Math.E);
+    console.log(Math.LN2);
+    console.log(Math.LN10);
+    console.log(Math.LOG2E);
+    console.log(Math.LOG10E);
+    console.log(Math.PI);
+    console.log(Math.SQRT1_2);
+    console.log(Math.SQRT2);
+</script>
+>>
+2.718281828459045
+0.6931471805599453
+2.302585092994046
+1.4426950408889634
+0.4342944819032518
+3.141592653589793
+0.7071067811865476
+1.4142135623730951
+
+
+표 8-11 Math 객체의 메서드
+메서드 이름	설명
+abs(x)	x의 절대 값을 리턴
+acos(x)	x의 아크 코사인 값을 리턴
+asin(x)	x의 아크 사인 값을 리턴
+atan(x)	x의 아크 탄젠트 값을 리턴
+atan2(y, x)	x와 y의 비율로 아크 탄젠트 값을 구해 리턴
+ceil(x)	x보다 크거나 같은 가장 작은 정수를 리턴
+cos(x)	x의 코사인 값을 리턴
+exp(x)	자연로그의 x 제곱을 리턴
+floor(x)	x보다 작거나 같은 가장 큰 정수를 리턴
+log(x)	x의 로그 값을 리턴
+max(x,y,z....,n)	매개변수 중 가장 큰 값을 리턴
+min(x,y,z....,n)	매개변수 중 가장 작은 값을 리턴
+pow(x,y)	x의 y 제곱을 리턴
+random()	0부터 1까지의 임의의 수를 리턴
+round(x)	x를 반올림하여 리턴
+sin(x)	x의 사인 값을 리턴
+sqrt(x)	x의 제곱근을 리턴
+tan(x)	x의 탄젠트 값을 리턴
+
+
+...
+자바스크립트의 기술을 하나 알아봅시다. 자바스크립트의 함수는 하나의 자료형이므로 변수에 저장할 수 있습니다. 따라서 코드 8-43처럼 Math 객체의 메서드를 변수에 저장해서 함수처럼 쉽게 사용할 수 있습니다.
+
+
+[code 8-43]
+
+<script>
+    var max = Math.max;
+    console.log('max: ' + max(52,273, 103, 57, 32));
+    console.log('Math.max: ' + Math.max(52,273, 103, 57, 32));
+</script>
+
+
+
