@@ -180,12 +180,68 @@ NOTE_  바벨을 활용할 때의 객체 복제
 <br>
 
 
+### p.224
+(아래서5번째줄) \
+하지만 직접 square 객체의 constructor() 메서드를 출력해보세요.
+
+> 하지만 직접 'alert(square.constructor)'로 square 객체의 constructor() 메서드를 출력해보세요.
+
+<br>
+
+
 ### p.235
 (아래서4번째줄) \
 그림 8-1처럼 기본 자료형과 객체는 자료형이 분명 다릅니다. 하지만 두 가지 모두 `값을` 출력합니다.
 
 > 같은 값을
 
+<br>
+
+
+### p.286
+[코드 8-56 일반적인 배열 메서드 사용] \
+```javascript
+<script>
+    ...
+
+    // 과학 성적이 90점 넘는 학생을 필터링 합니다.
+    var filteredA = students.filter(function (item) {
+        return item > 90;
+    });
+    console.log(filteredA);
+
+    ...
+</script>
+```
+
+> return item.과학 > 90;
+
+<br>
+
+
+### p.286
+[코드 8-57 화살표 함수를 사용한 Array 객체의 메서드 활용]
+```javascript
+<script>
+    ...
+
+    // 과학 성적이 90점 넘는 학생을 필터링 합니다.
+    var filteredA = students.filter((item) => item > 90);
+    console.log(filteredA);
+
+    ...
+</script>
+```
+
+> item.과학 > 90
+
+<br>
+
+
+### p.292
+02. 1번에서 `'Hello World..!'와` 'hello world..!'가 차례대로 출력하게 하려면 무엇을 변경해야 할까요?
+
+> 'HELLO WORLD..!'와
 
 <br>
 <br>
