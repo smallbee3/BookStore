@@ -59,7 +59,7 @@ p.219
   // console.log(height); -> ReferenceError: height is not defined
 </script>
 
-코드 7-13의 생성자 함수 안에서 변수 width와 height를 정의했습니다. 이제 외부에서는 지역 변수 width와 height를 사용할 수 없고 오직 getOO() 형태의 메서드와 setOO() 형태의 메서드를 사용해야 합니다.
+코드 7-13의 생성자 함수 안에서 변수 width와 height를 정의했습니다. 이제 외부에서는 지역 변수 width와 height를 사용할 수 없고(?) 오직 getOO() 형태의 메서드와 setOO() 형태의 메서드를 사용해야 합니다.
 ...
 throw 키워드는 강제로 오류를 발생시키는 키워드입니다. 11장에서 다루겠지만 간단하게 사용해봅시다. setOO() 형태의 메서드를 사용할 때 매개변수로 입력받은 값이 0 이하이면 강제로 throw 키워드를 실행하게 했습니다.
 
@@ -79,6 +79,7 @@ p.226
 7.6.1 클래스 in ECMAScript 6
 
 이번 장에서 생성자 함수를 배웠으므로 클래스가 무엇인지 비교하며 설명하도록 하겠습니다.
+
 
 클래스 선언과 속성
 [code 7-19]
@@ -111,9 +112,7 @@ class Rectangle4 {
   }
 }
 const rectangle = new Rectangle4(100,400);
-console.log(rectangle);
-
-console.log(rectangle.getArea());	function Rectangle3(width, height) {
+console.log(rectangle);	console.log(rectangle.getArea());	function Rectangle3(width, height) {
   this.width = width;
   this.height = height;
 }
@@ -125,6 +124,7 @@ var rectangle = new Rectangle3(100, 300);
 console.log(rectangle);
 
 console.log(rectangle.getArea());
+
 
 게터와 세터
 [code 7-21]

@@ -1,7 +1,7 @@
 [Ch8 Built-in object]
 
 p.236
-속성과 메서드는 객체가 가질 수 있는 것인데, 기본 자료형에도 속성과 메서드가 있습니다. 기본 자료형의 속성이나 메서드를 사용하면 기본 자료형이 자동으로 객체로 변환됩니다.
+속성과 메서드는 객체가 가질 수 있는 것인데, 기본 자료형(숫자,문자열,불)에도 속성과 메서드가 있습니다. 기본 자료형의 속성이나 메서드를 사용하면 기본 자료형이 자동으로 객체로 변환됩니다.
 
 예를 들어 기본 자료형 숫자의 속성이나 메서드를 사용할 때는 자동으로 Number 객체로 변환되므로 기본 자료형이 속성이나 메서드를 사용할 수 있는 것입니다. 따라서 기본 자료형과 객체의 차이점을 찾기 힘듭니다. 이 장에서 Number 객체라고 부르면 객체와 기본 자료형 모두 의미한다고 생각해주세요.
 굳이 차이점을 찾자면 기본 자료형은 객체가 아니므로 속성과 메서드를 추가할 수 없습니다.
@@ -29,7 +29,7 @@ Object 객체에 있는 메서드를 정리하면 표 8-1과 같습니다.
 메서드 이름	설명
 constructor()	객체의 생성자 함수를 나타냄
 hasOwnProperty(name)	객체에 name 속성이 있는지 확인
-isPrototypeof(object)	객체가 object의 프로토타입인지 검사
+isPrototypeOf(object)	객체가 object의 프로토타입인지 검사
 propertyIsEnumerable(name)	반복문으로 열거할 수 있는지 확인
 toLocaleString()	객체를 호스트 환경에 맞는 언어의 문자열로 변경
 toString()	객체를 문자열로 바꿈
@@ -155,7 +155,7 @@ console.log(nubmer.toPrecision(2));
 >> ƒ () {}
 
 
-[TEST] - functoin
+[TEST] - function
 <script>
     function test() {}
     test.property = 1;
