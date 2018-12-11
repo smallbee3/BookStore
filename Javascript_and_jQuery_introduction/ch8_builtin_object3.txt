@@ -10,13 +10,11 @@ HTML5와 함께 출현한 자바스크립트 표준안을 ECMAScrpt 5라고 합�
 ECMAScript 5에서는 Array 생성자 함수에 표 8-12의 메서드를 추가했습니다.
 
 표 8-12 Array 생성자 함수의 메서드
-메서드 이름
-설명
-Array.isArray()
-배열인지 확인합니다.
+메서드 이름	설명
+Array.isArray()	배열인지 확인합니다.
 
-typeof 키워드로 Array 객체의 자료형을 확인하면 문자열 'object'가 나오므로 Array 객체임을 확인하려면 8.2에서 배운 constructor() 메서드로 자료혀을 비교하는 방법을 응용해야 합니다.
-만약 ECMAScript 5를 사용할 수 있는 환겨이라면 코드 8-44처럼 isArray() 메서드로 해당 변수가 Array 객체인지 확인할 수 있습니다.
+typeof 키워드로 Array 객체의 자료형을 확인하면 문자열 'object'가 나오므로 Array 객체임을 확인하려면 8.2에서 배운 constructor() 메서드로 자료형을 비교하는 방법을 응용해야 합니다.
+만약 ECMAScript 5를 사용할 수 있는 환경이라면 코드 8-44처럼 isArray() 메서드로 해당 변수가 Array 객체인지 확인할 수 있습니다.
 
 [code 8-44]
 <script>
@@ -67,12 +65,9 @@ p.274
 ECMAScript 5에서 Array 객체는 기존의 메서드 이외에 표 8-13의 메서드를 추가로 갖습니다.
 
 표 8-13  ECMAScript 5 Array 객체의 탐색 메서드
-메서드 이름
-설명
-indexOf()
-특정 요소를 앞쪽부터 검색
-lastIndexOf()
-특정 요소를 뒤쪽부터 검색
+메서드 이름	설명
+indexOf()	특정 요소를 앞쪽부터 검색
+lastIndexOf()	특정 요소를 뒤쪽부터 검색
 
 indexOf() 메서드와 lastIndexOf() 메서드 모두 매개변수에 검색하려는 객체를 입력합니다. 만약 내부에 검색하려는 객체가 있으면 해당 객체가 위치하는 인덱스를 리턴하고 없으면 -1을 리턴합니다.
 
@@ -81,14 +76,12 @@ indexOf() 메서드와 lastIndexOf() 메서드 모두 매개변수에 검색하�
 ECMAScript 5의 Array 객체는 표 8-14와 같은 반복 메서드가 있습니다.
 
 표 8-14
-메서드 이름
-설명
+메서드 이름	설명
+forEach()	배열 각각의 요소를 사용해 특정 함수를 for in 반복문처럼 실행
+map()	기존의 배열에 특정 규칙을 적용해 새로운 배열을 만듦
+
+
 forEach()
-배열 각각의 요소를 사용해 특정 함수를 for in 반복문처럼 실행
-map()
-기존의 배열에 특정 규칙을 적용해 새로운 배열을 만듦
-
-
 forEach() 메서드는 2부에서 살펴볼 jQuery의  each() 메서드와 비슷하므로 이해하고 넘어가면 이후에 쉽게 이해할 수 있습니다.
 forEach() 메서드의 매개변수에는 코드 8-46  형태의 함수를 넣습니다.
 
@@ -127,6 +120,7 @@ The sequence of those three parameters do matter !
 
 
 p.276
+map()
 이번에는 map() 메서드를 알아보겠습니다. map() 메서드는 배열의 각 요소를 변경해 새로운 배열을 리턴하는 메서드입니다.
 map() 메서드의 매개변수에는 코드 8-47과 같은 함수를 넣습니다.
 
@@ -140,17 +134,20 @@ map() 메서드의 매개변수에는 코드 8-47과 같은 함수를 넣습니�
 >> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 
+    // [code 8-47] (2)
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var output = array.map(function (element, index, array) { return element * element / (index + 1); });
+    console.log(output);
+
+
+
 8.8.4 조건 메서드
 forEach() 메서드의 매개변수로 입력하는 함수의 형태는 filter() 메서드를 비롯해 every() 메서드, some() 메서드에서도 사용합니다.
 
-메서드 이름
-설명
-filter()
-특정 조건을 만족하는 요ㅗ소를 추출해 새로운 배열을 만듦
-every()
-배열의 요소가 특정 조건을 모두 만족하는지 확인
-some()
-배열의 요소가 특정 조건을 적어도 하나 만족하는지 확인
+메서드 이름	설명
+filter()	특정 조건을 만족하는 요소를 추출해 새로운 배열을 만듦
+every()	배열의 요소가 특정 조건을 모두 만족하는지 확인
+some()	배열의 요소가 특정 조건을 적어도 하나 만족하는지 확인
 
 1) filter()
 
@@ -226,12 +223,9 @@ output6: true
 조금 어려울 수 있는 메서드는 표 8-16 reduce() 메서드와 reduceRight() 메서드입니다.
 
 표 8-16 ECMAScript 5 Array 객체의 연산 메서드
-메서드 이름
-설명
-reduce()
-배열의 요소가 하나가 될 때까지 요소를 왼쪽부터 두 개씩 묶는 함수를 실행
-reduceRight()
-배열의 요소가 하나가 될 때까지 요소를 오른쪽부터 두 개씩 묶는 함수를 실행
+메서드 이름	설명
+reduce()	배열의 요소가 하나가 될 때까지 요소를 왼쪽부터 두 개씩 묶는 함수를 실행
+reduceRight()	배열의 요소가 하나가 될 때까지 요소를 오른쪽부터 두 개씩 묶는 함수를 실행
 
 두 메서드는 코드 8-50처럼 복잡한 형태의 함수를 매개변수로 입력합니다.
 
@@ -305,10 +299,8 @@ result: 15
 8.9 ECMAScript 5 String 객체
 
 표 8-17 ECMAScript 5 String 객체의 메서드
-메서드 이름
-설명
-trim()
-문자열 양쪽 끝의 공백을 제거
+메서드 이름	설명
+trim()	문자열 양쪽 끝의 공백을 제거
 
 <script>
     var text = '   text   ';
@@ -330,12 +322,9 @@ p.283
 ECMAScript 5부터는 정식으로 JSON 객체를 지원합니다. JSON(JavaScript Object Notation)은 자바스크립트 객체의 형태를 갖는 문자열을 뜻합니다. JSON이 무엇인지는 3부에서 알아보고 지금은 이 정도만 알아둡시다. JSON 객체는 표 8-18의 메서드가 있습니다.
 
 표 8-18 ECMAScript 5 JSON 객체의 메서드
-메서드 이름
-설명
-JSON.stringify()
-자바스크립트 객체를 JSON 문자열로 변환
-JSON.parse()
-JSON 문자열을 자바스크립트 객체로 변환
+메서드 이름	설명
+JSON.stringify()	자바스크립트 객체를 JSON 문자열로 변환
+JSON.parse()	JSON 문자열을 자바스크립트 객체로 변환
 
 코드 8-53을 살펴봅시다. 객체의 속성을 출력하려고 본문에서 for in 반복문을 여러 번 사용했습니다. 하지만 JSON 객체의 stringify() 메서드를 사용하면 간단하게 모든 속성을 출력할 수 있습니다.
 
@@ -447,6 +436,8 @@ ECMAScript 6를 사용할 수 있는 환경이라면, 특수한 경우를 제외
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="underscore.js"></script>
+  <script>     ...
+  </script>   <script src="underscore.js"></script>
 </head>
 <body>
 </body>
@@ -456,10 +447,8 @@ ECMAScript 6를 사용할 수 있는 환경이라면, 특수한 경우를 제외
 정렬
 underscore 라이브러리 문서에서 '정렬'을 영어로 검색해보면 정렬과 관련된 부분으로 이동합니다.
 
-프로그래밍 언어 대부분은 특정 기능을 특정한 단어로 사용하도록 통일되어 있습니다. 예를 들어 정렬은 sort고, 문자열 양 옆의 글자를 자르는 기능은 trim이고, 배열 내용을 랜덤으로 섞는 기능은 shuffle이며, 요소를 랜덤으로 몇 개 봅아주는 기능은 sample 입니다.
+프로그래밍 언어 대부분은 특정 기능을 특정한 단어로 사용하도록 통일되어 있습니다. 예를 들어 정렬은 sort고, 문자열 양 옆의 글자를 자르는 기능은 trim이고, 배열 내용을 랜덤으로 섞는 기능은 shuffle이며, 요소를 랜덤으로 몇 개 뽑아주는 기능은 sample 입니다.
 
 
 
 배열 정렬이 굉장히 간단해졌죠? 참고로 underscore 라이브러리의 모든 메서드는 비파괴적(nondestructive) 메서드입니다. 자기 자신을 변화시키지 않고 리턴만 하므로, 리턴을 활용해 코드를 구성해야 합니다.
-
-

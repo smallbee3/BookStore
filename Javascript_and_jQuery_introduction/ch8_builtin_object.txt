@@ -43,7 +43,7 @@ Object 객체에 있는 constructor() 메서드는 객체의 생성자 함수를
 typeof 연산자로 자료형을 검사하면 문제가 발생할 수 있는 부분이 아주 조금 있습니다. 코드 8-7을 살펴봅시다.
 
 ...
-두 변수 모두 숫자지만 생성자 함수로 만든 숫자는 개체이므로 경고장을 출력하지 않습니다. 이러한 두 대상을 같은 자료형을 취급하고 싶을 때는 constructor() 메서드를 사용해야 합니다.
+두 변수 모두 숫자지만 생성자 함수로 만든 숫자는 객체이므로 경고장을 출력하지 않습니다. 이러한 두 대상을 같은 자료형을 취급하고 싶을 때는 constructor() 메서드를 사용해야 합니다.
 코드 8-9는 constructor() 메서드로 자료형을 비교합니다.
 
 [code 8-9]
@@ -67,7 +67,7 @@ Comparison through 'constructor'
 
 8.2.4 모든 객체에 메서드 추가
 
-이전에 언급했듯이 Object 객체는 모든 자바스크립트 객체의 최상위 객체입니다. 따러서 Object  객체의 프로토타입에 속성 또는 메서드를 추가하면 모든 객체에서 활용할 수 있습니다.
+이전에 언급했듯이 Object 객체는 모든 자바스크립트 객체의 최상위 객체입니다. 따라서 Object  객체의 프로토타입에 속성 또는 메서드를 추가하면 모든 객체에서 활용할 수 있습니다.
 코드 8-10을 살펴봅시다. 코드 8-10은 Object.prototype 객체에 test() 메서드를 추가합니다. 이렇게 메서드를 추가하면 자바스크립트의 모든 객체에서 test() 메서드를 사용할 수 있습니다.
 
 [code 8-10]
@@ -155,7 +155,7 @@ console.log(nubmer.toPrecision(2));
 >> ƒ () {}
 
 
-[TEST] - function
+[Myway] - function
 <script>
     function test() {}
     test.property = 1;
@@ -247,7 +247,7 @@ bold()	b 태그로  ″
 fixed()	tt 태그로  ″
 fontcolor(colorString)	font 태그로 문자열을 감싸고 color 속성을 주어 리턴
 fontsize(fontSize)	font 태그로 문자열을 감싸고 size 속성을 주어 리턴
-italics()	| 태그로 문자열을 감싸 리턴
+italics()	I 태그(i)로 문자열을 감싸 리턴
 link(linkRef)	a 태그에 href 속성을 지정해 리턴
 small()	small 태그로 문자열을 감싸 리턴
 strike()	strike 태그로  ″
