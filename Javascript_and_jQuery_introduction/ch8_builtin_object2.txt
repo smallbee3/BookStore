@@ -169,6 +169,8 @@ p.262
 >> REMOVED(RIGHT): 52,32
 
 
+이러한 문제를 해결하려면 코드 8-33처럼 역 for 반복문을 사용해야 합니다.
+
 [code 8-33]
 <script>
     var array = [52, 273, 103, 32, 274, 129];
@@ -208,13 +210,13 @@ p.262
 [code 8-35]
 <script>
     var date = new Date('December 9, 1991');
-    console.log(date);
+    console.log("STRING: " + date);
 
     var date = new Date('December 9, 1991 02:24:23');
-    console.log(date);
+    console.log("STRING: " + date);
 </script>
->> Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
->> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+>> STRING: Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
+>> STRING: Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
 
 
 3) 매개변수에 숫자를 입력
@@ -228,12 +230,12 @@ p.262
     var date = new Date(1991, 11, 9, 2, 24, 23);
     console.log(date);
 
-    var date = new Date(1991, 11, 9, 2, 24, 23, 12);
+    var date = new Date(1991, 12, 9, 2, 24, 23, 12);
     console.log(date);
 </script>
->> Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
->> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
->> Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+>> INTEGER: Mon Dec 09 1991 00:00:00 GMT+0900 (Korean Standard Time)
+>> INTEGER: Mon Dec 09 1991 02:24:23 GMT+0900 (Korean Standard Time)
+>> INTEGER: Thu Jan 09 1992 02:24:23 GMT+0900 (Korean Standard Time)
 
 
 p.265
@@ -247,9 +249,9 @@ NOTE_
 [code 8-37]
 <script>
     var date = new Date(2732741033257);
-    console.log(date);
+    console.log("UNIX TIME: " + date);
 </script>
-
+>> UNIX TIME: Sun Aug 06 2056 07:43:53 GMT+0900 (Korean Standard Time)
 
 
 8.6.2 메서드

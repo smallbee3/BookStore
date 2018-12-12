@@ -1,454 +1,289 @@
-[Ch8 Built-in object3]
+[Ch8 Built-in object]
+
+p.236
+속성과 메서드는 객체가 가질 수 있는 것인데, 기본 자료형(숫자,문자열,불)에도 속성과 메서드가 있습니다. 기본 자료형의 속성이나 메서드를 사용하면 기본 자료형이 자동으로 객체로 변환됩니다.
+
+예를 들어 기본 자료형 숫자의 속성이나 메서드를 사용할 때는 자동으로 Number 객체로 변환되므로 기본 자료형이 속성이나 메서드를 사용할 수 있는 것입니다. 따라서 기본 자료형과 객체의 차이점을 찾기 힘듭니다. 이 장에서 Number 객체라고 부르면 객체와 기본 자료형 모두 의미한다고 생각해주세요.
+굳이 차이점을 찾자면 기본 자료형은 객체가 아니므로 속성과 메서드를 추가할 수 없습니다.
+
+-> p.896 [PRACTICE 02]
 
 
-8.8 ECMAScript 5 Array 객체
+...
+기본 자료형을 객체로 변환하는 것은 일회용 옷을 입는다는 개념으로 생각하면 쉽습니다. 기본 자료형의 메서드를 사용한다는 것은 기본 자료형에 객체라는 일회용 옷을 입힌 다음 메서드를 사용하는 것입니다. 한 번 사용하면 곧바로 일회용 옷을 버립니다.
 
-HTML5와 함께 출현한 자바스크립트 표준안을 ECMAScrpt 5라고 합니다. ECMAScript 5 는 기존 자바스크립트에서 객체 관련 부분을 많이 보완했습니다. 이번 절에서는 ECMAScript 5에서 배열에 추가된 내용을 살펴보겠습니다.
 
 
-8.8.1 확인 메서드
-ECMAScript 5에서는 Array 생성자 함수에 표 8-12의 메서드를 추가했습니다.
+p.237
+"그러면 기본 자료형은 속성이나 메서드를 추가할 수 없겠군요?"
+아닙니다. 프로토타입으로 일회용 옷 자체를 바꾸면 됩니다. 코드 8-3처럼 Number 생성자 함수의 프로토타입에 메서드를 추가해주세요.
 
-표 8-12 Array 생성자 함수의 메서드
+
+
+p.239
+8.2.2 속성과 메서드
+Object 객체에 있는 메서드를 정리하면 표 8-1과 같습니다.
+
+
+표 8-1  Object 객체의 메서드
 메서드 이름	설명
-Array.isArray()	배열인지 확인합니다.
-
-typeof 키워드로 Array 객체의 자료형을 확인하면 문자열 'object'가 나오므로 Array 객체임을 확인하려면 8.2에서 배운 constructor() 메서드로 자료형을 비교하는 방법을 응용해야 합니다.
-만약 ECMAScript 5를 사용할 수 있는 환경이라면 코드 8-44처럼 isArray() 메서드로 해당 변수가 Array 객체인지 확인할 수 있습니다.
-
-[code 8-44]
-<script>
-    console.log('[1,2,3]: ' + Array.isArray([1,2,3]));
-    console.log('{}: ' + Array.isArray({}));
-    console.log('1: ' + Array.isArray(1));
-</script>
+constructor()	객체의 생성자 함수를 나타냄
+hasOwnProperty(name)	객체에 name 속성이 있는지 확인
+isPrototypeOf(object)	객체가 object의 프로토타입인지 검사
+propertyIsEnumerable(name)	반복문으로 열거할 수 있는지 확인
+toLocaleString()	객체를 호스트 환경에 맞는 언어의 문자열로 변경
+toString()	객체를 문자열로 바꿈
+valueOf()	객체의 값을 나타냄
 
 
 p.242
 8.2.3 자료형 구분
-[Myway]
+Object 객체에 있는 constructor() 메서드는 객체의 생성자 함수를 의미하며, 자료형을 검사할 때 유용하게 사용할 수 있습니다.
+"자료형을 검사할 때는 typeof 연산자를 사용하잖아요?"
+typeof 연산자로 자료형을 검사하면 문제가 발생할 수 있는 부분이 아주 조금 있습니다. 코드 8-7을 살펴봅시다.
 
-var array = [1,2,3];
-console.log('[1,2,3]: ' + array.constructor == Array);
-console.log('[1,2,3]: ', array.constructor == Array);
-console.log(array.constructor == [].constructor);
-console.log([1,2,3].constructor == [].constructor);
->> false
->> [1,2,3]:  true
->> true
->> true
->> true
+...
+두 변수 모두 숫자지만 생성자 함수로 만든 숫자는 객체이므로 경고장을 출력하지 않습니다. 이러한 두 대상을 같은 자료형으로 취급하고 싶을 때는 constructor() 메서드를 사용해야 합니다.
+코드 8-9는 constructor() 메서드로 자료형을 비교합니다.
 
+[code 8-9]
+Comparison through 'constructor'
 
-var object = {};
-console.log('{}: ' + object.constructor == Array);
-console.log(object.constructor == Array);
-console.log({}.constructor == Object);
->> false
->> false
->> true
+<script>
+    var numberFromLiteral = 273;
+    var numberFromObject = new Number(273);
 
+    if (numberFromLiteral.constructor == Number) {
+      console.log('numberFromLiteral은 숫자입니다.');
+    }
+    if (numberFromObject.constructor == Number) {
+      console.log('numberFromLiteral은 숫자입니다.');
+    }
+</script>
 
-var number = 1;
-console.log('1: ' + number.constructor == Number);
-console.log(number.constructor == Array);
-console.log((1).constructor == Number);
->> false
->> false
->> true
+코드 8-9처럼 객체의 생성자 함수가 Number 생성자 함수인지 비교하면 쉽게 숫자인지 구분할 수 있습니다. 다른 자료형도 마찬가지므로 꼭 기억해주세요.
 
 
 
-p.274
-8.8.2 탐색 메서드
+8.2.4 모든 객체에 메서드 추가
 
-ECMAScript 5에서 Array 객체는 기존의 메서드 이외에 표 8-13의 메서드를 추가로 갖습니다.
+이전에 언급했듯이 Object 객체는 모든 자바스크립트 객체의 최상위 객체입니다. 따라서 Object  객체의 프로토타입에 속성 또는 메서드를 추가하면 모든 객체에서 활용할 수 있습니다.
+코드 8-10을 살펴봅시다. 코드 8-10은 Object.prototype 객체에 test() 메서드를 추가합니다. 이렇게 메서드를 추가하면 자바스크립트의 모든 객체에서 test() 메서드를 사용할 수 있습니다.
 
-표 8-13  ECMAScript 5 Array 객체의 탐색 메서드
+[code 8-10]
+<script>
+    Object.prototype.test = function() {
+      console.log(this);
+      // alert(this);
+    }
+    var number = 273;
+    number.test();
+</script>
+
+
+
+8.3 Number 객체
+
+Number 객체는 자바스크립트에서 가장 단순한 객체로 숫자를 표현할 때 사용합니다. Number 객체는 코드 8-11처럼 두 가지 방법으로 생성합니다.
+
+<script>
+    var numberFromLiteral = 273;
+    var numberFromObject = new Number(273);
+
+    console.log(typeof(numberFromLiteral));
+    console.log(typeof(numberFromConstructor));
+</script>
+
+
+8.3.1 메서드
+Number 객체는 Object 객체가 가지는 일곱 가지 메서드는 물론이고, 표 8-2의 세 가지 메서드를 추가로 갖습니다.
+
+표 8-2  Number 객체의 메서드
 메서드 이름	설명
-indexOf()	특정 요소를 앞쪽부터 검색
-lastIndexOf()	특정 요소를 뒤쪽부터 검색
+toExponential(number)	숫자를 지수 표시로 나타낸 문자열을 리턴
+toFixed(number)	숫자를 고정 소수점 표시로 나타낸 문자열을 리턴
+toPrecision(number)	숫자를 길이에 따라 지수 표시 또는 고정 소수점 표시로 나타낸 문자열을 리턴
 
-indexOf() 메서드와 lastIndexOf() 메서드 모두 매개변수에 검색하려는 객체를 입력합니다. 만약 내부에 검색하려는 객체가 있으면 해당 객체가 위치하는 인덱스를 리턴하고 없으면 -1을 리턴합니다.
+표 8-2의 메서드는 모두 매개변수로 숫자를 하나 입력받습니다. toPrecision() 메서드는 유효 숫자의 자릿수를 의미하며, 그 이외의 메서드는 소수점 몇째 자리까지 나타낼 것인지를 의미합니다.
 
 
-8.8.3 반복 메서드
-ECMAScript 5의 Array 객체는 표 8-14와 같은 반복 메서드가 있습니다.
+// 1) toFixed
+var nubmer = 273.5210332;
 
-표 8-14
+var output = ''
+output += number.toFixed(1) + '\n';
+output += number.toFixed(4);
+console.log(output);
+>> 273.5
+      273.5210
+
+// 1-2)
+// p.246
+// NOTE_ 직접 호출
+var fixedNumber = (273.5210332).toFixed(2);
+console.log(fixedNumber);
+
+
+// 2) toExponential
+console.log(nubmer.toExponential(1));
+console.log(nubmer.toExponential(2));
+>> 273.52
+>> 2.7e+2
+>> 2.74e+2
+
+
+// 3) toPrecision
+console.log(nubmer.toPrecision(1));
+console.log(nubmer.toPrecision(2));
+>> 3e+2
+>> 2.7e+2
+
+
+
+8.3.2 (생성자) 함수의 속성
+이 절의 제목이 조금 의아하죠? 객체의 속성이 아니라 생성자 함수의 속성을 알아봅니다. 우선 코드 8-14를 살펴봅시다. 함수에 속성과 메서드를 넣었습니다.
+
+[code 8-14] - Constructor
+<script>
+    function Constructor() {}
+    Constructor.property = 273;
+    Constructor.method = function () {};
+    console.log(Constructor.property);
+    console.log(Constructor.method);
+</script>
+>> 273
+>> ƒ () {}
+
+
+[Myway] - function
+<script>
+    function test() {}
+    test.property = 1;
+    test.method = function() { console.log('hi'); };
+
+    console.log(test.property);
+    console.log(test.method);
+    console.log(test.method());
+</script>
+>> 1
+>> ƒ () { console.log('hi'); }
+>> hi
+
+코드를 실행하면 함수의 property 속성을 정상적으로 출력합니다.
+이렇게 함수는 속성과 메서드를 가질 수 있습니다. Number 생성자 함수도 그림 8-12처럼 속성과 메서드가 있습니다.
+
+
+표 8-3 Number 생성자 함수의 속성
+속성 이름	설명
+MAX_VALUE	자바스크립트의 숫자가 나타낼 수 있는 최대 숫자
+MIN_VALUE	자바스크립트의 숫자가 나타낼 수 있는 최소 숫자
+NaN	자바스크립트의 숫자로 나타낼 수 없는 숫자
+POSITIVE_INFINITY	양의 무한대 숫자
+NEGATIVE_INFINITY	음의 무한대 숫자
+
+
+
+8.4 String 객체
+
+8.4.1 생성
+
+<script>
+    var stringFromLiteral = 'Hello World..!';
+    var stringFromConstructor = new String('Hello World..!');
+
+    console.log(typeof(stringFromLiteral));
+    console.log(typeof(stringFromConstructor));
+</script>
+
+
+8.4.2 기본 속성과 메서드
+
+표 8-4 String 객체의 속성
+속성 이름	설명
+length	문자열의 길이를 나타냅니다.
+
+
+
+표 8-4 String 객체의 속성
 메서드 이름	설명
-forEach()	배열 각각의 요소를 사용해 특정 함수를 for in 반복문처럼 실행
-map()	기존의 배열에 특정 규칙을 적용해 새로운 배열을 만듦
+charAt(position)	position에 위치하는 문자를 리턴
+charCodeAt(position)	position에 위치하는 문자의 유니코드 번호를 리턴
+concat(args)	매개변수로 입력한 문자열을 이어서 리턴
+indexOf(searchString, position)	앞에서부터 일치하는 문자열의 위치를 리턴
+lastIndexOf(searchString, position)	뒤에서부터 일치하는 문자열의 위치를 리턴
+match(regExp)	문자열 안에 regExp가 있는지 확인
+replace(regExp, replacement)	regExp를 replacement로 바꾼 뒤 리턴
+search(regExp)	regExp와 일치하는 문자열의 위치를 리턴
+slice(start, end)	특정 위치의 문자열을 추출해 리턴
+split(separator, limit)	separator로 문자열을 잘라서 배열을 리턴
+substr(start, count)	start부터 count만큼 문자열을 잘라서 리턴
+substring(start, end)	start부터  end까지 문자열을 잘라서 리턴
+toLowerCase()	문자열을 소문자로 바꾸어 리턴
+toUpperCase()	문자열을 대문자로 바꾸어 리턴
+
+NOTE_ 정규 표현식과 관련된 메서드는 부록 B에서 다룹니다.
 
 
-forEach()
-forEach() 메서드는 2부에서 살펴볼 jQuery의  each() 메서드와 비슷하므로 이해하고 넘어가면 이후에 쉽게 이해할 수 있습니다.
-forEach() 메서드의 매개변수에는 코드 8-46  형태의 함수를 넣습니다.
-
-
-[code 8-46]
-
+[code 8-19] 잘못된 String 객체의 메서드 사용
 <script>
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    var sum = 0;
-    var output = '';
-    array.forEach(function (element, index, array) {
-      sum += element;
-      output += index + ': ' + element + ' -> ' + sum + '\n';
-    })
-    console.log(output);
+    var string = 'abcdefg';
+    returned_string = string.toUpperCase();
+    console.log(string);
+    console.log(returned_string);
 </script>
-
-매개변수로 입력 함수에 배열의 요소와 관련된 정보를 넣어 반복합니다. for in 반복문과 연관해서 생각하면 쉽게 이해할 수 있을 것입니다. forEach() 메서드의 매개변수로 입력한 함수는 매개변수로 element, index, array가 있습니다.
-매개변수 element는 현재 반복에서 배열의 요소를 뜻하고, 매개변수 index는 현재 반복에서 요소의 인덱스를 뜻합니다. 매개변수 array의 경우는 현재 반복을 수행하는 배열 자체를 뜻합니다.
-
-The sequence of those three parameters do matter !
-<script>
-    [test]
-    var sum = 0;
-    var output = '';
-    array.forEach(function (array, element, index) {
-      sum += element;
-      output += index + ': ' + element + ' -> ' + sum + '\n';
-    })
-    console.log(output);
-</script>
-
->> .... (strange result)
+>> abcdefg
+>> ABCDEFG
 
 
+8.4.3  HTML 관련 메서드
+String 객체는 표 8-6과 같은 HTML 관련 메서드가 있습니다. 자기 자신을 변화시키지 않고 리턴한다는 점을 기억해주세요.
 
-p.276
-map()
-이번에는 map() 메서드를 알아보겠습니다. map() 메서드는 배열의 각 요소를 변경해 새로운 배열을 리턴하는 메서드입니다.
-map() 메서드의 매개변수에는 코드 8-47과 같은 함수를 넣습니다.
-
-[code 8-47]
-
-<script>
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    var output = array.map(function (element) { return element * element; });
-    console.log(output);
-</script>
->> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-
-
-    // [code 8-47] (2)
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    var output = array.map(function (element, index, array) { return element * element / (index + 1); });
-    console.log(output);
-
-
-
-8.8.4 조건 메서드
-forEach() 메서드의 매개변수로 입력하는 함수의 형태는 filter() 메서드를 비롯해 every() 메서드, some() 메서드에서도 사용합니다.
-
+표 8-6 String 객체의 HTML 관련 메서드
 메서드 이름	설명
-filter()	특정 조건을 만족하는 요소를 추출해 새로운 배열을 만듦
-every()	배열의 요소가 특정 조건을 모두 만족하는지 확인
-some()	배열의 요소가 특정 조건을 적어도 하나 만족하는지 확인
+anchor()	a 태그로 문자열을 감싸 리턴
+big()	big 태그로  ″
+blink()	blink 태그로  ″
+bold()	b 태그로  ″
+fixed()	tt 태그로  ″
+fontcolor(colorString)	font 태그로 문자열을 감싸고 color 속성을 주어 리턴
+fontsize(fontSize)	font 태그로 문자열을 감싸고 size 속성을 주어 리턴
+italics()	I 태그(i)로 문자열을 감싸 리턴
+link(linkRef)	a 태그에 href 속성을 지정해 리턴
+small()	small 태그로 문자열을 감싸 리턴
+strike()	strike 태그로  ″
+sub()	sub 태그로  ″
+sup()	sup 태그로  ″
 
-1) filter()
+실제로 최근에는 표 8-6의 메서드를 사용하지 않습니다. 그러므로 간단하게 코드 8-21을 입력해서 실행해보고 이 절을 넘어갑시다.
 
-[code 8-48]
+
+p.254
+NOTE_ 메서드 체이닝
+
+자바스크립트의 기술 중 메서드 체이닝(Method Chaining)이라는 기술이 있습니다. 간단하게 번역하면 메서드를 줄줄이 사용한다는 뜻입니다.
+
+코드 8-22는 String 객체의 메서드를 세 번 사용했습니다.
+
+[code 8-22]
 <script>
-    // element
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    array = array.filter(function (element, index, array) { return element <= 5; });
-    console.log(array);
-
-    // index
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    array = array.filter(function (element, index, array) { return index <= 3; });
-    console.log(array);
-
-    // index
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    array = array.filter(function (element, index, array) { return array[0] <= 1; });
-    console.log(array);
-</script>
-
-
-2) every(), some()
-
-두 메서드 모두 ForEach() 메서드나 filter() 메서드처럼 함수를 매개변수로 넣습니다. 매개변수로 입력한 함수는 filter() 메서드와 마찬가지로 bool 자료형을 리턴해야 합니다.
-
-every() 메서드는 배열의 모든 요소가 true를 리턴하면 true를 리턴하고 그 이외의 경우는 false를 리턴합니다.
-반면 some() 메서드는 배열의 요소 중 적어도 하나 이상의 함수에서 true를 리턴할 경우에 true를 리턴합니다.
-
-
-[code 8-49]
-<script>
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    function lessThanFive(element, index, array) { return element < 5; };
-    function lessThanTwenty(element, index, array) { return element < 20; };
-
-    var output1 = array.every(lessThanFive);
-    var output2 = array.every(lessThanTwenty);
-    var output3 = array.some(lessThanFive);
-    var output4 = array.some(lessThanTwenty);
-
-    var output = '';
-    output += 'output1: ' + output1 + '\n';
-    output += 'output2: ' + output2 + '\n';
-    output += 'output3: ' + output3 + '\n';
-    output += 'output4: ' + output4 + '\n';
+    // without 'Method Chainning'
+    var output = 'Hello World..!';
+    output = output.toLowerCase();
+    output = output.substring(0, 10);
+    output = output.anchor('name');
     console.log(output);
 </script>
->>
-output1: false
-output2: true
-output3: true
-output4: true
+>> <a name="name">hello worl</a>
+
+String 객체의 메서드들은 자기 자신의 내용을 바꾸지 않고 리턴하므로 조금 귀찮지만 이렇게 사용해야 합니다. 왜 자기 자신을 바꾸지 않고 리턴하게 만든 것일까요?
+여러가지 이유가 있지만 메서드 체이닝을 그 이유 중 하나로 들 수 있습니다. String 객체의 메서드를 사용하면 String 객체를 리턴하므로 코드 8-23처럼 연속해서 메서드를 사용할 수 있습니다. 이렇게 메서드를 연속해서 사용하는 것을 메서드 체이닝이라고 합니다.
 
 
-[Myway]
+[code 8-23]
 <script>
-    var output = '';
-    var output5 = array.every(function (element, index, array) { return element < 5; });
-    var output6 = array.some(function (element, index, array) { return element < 5; });
-    output += 'output5: ' + output5 + '\n';
-    output += 'output6: ' + output6 + '\n';
+    // with 'Method Chainning'
+    var output = 'Hello World..!';
+    output = output.toLowerCase().substring(0, 10).anchor('name');
     console.log(output);
 </script>
->>
-output5: false
-output6: true
-
-
-8.8.5 연산 메서드
-
-조금 어려울 수 있는 메서드는 표 8-16 reduce() 메서드와 reduceRight() 메서드입니다.
-
-표 8-16 ECMAScript 5 Array 객체의 연산 메서드
-메서드 이름	설명
-reduce()	배열의 요소가 하나가 될 때까지 요소를 왼쪽부터 두 개씩 묶는 함수를 실행
-reduceRight()	배열의 요소가 하나가 될 때까지 요소를 오른쪽부터 두 개씩 묶는 함수를 실행
-
-두 메서드는 코드 8-50처럼 복잡한 형태의 함수를 매개변수로 입력합니다.
-
-
-[code 8-50] - reduce
-<script>
-    var array = [1, 2, 3, 4, 5];
-    var output = '';
-    array.reduce(function (previousValue, currentValue, index, array) {
-      output += previousValue + ' : ' + currentValue + ' : ' + index + '\n';
-    });
-    console.log(output);
-<script>
->>
-1 : 2 : 1
-undefined : 3 : 2
-undefined : 4 : 3
-undefined : 5 : 4
-
-
-[code 8-50] - reduceRight
-<script>
-    var array = [1, 2, 3, 4, 5];
-    var output = '';
-    array.reduceRight(function (previousValue, currentValue, index, array) {
-      output += previousValue + ' : ' + currentValue + ' : ' + index + '\n';
-    });
-    console.log(output);
-</script>
->>
-5 : 4 : 3
-undefined : 3 : 2
-undefined : 2 : 1
-undefined : 1 : 0
-
-
-[code 8-51] - reduce
-<script>
-    var array = [1, 2, 3, 4, 5];
-    var result = array.reduce(function (previousValue, currentValue) {
-      console.log(previousValue, currentValue);
-      return previousValue + currentValue;
-    });
-    console.log('result: ' + result);
-</script>
->>
-1 2
-3 3
-6 4
-10 5
-result: 15
-
-
-[code 8-51] - reduceRight
-<script>
-    var array = [1, 2, 3, 4, 5];
-    var result = array.reduceRight(function (previousValue, currentValue) {
-      console.log(previousValue, currentValue);
-      return previousValue + currentValue;
-    });
-    console.log('result: ' + result);
-</script>
->>
-5 4
-9 3
-12 2
-14 1
-result: 15
-
-
-8.9 ECMAScript 5 String 객체
-
-표 8-17 ECMAScript 5 String 객체의 메서드
-메서드 이름	설명
-trim()	문자열 양쪽 끝의 공백을 제거
-
-<script>
-    var text = '   text   ';
-    output = text.trim();
-    console.log(output);
-</script>
->>
-text
-
-
-p.283
-8.10 조금 더 나아가기
-
-이번 장의 조금 더 나아가기에서는 JSON 객체, ECMAScript 6의 화살표 함수, 배열을 좀 더 편하게 다룰 수 있게 해주는 underscore 라이브러리를 살펴보겠습니다.
-
-
-8.10.1 JSON 객체
-
-ECMAScript 5부터는 정식으로 JSON 객체를 지원합니다. JSON(JavaScript Object Notation)은 자바스크립트 객체의 형태를 갖는 문자열을 뜻합니다. JSON이 무엇인지는 3부에서 알아보고 지금은 이 정도만 알아둡시다. JSON 객체는 표 8-18의 메서드가 있습니다.
-
-표 8-18 ECMAScript 5 JSON 객체의 메서드
-메서드 이름	설명
-JSON.stringify()	자바스크립트 객체를 JSON 문자열로 변환
-JSON.parse()	JSON 문자열을 자바스크립트 객체로 변환
-
-코드 8-53을 살펴봅시다. 객체의 속성을 출력하려고 본문에서 for in 반복문을 여러 번 사용했습니다. 하지만 JSON 객체의 stringify() 메서드를 사용하면 간단하게 모든 속성을 출력할 수 있습니다.
-
-[code 8-53]
-<script>
-    var object = {
-      name: '윤인성',
-      regioni: '서울특별시'
-    };
-    console.log(JSON.stringify(object));
-</script>
->>
-{"name":"윤인성","regioni":"서울특별시"}
-
-
-객체의 속성을 확인할 때 가능하면 JSON 객체의 메서드를 사용하지 말고 지금까지 사용한 것처럼 for in 반복문을 사용합시다. 이렇게 하면 반복문 사용을 연습할 수 있고 여러 가지로 기능확장에 유리합니다.
-
-
-
-이제 parse() 메서드를 알아봅시다. parse() 메서드는 JSON 문자열을 자바스크립트 객체로 바꾸는 역할을 수행합니다.
-코드 8-54는 객체를 생성하고 JSON 문자열로 변경하고 다시 객체로 변경합니다.
-
-[code 8-54]
-<script>
-    var object = {
-      name: '윤인성',
-      region: '서울특별시'
-    };
-
-    var copy = JSON.parse(JSON.stringify(object));
-    console.log(copy.name + ' : ' + copy.region);
-    console.log(copy['name'] + ' : ' + copy['region']);
-</script>
-
-
-p.285
-NOTE_ toJSON() 메서드
-
-JSON.stringify() 메서드의 매개변수에 넣은 객체에 toJSON() 메서드가 없다면 객체 전체를 JSON으로 변환합니다. 반면 toJSON() 메서드가 있다면 toJSON() 메서드에서 리턴한 객체를 JSON으로 변환합니다.
-
-[code 8-55]
-<script>
-    var object = {
-      name: 'object',
-      prop: 'object',
-      toJSON: function() {
-        // return { custom: 'custom'};
-        return { 1: 'haha'};
-      }
-    };
-    console.log(JSON.stringify(object));
-</script>
-
->> {"1":"haha"}
-
-
-
-p.286
-8.10.2 화살표 함수를 사용한 Array 객체의 메서드 활용 in ECMAScript 6
-
-ECMAScript 5에서 추가된 배열의 메서드를 활용하면 코드 8-56처럼 구성됩니다.
-
-[code 8-56] - 일반적인 배열 메서드 사용
-<script>
-    var students = [
-      {이름: '윤인성', 국어: 87, 수학: 98, 영어: 88, 과학: 95},
-      {이름: '연하진', 국어: 92, 수학: 98, 영어: 88, 과학: 95},
-	...
-      {이름: '박아현', 국어: 97, 수학: 98, 영어: 88, 과학: 75},
-      {이름: '서준서', 국어: 45, 수학: 98, 영어: 88, 과학: 85}
-    ];
-
-    var filteredA = students.filter(function (item) { return item.과학 > 90; });
-    console.log(filteredA);
-
-    var filteredB = students.filter(function (item) { return ((item.국어 + item.수학 + item.영어 + item.과학) / 4) > 90; });
-    console.log(filteredB);
-</script>
-
-
-5장에서 화살표 함수를 설명하면서 "코드가 한 줄이라면 중괄호를 생략해도 되며, return 키워드를 사용하지 않아도 값을 리턴합니다."라고 했습니다.
-
-[code 8-57]
-<script>
-     ...
-    var filteredA = students.filter((item) => item.과학 > 90);
-    console.log(filteredA);
-
-    var filteredB = students.filter((item) => ((item.국어 + item.수학 + item.영어 + item.과학) / 4) > 90 );
-    console.log(filteredB);
-</script>
-
-
-ECMAScript 6를 사용할 수 있는 환경이라면, 특수한 경우를 제외하고 무조건 익명 함수를 화살표 함수로 교체하는 가이드라인이 있다고 5장에서 설명했었습니다. 추가적으로 이처럼 배열의 메서드를 활용할 때는 화살표 함수의 중괄호와 return 키워드를 생략해서 코드를 깔끔하게 구성할 수 있다고 기억해주세요.
-
-
-8.10.3 underscore 라이브러리
-
-배열 정렬과 같은 기본적인 유틸리티 기능을 모아놓은 underscore 라이브러리(http://underscorejs.org/)를 사용하면 편리합니다.
-
-추가로 underscore 라이브러리는 모든 웹 브라우저에서 작동하므로, 인터넷 익스플로러 8 이하의 웹 브라우저에서 ECMAScript 5에 추가된 메서드를 사용할 수 없을 때 보완하기 위한 목적으로도 활용할 수 있습니다.
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script src="underscore.js"></script>
-  <script>     ...
-  </script>   <script src="underscore.js"></script>
-</head>
-<body>
-</body>
-</html>
-
-
-정렬
-underscore 라이브러리 문서에서 '정렬'을 영어로 검색해보면 정렬과 관련된 부분으로 이동합니다.
-
-프로그래밍 언어 대부분은 특정 기능을 특정한 단어로 사용하도록 통일되어 있습니다. 예를 들어 정렬은 sort고, 문자열 양 옆의 글자를 자르는 기능은 trim이고, 배열 내용을 랜덤으로 섞는 기능은 shuffle이며, 요소를 랜덤으로 몇 개 뽑아주는 기능은 sample 입니다.
-
-
-
-배열 정렬이 굉장히 간단해졌죠? 참고로 underscore 라이브러리의 모든 메서드는 비파괴적(nondestructive) 메서드입니다. 자기 자신을 변화시키지 않고 리턴만 하므로, 리턴을 활용해 코드를 구성해야 합니다.
+>> <a name="name">hello worl</a>
