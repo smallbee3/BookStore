@@ -1,0 +1,580 @@
+[Ch10 DOM, Document Object Model]
+
+
+문서 객체 모델(DOM, Document Object Model)은 넓은 의미로 웹 브라우저가 HTML 페이지를 인식하는 방식이고, 좁은 의미로는 document 객체와 관련된 객체의 집합입니다.
+
+문서 객체 모델을 사용하면 HTML 페이지에 태그를 추가, 수정, 제거할 수 있습니다. 기본적인 자바스크립트만으로 문서 객체 모델 다루기에는 너무 복잡하므로 간단한 내용만 살펴보고 추가적인 내용은 2부에서 살펴봅시다.
+
+
+10.1 문서 객체 모델과 관련된 용어 정리
+문서 객체의 본격적인 내용을 살펴보기 전에 용어를 정리합시다. 10장에서는 태그, 문서 객체, 노드라는 용어를 자주 사용하는데, 코드를 통해 직접 살펴봅시다.
+
+
+[code 10-1] 간단한 HTML 페이지
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>index</title>
+  <script></script>
+</head>
+<body>
+  <h1 id="header">HEADER</h1>
+</body>
+</html>
+
+코드 10-1처럼 HTML 페이지에 존재하는 html이나 body 태그를 '태그'라고 부릅니다. 이 태그를 자바스크립트에서 이용할 수 있는 객체로 만들면 그것이 '문서 객체'입니다.
+
+"어떻게 자바스크립트에서 이용하나요?"
+
+10장에서 배울 내용입니다. 미리 살펴보면 코드 10-2처럼 document 객체의 getElementById() 메서드로 문서 객체를 자바스크립트로 가져와서 조작할 수 있습니다.
+이때 코드 10-2의 header 객체를 '문서 객체'라고 부릅니다.
+
+[code 10-2]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>index</title>
+  <!-- <script></script> -->
+</head>
+<body>
+  <h1 id="header">HEADER1</h1>
+  <script>
+    window.onload = function () {
+      var header = document.getElementById('header');
+      console.log('hi');
+    };
+  </script>
+</body>
+</html>
+
+
+마지막으로 현재 코드 10-1 HTML 페이지는 그림 10-1처럼 트리 모양으로 나타낼 수 있습니다. 그림 10-1의 각 요소를 '노드'라고 부릅니다.
+
+그림 10-1 코드 10-2의 문서 객체 모델
+
+
+
+p.322
+태그, 문서 객체, 노드를 쉽게 구분할 수 있을 것입니다. 조금씩 미묘한 차이가 있지만 거의 비슷한 말입니다.
+이어서 요소 노드(Element Node)와 텍스트 노드(Text Node)를 구분해봅시다.
+
+[code 10-3]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+</head>
+<body>
+  <h1>Text Node</h1>
+  <img src="image.jpg" />
+</body>
+</html>
+
+코드 10-3의 HTML 페이지를 문서 객체 모델로 나타내면 그림 10-2처럼 나타낼 수 있습니다. 요소 노드란 바로 HTML 태그를 의미하고, 텍스트 노드는 요소 노드 안에 들어 있는 글자를 의미합니다. 그림에서 쉽게 요소 노드와 텍스트 노드를 구분할 수 있습니다.
+
+마지막으로 웹 페이지가 처음 HTML 페이지에 적혀 있는 태그들을 읽으며 생성하는 것을 "정적으로 문서 객체를 생성한다"라고 표현합니다. 페이지에 적혀 있는 내용을 특별한 변화 없이 생성해 붙은 이름입니다. 반면에 자바스크립트로 원래 HTML 페이지에는 없던 문서 객체를 생성하는 것을 "동적으로 문서 객체를 생성한다"라고 표현했습니다.
+
+
+p.323
+10.2 문서 객체 만들기 1
+문서 객체는 가장 기본적으로 텍스트 노드를 갖는 문서 객체와 텍스트 노드를 갖지 않는 문서 객체로 구분할 수 있습니다. 이 절에서는 텍스트 노드를 갖는 h1 태그를 생성하면서 문서 객체를 생성하는 방법을 알아봅시다. 우선 body 태그를 코드 10-4처럼 구성합니다.
+
+[code 10-4]
+
+  <body>
+
+  </body>
+
+현재 body 태그에는 내용이 없으므로 아무것도 출력하지 않습니다. body 태그에 동적으로 문서 객체를 생성해서 넣어봅시다. 텍스트 노드를 갖는 문서 객체를 생성하려면 요소 노드와 텍스트 노드를 생성하고 텍스트 노드를 요소 노드에 붙여 줍니다.
+
+document 객체가 갖는 표 10-1의 메서드로 요소 노드와 텍스트 노드를 생성할 수 있습니다.
+
+표 10-1 document 객체의 노드 생성 메서드
+메서드 이름
+설명
+createElement(tagName)
+요소 노드를 생성
+createTextNode(text)
+텍스트 노드를 생성
+
+이 메서드를 바탕으로 코드 10-5 처럼 요소와 텍스트 노드를 생성합니다.
+
+
+[code 10-5] 문서 객체 생성
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var header = document.createElement('h1');
+      var textNode = document.createTextNode('Hello DOM');
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+하지만 코드를 실행해보면 아무런 결과가 나타나지 않습니다. 현재 그림 10-3과 같은 상황이기 때문입니다.
+
+화면에 문서 객체를 출력하려면 생성한 문서 객체를 body 문서 객체에 연결해야 합니다. 또한 생성한 요소 노드와 텍스트 노드도 연결해야겠죠? 노드와 노드를 연결할 때는 표 10-2의 메서드를 사용합니다.
+
+표 10-2 문서 객체의 연결 메서드
+메서드 이름
+설명
+appendChild(node)
+객체에 노드를 연결
+
+코드 10-6처럼 appendChild() 메서드로 body 문서 객체에 header 문서 객체를 추가합니다.
+코드를 실행하면 그림 10-4처럼 문서 객체 모델을 형성합니다.
+
+
+[code 10-6] 문서 객체 연결
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var header = document.createElement('h1');
+      var textNode = document.createTextNode('Hello DOM');
+
+      header.appendChild(textNode);
+      document.body.appendChild(header);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+>> Hello DOM
+
+
+
+p.326
+10.3 문서 객체 만들기 2
+
+텍스트 노드를 갖지 않는 노드를 생성하는 방법을 살펴봅시다. 텍스트 노드를 갖지 않는 대표 적인 HTML 태그는 img로 텍스트 노드 대신에 많은 속성이 있습니다. 사실 자바스크립트의 문서 객체 모델은 속성도 하나의 노드로 갖습니다. 하지만 너무 깊게 들어가면 어렵고 자주 사용하지도 않으므로 간단하게 알아봅시다.
+
+(1) 코드 10-7은 img 태그를 생성하고 body 문서 객체에 연결합니다. 앞 절의 내용과 같으므로 쉽게 이해할 수 있을 것입니다.
+
+
+(2) img 태그에 이미지를 넣으려면 src 속성을 지정해야 합니다. 속성을 지정하는 가장 간단한 방법은 코드 10-8과 같습니다.
+
+
+[code 10-7,8]  문서 객체 생성
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var img = document.createElement('img');
+
+      img.src = 'penguin.jpeg';
+      img.width = 500;
+      img.height = 350;
+
+      document.body.appendChild(img);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+
+p.327
+크롬의 [검사]기능으로 살펴보면 그림 10-6과 같습니다.
+
+이 방법은 웹 표준에서 정의하거나 웹 브라우저가 지원하는 태그의 속성에만 사용할 수 있습니다. 그렇지 않다면 이 방법을 사용할 수 없습니다. 예를 들어 SVG 태그는 웹 브라우저에서 이러한 방식을 지원하지 않으므로 이 방법을 사용할 수 없습니다. 웹 브라우저가 지원하지 않는 속성은 표 10-3의 메서드를 사용해야 속성을 넣을 수 있습니다.
+
+
+표 10-3 문서 객체의 속성 메서드
+메서드 이름
+설명
+setAttribute(name, value)
+객체의 속성을 지정합니다
+getAttribute(name)
+객체의 속성을 가져옵니다
+
+
+[code 10-9]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var img = document.createElement('img');
+      img.setAttribute('src', 'penguin.jpg');
+      img.setAttribute('width', 500);
+      img.setAttribute('height', 350);
+
+      img.setAttribute('data-property', 350);
+
+      document.body.appendChild(img);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+
+코드를 실행하고 크롬의 [검사]로 살펴보면 그림 10-7과 같습니다. data-property 속성은 이전이 방식으로 넣을 수 없습니다.
+
+e.g.
+
+<script>
+      ....
+      img.src = 'penguin.jpeg';
+      img.width = 500;
+      img.height = 350;
+      img.data_propety = 350; // -> Doesn't appear
+      ...
+</script>
+
+
+
+p.328
+10.4 문서 객체 만들기 3
+지금까지 살펴본 문서 객체를 생성하는 방법은 노드를 만들고 연결하는 방법입니다. 이 방법도 굉장히 쉽지만, 일반적으로 더 쉬운 방법을 사용합니다. 바로 문서 객체의 innerHTML 속성을 사용하는 것입니다.
+문서 객체의 innerHTML 속성은 그림 10-8처럼 태그의 내부를 의미하는 속성입니다.
+
+그림 10-8 문서 객체의 innerHTML 속성
+
+<h1>    Hello DOM .. !    </h1>
+여는     innerHTML 속성   닫는 태그
+태그
+
+
+innerHTML 속성은 코드10-10처럼 사용합니다. 문자열을 선언하고 body 문서 객체의 innerHTMl 속성에 넣기만 하면 문서 객체를 생성해줍니다.
+코드 10-11처럼 문자열에 HTML 태그를 직접 입력해주세요.
+
+
+[code10-10,11]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      // [code 10-7]
+      // var img = document.createElement('img');
+      // document.body.appendChild(img);
+
+      var output = '';
+      output += '<ul>';
+      output += '  <li>JavaScript</li>';
+      output += '  <li>jQuery</li>';
+      output += '  <li>Ajax</li>';
+      output += '</ul>';
+      document.body.innerHTML = output;
+      document.body.innerHTML += '<h1>Document Object Model</h1>'
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+문서 객체에 내용을 추가하고 싶다면 코드10-11의 innerHTML 속성에 다음과 같이 복합 대입 연산자로 문자열을 추가합니다.
+
+document.body.innerHTML += '<h1>Document Object Model</h1>'
+
+코드를 실행하며 그림 10-9처럼 문서 객체를 생성하고 출력합니다.
+
+
+그림 10-9 동적으로 생성된 태그
+
+	•	JavaScript
+	•	jQuery
+	•	Ajax
+Document Object Model
+
+
+인터넷 익스플로러를 제외한 웹 브라우저는 모든 문서 객체의 innerHTML 속성을 바꿀 수 있지만, 인터넷 익스플로러는 col, colgroup, frameset, head, html, style, table, tbody, tfoot, thead,title, tr 태그의 innerHTMl 속성을 바꿀 수 없습니다. 참고로 innerHTML 속성을 응용하면 문서 객체를 생성하는 것 이외에 문서 객체를 수정하거나 삭제할 수도 있습니다.
+
+
+NOTE_ textContent 속성
+
+만약 문자열 '<h1>Document Object Model</h1>'을 화면에 그대로 출력하고 싶으면 어떻게 해야 할까요? 그런 경우에는 innerHTML  속성에 '&lt;h1&gt;Document Object Model&lt;h1&gt;'를 넣습니다. &lt 는 '<(Less than)'을 뜻하고 &gt 는 '>(greater than)을 뜻하는 특수 기호입니다.
+조금 귀찮죠? 만약 HTML 형태의 문자열을 HTML 태그로 넣지 않고 단순 글자로 넣고 싶다면 textContent 속성을 사용합니다.
+
+
+code 10-12 문서 객체의 textContent 속성
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+
+      var output = '';
+      output += '<ul>';
+      output += '  <li>JavaScript</li>';
+      output += '  <li>jQuery</li>';
+      output += '  <li>Ajax</li>';
+      output += '</ul>';
+
+      document.body.textContent = output;
+      document.body.textContent += '<h1>Document Object Model</h1>'
+
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+
+코드를 실행하면 그림 10-10처럼 출력합니다. 단, textContent 속성은 인터넷 익스플로러 7 버전 이하에서는 지원하지 않습니다.
+
+그림 10-10 textContent 속성
+<ul> <li>JavaScript</li> <li>jQuery</li> <li>Ajax</li></ul><h1>Document Object Model</h1>
+
+
+
+p.331
+10.5 문서 객체 가져오기 1
+
+웹 페이지에 이미 존재하는 HTML 태그를 자바스크립트로 가져오는 방법을 알아봅시다. document 객체가 갖는 표 10-4의 메서드를 사용하면 이미 웹 페이지에 존재하는 문서 객체를 가져올 수 있습니다.
+
+표 10-4 document 객체의 문서 객체 선택 메서드 1
+메서드 이름
+설명
+getElementById(id)
+태그와 id 속성이 id 매개변수와 일치하는 문서 객체를 가져옵니다.
+
+
+표 10-4의 메서드를 사용하는 예제를 작성해봅시다 .코드 10-13처럼 body 태그를 구성합니다.
+
+[code 10-13] body 태그 구성
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+  </script>
+</head>
+<body>
+  <h1 id="header-1">Header</h1>
+  <h1 id="header-2">Header</h1>
+</body>
+</html>
+
+
+document 객체의 getElementById() 메서드는 id 속성을 갖는 태그만 가져올 수 있으므로 id 속성을 입력했습니다. 이어서 코드 10-14처럼 getElementById() 메서드로 문서 객체를 가져옵니다.
+
+
+
+[code 10-14] getElementById() 메서드
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var header1 = document.getElementById('header-1');
+      var header2 = document.getElementById('header-2');
+
+      // p.331 header1과 header2는 문서 객체잉므로 뒤에 점을 찍어주면
+      // 문서 객체의 속성과 메서드를 살펴볼 수 있습니다.
+      console.log(header1.id);
+      console.log(header1.innerHTML);
+      console.log(header1.innerText);
+    };
+  </script>
+</head>
+<body>
+  <h1 id="header-1">Header</h1>
+  <h1 id="header-2">Header</h1>
+</body>
+</html>
+
+
+문서 객체 각각의 innerHTML 속성을 변경해봅시다.
+
+
+[code 10-15]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var header1 = document.getElementById('header-1');
+      var header2 = document.getElementById('header-2');
+
+      // 문서 객체의 속성을 변경합니다.
+      header1.innerHTML = 'with getElemetnById()';
+      header2.innerHTML = 'with getElemetnById()';
+    };
+  </script>
+</head>
+<body>
+  <h1 id="header-1">Header</h1>
+  <h1 id="header-2">Header</h1>
+</body>
+</html>
+
+코드를 실행하면 그림 10-12처럼 출력됩니다.
+
+그림 10-12 getElementById() 메서드
+with getElemetnById()
+with getElemetnById()
+
+
+이미 존재하는 문서 객체를 가져오는 방법도 굉장히 쉽죠? document 객체의 getElementById() 메서드는 정말 많이 사용하므로 꼭 기억해주세요.
+
+
+
+
+p.333
+10.6 문서 객체 가져오기 2
+
+
+document 객체의 getElementById() 메서드는 한 번에 한 가지 문서 객체만 가져올 수 있습니다. 반면 docuent 객체가 갖는 표 10-5 메서드를 사용하면 한 번에 여러 개의 문서 객체를 가져올 수 있습니다. 이름만 봐도 쉽게 여러 개의 문서 객체를 가져온다는 것을 알 수 있습니다.
+
+표 10-5 document 객체의 문서 객체 선택 메서드(2)
+메서드 이름
+설명
+getElementsByName(name)
+태그의 name 속성이 name 매개변수와 일치하는 문서 객체를 배열로 가져옵니다
+getElementsByTagName(tagName)
+tagName 매개변수와 일치하는 문서 객체를 배열로 가져옵니다
+
+이전 절과 같은 예제를 표 10-5의 메서드로 구현해봅시다.
+
+
+[code 10-16]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var headers = document.getElementsByTagName('h1');
+    };
+  </script>
+</head>
+<body>
+  <h1>Header</h1>
+  <h1>Header</h1>
+</body>
+</html>
+
+코드 10-16의 변수 headers 는 문서 객체를 갖는 배열이며, HTML 페이지의 h1 태그가 순서대로 들어갑니다. 배열 headers 안에 있는 문서 객체를 사용할 때는 코드 10-17처럼 사용합니다.
+
+
+[code 10-17,18] - 문서 객체 배열의 사용 / getElementsByTagName() 메서드
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var headers = document.getElementsByTagName('h1');
+
+      // 1) code 10-17
+      // headers[0].innerHTML = 'with getElementsByTagName()';
+      // headers[1].innerHTML = 'with getElementsByTagName()';
+
+      // 2) for + var i
+      for (var i = 0; i < headers.length; i++) {
+        headers[i].innerHTML = 'with getElementsByTagName()';
+      }
+
+      // 3) for in
+      // for (var i in headers) {
+      //   headers[i].innerHTML = 'with getElementsByTagName()';
+      // }
+
+    };
+  </script>
+</head>
+<body>
+  <h1>Header</h1>
+  <h1>Header</h1>
+</body>
+</html>
+
+
+headers 는 배열이므로 반복문을 사용할 수 있습니다. 주의할 점은 for in 반복문을 사용해서는 안 된다는 점입니다. 이유는 잠시 후에 살펴보고, 코드 10-18처럼 단순 for 반복문으로 배열 headers 안에 있는 모든 문서 객체의 내용부터 변경해 봅시다.
+
+코드를 실행하면 그림 10-13처럼 문서 객체의 innerHTML 속성이 변경된 것을 확인할 수 있습니다.
+
+
+
+p.335
+NOTE_ for in 반복문을 사용하면 안 되는 이유
+
+앞에서 문서 객체 배열에 for in 반복문을 사용하면 안 된다고 언급했습니다. for in 반복문을 사용하면 안 되는 이유는 문서 객체 이외의 속성에도 접근하기 때문입니다.
+
+코드 10-19는 문서 객체 배열과 for in 반복문을 함께 사용한 예제입니다.
+코드를 시행하면 그림 10-14처럼 출력합니다. 웹 브라우저에 따라서 추가로 출력하는 속성과 메서드의 종류와 개수에 차이가 있을 수 있습니다.
+
+따라서 getElementsByTagName() 메서드로 가져온 객체는 꼭 단순 for 반복문을 사용하기 바랍니다. geetElementsByName()  메서드도 사용방법이 같으므로 별도로 언급하지는 않겠습니다.
+
+
+[code 10-19]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var headers = document.getElementsByTagName('h1');
+
+       .... 
+      // 3) for in
+      var output = '';
+      for (var i in headers) {
+        headers[i].innerHTML = 'with getElementsByTagName()';
+        output += i + ' : ' + headers[i] + '\n';
+      }
+      console.log(output);
+      console.log(headers);
+
+      console.log(headers[0].innerHTML);
+      console.log(headers[1].innerHTML);
+      // console.log(headers['length'].innerHTML);
+      console.log(headers[length].innerHTML);
+      console.log(headers['item'].innerHTML);
+      console.log(headers['namedItem'].innerHTML);
+    };
+  </script>
+</head>
+<body>
+  <h1>Header</h1>
+  <h1>Header</h1>
+</body>
+</html>
+
+>>
+0 : [object HTMLHeadingElement]
+1 : [object HTMLHeadingElement]
+length : 2
+item : function item() { [native code] }
+namedItem : function namedItem() { [native code] }
+>> HTMLCollection(2) [h1, h1]
+>> with getElementsByTagName()
+>> with getElementsByTagName()
+>> with getElementsByTagName()
+>> with getElementsByTagName()
+>> with getElementsByTagName()
