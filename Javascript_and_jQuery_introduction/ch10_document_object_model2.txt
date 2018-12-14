@@ -1,0 +1,752 @@
+[Ch10 DOM2, Document Object Model]
+
+
+10.7 문서 객체 가져오기 3
+
+HTML5부터는 document 객체에 표 10-6의 메서드가 추가되었습니다.
+
+표 10-6 document 객체의 문서 객체 선택 메서드 3
+메서드 이름
+설명
+querySelector(선택자)
+선택자로 가장 처음 선택되는 문서 객체를 가져옵니다
+querySelectorAll(선택자)
+선택자를 통해 선택되는 문서 객체를배열로 가져옵니다.
+
+이는 CSS 선택자로 문서 객체를 선택하는 메서드입니다. 간단하게 document.querySelector() 메서드를 살펴보겠습니다.
+코드 10-20은 document.getElementById() 메서드를 설명하면서 만든 예제와 같습니다.
+
+
+[code 10-20]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DOM Basic</title>
+  <script>
+    window.onload = function () {
+      var header1 = document.querySelector('#header-1');
+      var header2 = document.querySelector('#header-2');
+
+      header1.innerHTML = 'with getElementById()';
+      header2.innerHTML = 'with getElementById()';
+    };
+  </script>
+</head>
+<body>
+  <h1 id="header-1">Header</h1>
+  <h1 id="header-2">Header</h1>
+</body>
+</html>
+
+코드를 실행하면 그림 10-15처럼 출력합니다.
+CSS 선택자가 익숙하지 않다면 일단 넘어가세요. 2부에서 정리하겠습니다.
+
+
+그림 10-15 document.querySelector() 메서드
+
+with getElementById()
+with getElementById()
+
+
+
+
+p.337
+10.8 문서 객체의 스타일 조작
+
+문서 객체의 style 속성을 사용하면 해당 문서 객체의 스타일을 변경할 수 있습니다. 예제를 작성하며 살펴봅시다.
+...
+getElementById() 메서드로 문서 객체를 가져옵니다. 코드 10-22처럼 문서 객체의 style 속성에 있는 border, color, fontFamily 속성을 지정해봅시다. CSS에 입력하는 것과 같은 형식으로 입력하면 됩니다.
+
+
+[code 10-22]
+
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 문서 객체를 가져옵니다.
+            var header = document.getElementById('header');
+
+            // 문서 객체의 스타일을 바꿔줍니다.
+            header.style.border = '2px solid black';
+            header.style.color = 'orange';
+            header.style.fontFamily = 'helvetica';
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header">Header</h1>
+</body>
+</html>
+
+코드를 실행하면 그림 10-17처럼 각각의 스타일이 적용된 것을 확인할 수 있습니다.
+
+Header
+
+
+
+p.338
+NOTE_ 스타일 속성 이름
+
+코드를 입력하면서 아마 다음처럼 생각하는 독자들도 있을 것입니다.
+
+"왜 스타일 시트에서 사용하던 스타일 속성 이름을 그대로 입력하면 안 되지?"
+
+자바스크립트는 특수 기호 '-'을 식별자에 사용할 수 없으므로 다음처럼 입력하면 오류가 발생합니다.
+
+var header = document.getElementById('header');
+header.style.background-color = 'red';
+
+
+var header = document.getElementById('header');
+header.style.backgroundColor = 'red';
+
+따라서 '-'으로 연결된 속성은 다음과 같은 방식으로 사용합니다. 특수 기호 '-'으로 끊긴 단어의 첫 글자를 대문자로 변경하면 됩니다. 표 10-7처럼 스타일 시트와 스타일 속성을 자바스크립트의 스타일 식별자로 변경할 수 있습니다.
+
+표 10-7 스타일 식별자 변환
+스타일 시트의 스타일 속성
+자바스크립트의 스타일 식별자
+background-image
+backgroundImage
+background-color
+backgroundColor
+box-sizing
+boxSizing
+list-style
+listStyle
+
+문자열로 스타일 속성에 접근할 대는 다음 두 가지 방법을 모두 사용할 수 있습니다.
+
+document.body.style['backgroundColor'] = 'red';
+document.body.style['background-color'] = 'red';
+
+
+
+p.339
+10.9 문서 객체 제거
+
+문서 객체를 제거할 때는 문서 객체가 가지는 표 10-8의 제거 메서드를 사용합니다.
+
+표 10-8 문서 객체의 제거 메서드
+메서드 이름
+설명
+removeChild(child)
+문서 객체의 자식 노드를 제거
+
+코드 10-23처럼 body 태그를 구성합니다. h1 태그를 제거해보겠습니다.
+...
+이어서 코드 10-24처럼 h1태그를 가져오고  body 문서 객체에서 removeChild() 메서드로 h1 태그를 제거합니다.
+
+
+[code 10-23,24]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 문서 객체를 가져옵니다.
+            var willRemove = document.getElementById('will-remove');
+            // 문서 객체를 제거합니다.
+            document.body.removeChild(willRemove);
+        };
+    </script>
+</head>
+<body>
+    <h1 id="will-remove">Header</h1>
+</body>
+</html>
+
+코드 10-24는 body 문서 객체 바로 아래에 제거하고자 하는 문서 객체가 있으므로 사용 가능한 코드입니다. 일반적으로 문서 객체를 제거할 때는 다음 코드를 사용합니다.
+
+willRemove.parentNode.removeChild(willRemove);
+
+그림 10-18처럼 h1 태그에서 부모 노드로 이동하고 부모 노드에서 자식 노드를 삭제한 것입니다.
+
+그림 10-18 parentNode와 childNode의 관계
+
+	 ----parentNode----
+	↓				 |
+     body				 h1
+ 	|				↑
+	-----childNode------
+
+
+문서 객체의 생성, 수정, 삭제와 관련된 기본적인 내용을 모두 살펴보았습니다. 다음으로는 족므 더 나아가기의 에제를 살펴보도록 합시다.
+
+
+
+
+p.341
+10.10 조금 더 나아가기
+
+이번 장의 조금 더 나아가기는 지금까지의 본문 내용을 모두 복습합니다. 따라서 조금 어렵더라도 반드시 진행하고 넘어가기 바랍니다.
+
+
+10.10.1 문서 객체를 사용한 시계
+
+문서 객체로 현재 시각을 표시하는 시계를 만들어보면서 문서 객체 만들기를 연습해봅니다. 매우 간단한 예제지만 어떤 방식으로 문서 객체를 사용하는지 살펴볼 수 있습니다.
+우선 body 태그를 코드 10-25처럼 구성합니다. 코드 10-25의 h1 태그에 현재 시각을 지속적으로 표시할 것입니다.
+...
+코드 10-27처럼 setInterval() 함수로 1초마다 clock 문서 객체의 innerHTML 속성을 현재 시각으로 변경합니다.
+
+
+[code 10-25,26,27]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var clock = document.getElementById('clock');
+            // 1초마다 함수를 실행합니다.
+            setInterval(function () {
+                clock.innerHTML = new Date().toString();
+            }, 1000);
+        };
+    </script>
+</head>
+<body>
+    <h1 id="clock"></h1>
+</body>
+</html>
+
+
+코드를 실행하면 그림 10-19ㅓ럼 현재 시각이 표시됩니다. setInterval() 함수를 사용했으므로 1초마다 시간이 바뀝니다.
+
+그림 10-19
+Wed Dec 12 2018 19:54:49 GMT+0900 (Korean Standard Time)
+
+
+
+p.342
+10.10.2 문서 객체를 사용한 움직임 구현
+
+앞의 예제가 너무 간단했죠? 이 절에서는 궤도를 따라 이동하는 지구와 달을 구현하며 문서 객체 만드는 법을 연습해봅니다. 지금가지 살펴봤던 예제보다 코드가 많습니다. 도한 간단한 수학적 지식이 요구되므로 어렵게 느껴질 수도 있습니다. 그래도 차근차근 코드를 작성하며 이해해봅시다.
+
+코드 10-28처럼 body 태그에 h1 태그를 세 개 입력합니다. 각기 태양, 지구, 달을 나타냅니다.
+코드 10-29처럼 body 태그에서 생성했던 각각의 태그를 변수에 할당합니다.
+
+
+[code 10-28,29]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var sun = document.getElementById('sun');
+            var earth = document.getElementById('earth');
+            var moon = document.getElementById('moon');
+        };
+    </script>
+</head>
+<body>
+    <h1 id="sun">@</h1>
+    <h1 id="earth">O</h1>
+    <h1 id="moon">*</h1>
+</body>
+</html>
+
+
+이제 문서 객체에 스타일을지정합니다. 물론 스타일 시트에서 position 속성을 설정해도됩니다.
+
+p.343
+[code 10-30]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var sun = document.getElementById('sun');
+            var earth = document.getElementById('earth');
+            var moon = document.getElementById('moon');
+            // 문서 객체의 스타일 속성을 변경합니다.
+            sun.style.position = 'absolute';
+            earth.style.position = 'absolute';
+            moon.style.position = 'absolute';
+            sun.style.left = 250 + 'px';
+            sun.style.top = 200 + 'px';
+
+            sun.style.color = 'red';
+            earth.style.color = 'green';
+            moon.style.color = 'yellow';
+            document.body.style.backgroundColor = 'black';
+        };
+    </script>
+</head>
+<body>
+    <h1 id="sun">@</h1>
+    <h1 id="earth">O</h1>
+    <h1 id="moon">*</h1>
+</body>
+</html>
+
+
+
+회전을 위한 변수 earthAngle과 moonAngle을 선언합니다. 이어서 움직임을 구현하려고 setInteral() 함수로 1초에 30번 함수를 실행했습니다.
+
+
+
+p.344
+[code 10-31]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var sun = document.getElementById('sun');
+            var earth = document.getElementById('earth');
+            var moon = document.getElementById('moon');
+            // 문서 객체의 스타일 속성을 변경합니다.
+            sun.style.position = 'absolute';
+            earth.style.position = 'absolute';
+            moon.style.position = 'absolute';
+            sun.style.left = 250 + 'px';
+            sun.style.top = 200 + 'px';
+
+            // 변수를 선언합니다.
+            var earthAngle = 0;
+            var moonAngle = 0;
+            // 애니메이션을 시작합니다.
+            setInterval(function () {
+
+            }, 1000 / 30);
+
+            sun.style.color = 'red';
+            earth.style.color = 'green';
+            moon.style.color = 'yellow';
+            document.body.style.backgroundColor = 'black';
+        };
+    </script>
+</head>
+<body>
+    <h1 id="sun">@</h1>
+    <h1 id="earth">O</h1>
+    <h1 id="moon">*</h1>
+</body>
+</html>
+
+
+움직임을 구현하는데 왜 1초에 30번 함수를 반복 실행하는지 궁금한 독자부들도 있을 것입니다. 어릴 적 교과서나 포스트잇에 그림을 그리고 페이지를 빠르게 넘겨 간단한 애니메이션ㅇ르 만들어 본 적이 있나요? 인간의 눈은 1초에 약 24번 정도 페이지가 전환되면 움직인다고 인식합니다. 참고로 1초에 30번 화면이 변경되는 것을 30FPS(frames per second)라고 표현합니다.
+
+이제 각각의 문서 객체를 회전시켜야 하는데, 어떠한 방법을 사용할지 조금 막막할 수 있습니다. 처음부터 생각하기는 어렵지만 한 두번 사용하면 알아서 익혀지도록 하는 방법이 있습니다. 바로 삼각 함수를 이용하는 방법입니다.
+
+그다지 어렵지 않습니다. 외울 필요 없이 필요할 때만 사용하며 되는 공식이니까요. 그럼 10-20처럼 각각의 X좌표와 Y좌표를 sin  값과 cos 값으로 표시할 수 있습니다.
+
+
+그림 10-20 각도를 통해 sin 값과 cos 값으로 궤도 좌표 구하기
+...
+
+이 공식에 따라 각도로 X좌표와 Y좌표를 구하고 각 문서 객체에 대입합니다.
+
+
+[code 10-32]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Basic</title>
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var sun = document.getElementById('sun');
+            var earth = document.getElementById('earth');
+            var moon = document.getElementById('moon');
+            // 문서 객체의 스타일 속성을 변경합니다.
+            sun.style.position = 'absolute';
+            earth.style.position = 'absolute';
+            moon.style.position = 'absolute';
+            sun.style.left = 250 + 'px';
+            sun.style.top = 200 + 'px';
+            // 변수를 선언합니다.
+            var earthAngle = 0;
+            var moonAngle = 0;
+
+            // 애니메이션을 시작합니다.
+            setInterval(function () {
+                // 각도로 지구와 달의 좌표를 구합니다.
+                var earthLeft = 250 + 150 * Math.cos(earthAngle);
+                var earthTop = 200 + 150 * Math.sin(earthAngle);
+                var moonLeft = earthLeft + 50 * Math.cos(moonAngle);
+                var moonTop = earthTop + 50 * Math.sin(moonAngle);
+                // 위치를 이동합니다.
+                earth.style.left = earthLeft + 'px';
+                earth.style.top = earthTop + 'px';
+                moon.style.left = moonLeft + 'px';
+                moon.style.top = moonTop + 'px';
+                // 각도를 변경합니다.
+                earthAngle += 0.1;
+                moonAngle += 0.3;
+            }, 1000 / 30);
+        };
+    </script>
+</head>
+<body>
+    <h1 id="sun">@</h1>
+    <h1 id="earth">O</h1>
+    <h1 id="moon">*</h1>
+</body>
+</html>
+
+코드를 실행하면 그림 10-21처럼 각각의 문서 객체가 이동하는 모습을 살펴 볼 수 있습니다.
+
+
+
+
+10.10.3 문서 객체와 객제지향을 사용한 움직임 구현
+
+
+코드가 길어 부분적으로 설명하려고 코드 10-34처럼 script 태그를 세 개 사용하겠습니다.
+
+[code 10-34]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+    </script>
+    <!-- window.onload -->
+    <script>
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+p.348
+1) 보조 함수
+
+보조 함수 부분은 코드 10-35처럼 구성합니다.
+
+[code 10-35]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+        // 랜덤한 정수를 생성합니다.
+        function nextRandomInteger(limit) {
+            return Math.round(Math.random() * limit);
+        }
+        // 랜덤한 알파벳을 리턴하는 함수입니다.
+        var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        function randomAlphabet() {
+            return alphabet.charAt(nextRandomInteger(25));
+        }
+        // 양수와 음수로 랜덤한 속도를 생성하는 함수입니다.
+        function randomSpeed(maxSpeed) {
+            return Math.random() * maxSpeed - Math.random() * maxSpeed;
+        }
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+    </script>
+    <!-- window.onload -->
+    <script>
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+p.349
+2) 생성자 함수
+...
+이제 생성자 함수 부분을 살펴봅시다. 변수 canvasWidth와 canvasHeight는 텍스트가 움직일 수 있는 공간의 너비와 높이를 나타내는 변수입니다.
+움직이는 글자를 표현할 생성자 함수로는 코드 10-36처럼 MovingText()를 생성했습니다. 속성으로 x(x좌표), y(y좌표), vs(x축 속도), vy(y축 속도)와 body(글자 자체)가 있습니다.
+
+
+[code 10-36]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>     <!-- 보조 함수 -->
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+        // MovingText의 생성자 함수
+        var canvasWidth = 700;
+        var canvasHeight = 400;
+        function MovingText() {
+            // 위치와 속도 속성
+            this.x = nextRandomInteger(canvasWidth);
+            this.y = nextRandomInteger(canvasHeight);
+            this.vx = randomSpeed(10);
+            this.vy = randomSpeed(10);
+            // 문서 객체를 생성합니다.
+            this.body = document.createElement('h1');
+            this.body.innerHTML = randomAlphabet();
+            this.body.style.position = 'absolute';
+            // 문서 객체를 document.body에 추가합니다.
+            document.body.appendChild(this.body);
+        }
+    </script>
+    <!-- window.onload -->
+    <script>
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+p.350
+생성자 함수를 사용하면 각각의 속성을 모두 초기화하고 글자를 document.body 객체에 추가합니다. 이어서 생성자 함수 MovingText() 에는 move() 메서드가 있습니다. 기존의 위치에서 속도를 더해 이동시킵니다. 영역을 벗어나면 반대 방향으로 튕겨줍니다.
+
+[code 10-37]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+	...
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+        // MovingText의 생성자 함수
+        var canvasWidth = 700;
+        var canvasHeight = 400;
+        function MovingText() {
+            // 위치와 속도 속성
+            this.x = nextRandomInteger(canvasWidth);
+            this.y = nextRandomInteger(canvasHeight);
+            this.vx = randomSpeed(10);
+            this.vy = randomSpeed(10);
+            // 문서 객체를 생성합니다.
+            this.body = document.createElement('h1');
+            this.body.innerHTML = randomAlphabet();
+            this.body.style.position = 'absolute';
+            // 문서 객체를 document.body에 추가합니다.
+            document.body.appendChild(this.body);
+        }
+        MovingText.prototype.move = function () {
+            // 범위 검사
+            if (this.x < 0 || this.x > canvasWidth) { this.vx *= -1; }
+            if (this.y < 0 || this.y > canvasHeight) { this.vy *= -1; }
+            // 이동
+            this.x += this.vx;
+            this.y += this.vy;
+            // 화면에 이동 표시
+            this.body.style.left = this.x + 'px';
+            this.body.style.top = this.y + 'px';
+        };
+    </script>
+    <!-- window.onload -->
+    <script>
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+p.350
+window.onload
+마지막으로 window.onload 부분입니다. 이 부분에서는 객체를 생성하고 움직여주면 됩니다. 우선 배열을 만들고 MovingText 객체를 생성해 배열에 넣습니다.
+
+[code 10-38]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+	...
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+	...
+    </script>
+    <!-- window.onload -->
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var movingTexts = [];
+            // 배열에 MovingText 객체 100개를 생성합니다.
+            for (var i = 0; i < 100; i++) {
+                movingTexts.push(new MovingText());
+            }
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+setInterval() 함수로 배열에 들어 있는 MovingText 객체의 move() 메서드를 1초에 30번 실행합니다. 즉, 30FPS를 구현합니다.
+
+[code 10-39]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+        ...
+    </script>
+    <!-- 생성자 함수 -->
+    <script>
+	...
+    </script>
+    <!-- window.onload -->
+    <script>
+        window.onload = function () {
+            // 변수를 선언합니다.
+            var movingTexts = [];
+            // 배열에 MovingText 객체 100개를 생성합니다.
+            for (var i = 0; i < 100; i++) {
+                movingTexts.push(new MovingText());
+            }
+             // 움직입니다.
+            setInterval(function () {
+                for (var i in movingTexts) {
+                    movingTexts[i].move();
+                }
+            }, 1000 / 30);
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+p.354
+NOTE_  클로저 활용
+
+이번 에제에서 보조 함수를 조금 더 살펴보겠습니다. 코드 10-41의 함수를 살펴봅시다.
+
+랜덤한 알파벳을 생성하는 함수입니다. 여러 프로그램에 응용할 수 있는 내용이므로 복사해서 사용하기 좋겠죠? 그런데 복사해서 사용했는데 해당 코드에서 변수 alphabet을 재정의하면 어떻게 될까요?
+
+"안 되겠죠?"
+
+그렇습니다. 따라서 코드 10-42처럼 함수 내부에 변수를 만드는 것이 안전할 것입니다.
+
+[code 10-41]
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+        // 랜덤한 정수를 생성합니다.
+        function nextRandomInteger(limit) {
+            return Math.round(Math.random() * limit);
+        }
+        // 랜덤한 알파벳을 리턴하는 함수입니다.
+        var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        function randomAlphabet() {
+            return alphabet.charAt(nextRandomInteger(25));
+        }
+        // 양수와 음수로 랜덤한 속도를 생성하는 함수입니다.
+        function randomSpeed(maxSpeed) {
+            return Math.random() * maxSpeed - Math.random() * maxSpeed;
+        }
+	...
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+
+[code 10-42]
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+        // 랜덤한 정수를 생성합니다.
+        function nextRandomInteger(limit) {
+            return Math.round(Math.random() * limit);
+        }
+        // 랜덤한 알파벳을 리턴하는 함수입니다.
+        function randomAlphabet() {
+           var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            return alphabet.charAt(nextRandomInteger(25));
+        }
+        // 양수와 음수로 랜덤한 속도를 생성하는 함수입니다.
+        function randomSpeed(maxSpeed) {
+            return Math.random() * maxSpeed - Math.random() * maxSpeed;
+        }
+	...
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+좋은 해결 방법입니다. 하지만 이 함수를 100번 사용한다면 변수 alpha가 메모리에서 100번 생성되고 100번 제거되는 일이 발생합니다. 따라서 코드 10-43처럼 클로저로 외부에는 공개되지 않는 변수를 생성하는 것이 좋은 해결 방법입니다.
+
+
+[code 10-43] 클로저 활용
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 보조 함수 -->
+    <script>
+        // 랜덤한 정수를 생성합니다.
+        function nextRandomInteger(limit) {
+            return Math.round(Math.random() * limit);
+        }
+        // 랜덤한 알파벳을 리턴하는 함수입니다.
+	(기존)
+        function randomAlphabet() {
+           var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            return alphabet.charAt(nextRandomInteger(25));
+        }
+
+	(Myway)
+        function randomAlphabet() {
+            return function () {
+	        var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		alphabet.charAt
+	   }(nextRandomInteger(25));
+        }
+
+	(Book)
+	var randomAlphabet = (function () {
+		var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		return function () {
+			return alphabet.charAt(nextRandomInteger(25));
+		}
+	})();
+
+        // 양수와 음수로 랜덤한 속도를 생성하는 함수입니다.
+        function randomSpeed(maxSpeed) {
+            return Math.random() * maxSpeed - Math.random() * maxSpeed;
+        }
+	...
+    </script>
+</head>
+<body>
+</body>
+</html>
