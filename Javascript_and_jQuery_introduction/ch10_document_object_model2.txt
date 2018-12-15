@@ -6,12 +6,9 @@
 HTML5부터는 document 객체에 표 10-6의 메서드가 추가되었습니다.
 
 표 10-6 document 객체의 문서 객체 선택 메서드 3
-메서드 이름
-설명
-querySelector(선택자)
-선택자로 가장 처음 선택되는 문서 객체를 가져옵니다
-querySelectorAll(선택자)
-선택자를 통해 선택되는 문서 객체를배열로 가져옵니다.
+메서드 이름	설명
+querySelector(선택자)	선택자로 가장 처음 선택되는 문서 객체를 가져옵니다
+querySelectorAll(선택자)	선택자를 통해 선택되는 문서 객체를배열로 가져옵니다.
 
 이는 CSS 선택자로 문서 객체를 선택하는 메서드입니다. 간단하게 document.querySelector() 메서드를 살펴보겠습니다.
 코드 10-20은 document.getElementById() 메서드를 설명하면서 만든 예제와 같습니다.
@@ -106,16 +103,11 @@ header.style.backgroundColor = 'red';
 따라서 '-'으로 연결된 속성은 다음과 같은 방식으로 사용합니다. 특수 기호 '-'으로 끊긴 단어의 첫 글자를 대문자로 변경하면 됩니다. 표 10-7처럼 스타일 시트와 스타일 속성을 자바스크립트의 스타일 식별자로 변경할 수 있습니다.
 
 표 10-7 스타일 식별자 변환
-스타일 시트의 스타일 속성
-자바스크립트의 스타일 식별자
-background-image
-backgroundImage
-background-color
-backgroundColor
-box-sizing
-boxSizing
-list-style
-listStyle
+스타일 시트의 스타일 속성	자바스크립트의 스타일 식별자
+background-image	backgroundImage
+background-color	backgroundColor
+box-sizing	boxSizing
+list-style	listStyle
 
 문자열로 스타일 속성에 접근할 대는 다음 두 가지 방법을 모두 사용할 수 있습니다.
 
@@ -130,10 +122,8 @@ p.339
 문서 객체를 제거할 때는 문서 객체가 가지는 표 10-8의 제거 메서드를 사용합니다.
 
 표 10-8 문서 객체의 제거 메서드
-메서드 이름
-설명
-removeChild(child)
-문서 객체의 자식 노드를 제거
+메서드 이름	설명
+removeChild(child)	문서 객체의 자식 노드를 제거
 
 코드 10-23처럼 body 태그를 구성합니다. h1 태그를 제거해보겠습니다.
 ...

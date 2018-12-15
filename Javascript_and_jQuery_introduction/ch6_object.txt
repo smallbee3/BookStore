@@ -7,9 +7,25 @@ p.173
 식별자가 아닌 문자를 키로 사용했을 때는 무조건 대괄호를 사용해야 객체의 요소에 접근할 수 있습니다.
 
 
-p.174
+p.175
+자기 자신이 가진 속성을 표시할 때 this 키워드 사용
+자기 자신이 가진 속성이라는 것을 표시할 때는 코드 6-7처럼 this 키워드를 사용합니다.
+
+[code 6-7]
+<script>
+    var person = {
+        name: '윤인성',
+        eat: function (food) {
+            alert(this.name + '이 ' + food + '을/를 먹습니다.');
+        }
+    };
+    person.eat('밥');
+</script>
+
+
+p.176
 NOTE_  this 키워드 생략
-C++, JAVA, C#과 같은 프로그래밍 언어는 같은 객체 내부에서 this 키워드를 생략할 수 있습니다. 하지만 자바스크립트는 this 키워들르 생략할 수 없습니다. 다른 프로그래밍 언어를 사용하던 개발자들이 굉장히 많이 실수하는 부분입니다. this 키워드를 사용해야 한다는 사실을 꼭 기억해주세요.
+C++, JAVA, C#과 같은 프로그래밍 언어는 같은 객체 내부에서 this 키워드를 생략할 수 있습니다. 하지만 자바스크립트는 this 키워드를 생략할 수 없습니다. 다른 프로그래밍 언어를 사용하던 개발자들이 굉장히 많이 실수하는 부분입니다. this 키워드를 사용해야 한다는 사실을 꼭 기억해주세요.
 
 
 p.176
@@ -47,7 +63,23 @@ p.177
 6.4  객체 관련 키워드
 6.4.1  in 키워드
 in 키워드를 사용하면 해당 키가 객체 안에 있는지 확인할 수 있습니다. 코드 6-10은 객체가 이름과 성별에 해당하는 속성이 있는지 확인합니다.
-..
+
+[code 6-10]
+<script>
+    var output = '';
+    var student = {
+        이름: '연하진',
+        국어: 92, 수학: 98,
+        영어: 96, 과학: 98
+    };
+    output += "'이름' in student: " + ('이름' in student) + '\n';
+    output += "'성별' in student: " + ('성별' in student);
+    // output += "'영어' in student: " + '영어' in student;
+					// -> false when there is no parenthesis
+    alert(output);
+</script>
+
+
 코드를 실행하면 그림 6-5처럼 출력합니다. 이름 속성은 존재하므로 true를 출력하고, 성별 속성은 존재하지 않으므로 false를 출력합니다.
 
 
@@ -121,9 +153,28 @@ NOTE_ '매개변수로 전달하는 객체'를 옵션 객체라고 부르는 경
 로 입력해야 하는 요소가 있는 객체도 옵션 객체라고 부르는 경우가 많습니다.
 
 
+일반적으로 짧은 조건문을 사용해 코드 6-28처럼 초기화합니다.
+
+[code 6-28]
+
+<script>
+    function test(options) {
+        options.valueA = options.valueA || 10;
+        options.valueB = options.valueB || 20;
+        options.valueC = options.valueC || 30;
+        alert(options.valueA + ':' + options.valueB + ':' + options.valueC);
+    }
+    test({
+        valueA: 52,
+        valueC: 273
+    });
+</script>
 
 p.193
 NOTE_  객체를 병합해서 옵션 객체를 초기화하는 경우도 많습니다. 이와 관련된내용은 20장의 본문에서 살펴보도록 하겠습니다.
+
+
+
 
 
 p.200

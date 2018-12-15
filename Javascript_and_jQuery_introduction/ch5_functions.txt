@@ -352,6 +352,7 @@ Number() 함수는 숫자로 바꿀 수 없으면 NaN으로 변환합니다.
 >> 1000 : 1.5
 
 
+
 parseInt() 함수와 parseFloat() 함수를 사용할 때는 몇 가지 주의할 점이 있습니다. 모르면 이와 관련된 문제가 발생했을 때 이유를 찾을 수 없으므로 간단하게 살펴보겠습니다.
 ...
 자바스크립트는 0으로 시작하거나 0x로 시작하면 10진수가 아니라 각각 8진수, 16진수로 생각하고 변환합니다.
@@ -371,9 +372,8 @@ parseInt() 함수의 두 번째 매개변수에 진법을 입력하면 앞의 �
  * parseFloat('52.273e5') -> 5227300
 
 
-
 181207  Caution !
- * parseFloat('52.273e5') -> 52
+ * parseInt('52.273e5') -> 52
 
 
 
@@ -381,7 +381,80 @@ p.156
 5.12 조금 더 나아가기
 
 5.12.1 자바스크립트의 실행순서
+
+자바스크립트의 함수 중에는 웹 브라우저에 처리를 부탁하는 함수가 있습니다. 대표적으로 타이머 함수와 웹 요청 관련 함수가 있으며, 웹 브라우저가 처리하고 처리가 완료되었다는것을 자바스크립트에 알려줍니다.
+이러한 함수는 현재 실행 중인 다른 코드의 실행이 끝나기 전에는 실행되지 않습니다. ....
+코드 5-42처럼 구성된 코드는 0초 후에 타이머를 실행하라고 했지만 경고창을 출력하지 못합니다.
+
+[ code 5-42]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        setTimeout(function () {
+            alert('Set Timeout');
+        }, 0);
+
+        while (true) { }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
 5.12.2 반복문과 콜백 함수
+
+
+[code 5-43]
+<script>
+    for (var i = 0; i < 3; i++) {
+        setTimeout(function () {
+            alert(i);
+        }, 0);
+    }
+</script>
+>> 3
+>> 3
+>> 3
+
+
+1) 클로저를 활용한 해결
+[code 5-44]
+<script>
+    for (var i = 0; i < 3; i++) {
+        (function (closed_i) {
+            setTimeout(function () {
+                alert(closed_i);
+            }, 0);
+        })(i);
+    }
+</script>
+
+2) let 키워드 활용
+p.74
+for(let i=0; i<3; i++) {
+  setTimeout(function () {
+    alert(i);
+  }, 0);
+}
+
+3) forEach() 메서드를 활용한 클로저 생성
+[code 5-45]
+<script>
+    [0, 1, 2].forEach(function (i) {
+        setTimeout(function () {
+            alert(i);
+        }, 0);
+    });
+</script>
+
+
+
+
 5.12.3 기본 매개변수, default parameter
 
 1) 기본 매개변수의 기초
@@ -470,6 +543,18 @@ arguments 객체는 배열이 아닌 배열처럼 생긴 특별한 객체라는 
 p.166
 apply () 메서드
 모든 함수에는 apply 메서드가 있습니다. apply 메서드는 첫 번째 매개변수로는 '함수 내부에서 활용할 this 키워드 객체', 두 번째 매개변수로는 '매개변수 배열'을 넣게 됩니다. 단, 첫 번째 매개변수를 잘못 사용하면 문제가되는 경우도 많고, 코드의 가독성이 굉장히 떨어집니다.
+
+[code 5-54]
+
+<script>
+    function test(a, b, c, d) {
+        alert(a + ':' + b + ':' + c + ':' + d);
+    }
+    var array = [1, 2, 3, 4];
+    test.apply(null, array);
+</script>
+
+
 그래서 ECMAScript 6에서는 전개 연산자로 함수를 호출할 때 배열을 전개해서 넣을 수 있게 했습니다.
 
 [code 5-55]

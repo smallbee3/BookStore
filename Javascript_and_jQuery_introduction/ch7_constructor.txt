@@ -10,9 +10,22 @@ p.209
 NOTE_ 생성자 함수의 이름
 생성자 함수의 이름은 일반적으로 대문자로 시작합니다. 대문자로 시작하지 않아도 문제는 없지만 개발자 대부분이 지키는 규칙이므로 따라주세요. 자바스크립트에서 기본적으로 제공하는 생성자 함수도 모두 대문자로 시작합니다.
 
+
+p.209
+생성자 함수 안의 this 키워드
+생성자 함수 안에서는 this 키워드를 통해 생성자 함수로 생성될 객체의 속성을 지칭합니다.
+
+
+
 p.211
 var student = new Student()
    객체, 인스턴스       생성자 함수
+
+
+p.212
+NOTE_ instanceof 키워드
+
+
 
 
 p.214
@@ -22,7 +35,6 @@ prototype
 메서드를 하나만 생성해도 모든 객체가 해당 메서드를 사용할 수 있습니다. 따라서 생성자 함수로 객체를 만들 때는 생성자 함수 내부에 속성만 넣습니다.
 ...
 메서드는 모두 프로토타입 안에 넣어줍니다. 함수 안에 자동으로 만들어지는 arguments와 마찬가지로 자바스크립트의 모든 함수는 그림 7-5처럼 변수 prototype을 갖습니다. prototype은 객체입니다.
-
 
 
 
@@ -50,8 +62,8 @@ p.219
   function Rectangle2(w, h) {
     var width = w;
     var height = h;
-    this.getWidth = function () { return width; };  // -> Closure
-    this.getHeight = function () { return height; };  // -> Closure
+    this.getWidth = function () { return width; };  //->Closure?
+    this.getHeight = function () { return height; };  //->Closure?
     this.setWidth = function (w) { width = w; };
     this.setHeight = function (h) { height = h; };
   }
@@ -63,15 +75,58 @@ p.219
 ...
 throw 키워드는 강제로 오류를 발생시키는 키워드입니다. 11장에서 다루겠지만 간단하게 사용해봅시다. setOO() 형태의 메서드를 사용할 때 매개변수로 입력받은 값이 0 이하이면 강제로 throw 키워드를 실행하게 했습니다.
 
+[code 7-14]
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // 생성자 함수를 선언합니다.
+        function Rectangle(w, h) {
+            // 변수를 선언합니다.
+            var width = w;
+            var height = h;
+            // 메서드를 선언합니다.
+            this.getWidth = function () { return width; };
+            this.getHeight = function () { return height; };
+            this.setWidth = function (w) {
+                if (w < 0) {
+                    throw '길이는 음수일 수 없습니다.';
+                } else {
+                    width = w;
+                }
+            };
+            this.setHeight = function (h) {
+                if (h < 0) {
+                    throw '길이는 음수일 수 없습니다.';
+                } else {
+                    height = h;
+                }
+            };
+        }
+        Rectangle.prototype.getArea = function () {
+            return this.getWidth() * this.getHeight(); //->Closure?
+        };
+        // 변수를 선언합니다.
+        var rectangle = new Rectangle(5, 7);
+        rectangle.setWidth(-2);
+        // 출력합니다.
+        alert('AREA: ' + rectangle.getArea());
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
 
 p.221
-일부 캡슐화의 개념을 잘못 알고 있는 초보 프로그래머는 게터와 세터를 만드는 것 자체가 캡슐화라고 생각하는 경우가 있습니다. 그것은 너무 단순한 생각입니다. 캡슐화는 만일의 상화을 대비해서 특정 속성이나 메서드를 사용자가 사용할 수 없게 숨겨놓는 것임을 기억해주세요.
+일부 캡슐화의 개념을 잘못 알고 있는 초보 프로그래머는 게터와 세터를 만드는 것 자체가 캡슐화라고 생각하는 경우가 있습니다. 그것은 너무 단순한 생각입니다. 캡슐화는 만일의 상황을 대비해서 특정 속성이나 메서드를 사용자가 사용할 수 없게 숨겨놓는 것임을 기억해주세요.
 
 
 p.224
-"p.224
-참고로 생성자 함수 Square의 프로토타입 constructor() 메서드에 Square를 다시 넣는 부분이 없어도 정상적으로 작동합니다.
-하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangleㅇ르 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다."
+"참고로 생성자 함수 Square의 프로토타입 constructor() 메서드에 Square를 다시 넣는 부분이 없어도 정상적으로 작동합니다.
+하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangle을 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다."
 -> [3 error] 181208
 
 
