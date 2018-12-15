@@ -1,0 +1,138 @@
+[Ch11 Event]
+
+
+
+p.362
+11.3 고전 이벤트 모델
+고전 이벤트 모델은 이벤트 하나에 이벤트 리스너 하나만 연결할 수 있습니다. 다음 절 부터는 다른 이벤트 모델을 살펴보기 전에 고전 이벤트와 관련된 부가적인 내용을 살펴봅니다.
+
+
+
+
+이벤트 속성 == 속성, 이벤트 속성== 메서드 ?
+11.5 이벤트 강제 실행
+p.386
+...
+이벤트 속성도 속성이고 함수 자료형을 넣으므로 메서드입니다.
+따라서 메서드를 호출하는 것처럼 이벤트 속성을 호출하면 이벤트가 강제로 실행됩니다.
+
+header.onclick()
+
+
+e.g.
+p.354  NOTE_ 클로저 활용
+var randomAlphabet = (function () {
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return function () {
+        return alphabet.charAt(nextRandomInteger(25));
+    }
+})();
+
+this.body.innerHTML = randomAlphabet();
+
+
+
+
+11.5 이벤트강제 실행
+
+p.367
+[code 11-9,10,11,12,13]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+            // 문서 객체를 가져옵니다.
+            var buttonA = document.getElementById('button-a');
+            var buttonB = document.getElementById('button-b');
+            var counterA = document.getElementById('counter-a');
+            var counterB = document.getElementById('counter-b');
+            // 이벤트를 연결합니다.
+            buttonA.onclick = function () {
+                counterA.innerHTML = Number(counterA.innerHTML) + 1;
+            };
+            buttonB.onclick = function () {
+                counterB.innerHTML = Number(counterB.innerHTML) + 1;
+
+                // p.367
+                // 하지만 코드 11-13처럼 버튼 A의 click 이벤트를 강제로 실행하는 방법이 더 간단합니다.
+                // counterA.innerHTML = Number(counterA.innerHTML) + 1;
+                buttonA.onclick();
+            };
+        };
+    </script>
+</head>
+<body>
+    <button id="button-a"> ButtonA</button>
+    <button id="button-b"> ButtonB</button>
+    <h1>Button A - <span id="counter-a">0</span></h1>
+    <h1>Button B - <span id="counter-b">0</span></h1>
+</body>
+</html>
+
+
+
+11.7 디폴트 이벤트 제거
+
+
+
+
+11.8 이벤트 전달
+
+p.375
+카드 위에 그림이 있으므로 그림을 클릭하면 카드와 그림 모두에 이벤트가 발생합니다. 하지만 그림을 보여주면서 동시에 글과 댓글도 표시하게 만들 수는 없습니다. 따라서 이벤트 전달을 막아서 원하는 기능만 실행되도록 해야 합니다.
+...
+p 태그를 클릭하면 이벤트 버블링이 일어나면서 paragraph ➝ header 순으로 경고창이 출력됩니다. 이 코드에서 이벤트 전달을 막아 header 경고창을 출력하지 않게 해봅시다.
+
+인터넷 익스플로러와 그외 브라우저가 이벤트 전달을 막는 방법은 다릅니다.
+
+* 인터넷 익스플로러 : 이벤트 객체의 cancelBubble 속성을 true로 변경합니다.
+* 그 이외의 브라우저 : 이벤트 객체의 stopPropagation() 메서드를 사용합니다.
+
+코드 11-26처럼 각각의 방식에 맞게 코드를 구성할 수 있습니다.
+
+[code 11-26]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+            // 이벤트를 연결합니다.
+            document.getElementById('header').onclick = function () {
+                alert('header');
+            };
+            document.getElementById('paragraph').onclick = function (e) {
+                // 이벤트 객체를 처리합니다.
+                var event = e || window.event;
+                // 이벤트 발생을 알립니다.
+                alert('paragraph');
+                // 이벤트 전달을 제거합니다.
+                event.cancelBubble = true;
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+            };
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header">
+        <p id="paragraph">Paragraph</p>
+    </h1>
+</body>
+</html>
+
+인터넷 익스플로러는 이벤트 객체에 stopPropagation() 메서드가 없으므로 조건문으로 에러를 방지했습니다.
+
+"그 외의 브라우저에서 cancelBubble 속성을 사용하는 데 문제는 없나요?"
+
+속성을 사용하는 것은 문제가 있을 수 있지만, 속성에 값을 입력하는 것은 오류가 발생하지 않으니 문제가 없습니다. 쉽게 이벤트 전달을 막을 수 있겠죠?
+
+
+
+11.9 인터넷 익스플로러 이벤트 모델
+
+
+
