@@ -1,0 +1,206 @@
+[Ch12 Excecption handling]
+
+오류 중에서 괄호 개수를 잘못 입력하는 등의 문법적 오류를 제외하는 것을 예외(exception)이라고 부릅니다. 그리고 이를 처리하는 것을 예외 처리(exception handling)이라고 부릅니다.
+
+
+p.386
+try 구문만 단독으로 사용할 수는 없습니다. 인터넷 익스플로러 8 이상의 모든 웹 브라우저는 try catch와 try finally처럼 두 가지만 조합해서도 사용할 수 있습니다. 일반적으로 표에 있는 두 가지 조합을 많이 사용합니다.
+
+
+
+12.1 예외 처리 개요
+
+프로그램이 실행되는 동안 문제가 발생하면 프로그램이 자동으로 중단됩니다. 이때 프로그램이 대처할 수 있게 처리하는 것을 예외 처리(Exception handling)라고 합니다.
+프로그램 실행 중 발생하는 오류를 예외(Exception)라고 합니다. 반면 프로그래밍 언어의 문법적인 오류로 인해 프로그램이 실행되기도 전에 발생하는 오류를 에러(Error)라고 합니다.
+
+
+12.2 기본 예외 처리
+
+예외가 발생하지 않게 사전에 해결하는 것을 기본 예외 처리라고 부릅니다.
+
+
+12.3 고급 예외 처리
+
+고급 예외 처리는 try 키워드, catch 키워드, finally 키워드로 예외를 처리하는 방법입니다. 이를 try catch finally 구문이라고 부르며, 형태는 다음과 같습니다.
+
+
+12.5 에러와 예외
+
+12장을 진행하면서 일부 독자는 에러와 예외의 차이점을 구분하지 못할 수 있습니다. 가장 간단하게 에러와 예외를 구분하는 방법은 try catch 구문으로 해결할 수 있는 것이 예외이고, 해결할 수 없는 것이 에러입니다. 코드 12-9를 살펴봅시다.
+
+
+1) error
+[code 12-9]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        try {
+            error+-error+++;
+        } catch (exception) {
+            alert('Exception');
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+>> SyntaxError: Unexpected token ;
+
+코드를 실행하면 알 수 있지만, 예외 처리를 했음에도 경고창이 출력되지 않습니다. 크롬의 껌사로 살펴보면 그림 12-5처럼 에러가 발생한 것을 확인할 수 있습니다.
+
+에러와 예외를 구분할 필요는 없지만, 예외 처리를 한다고 모든 문제를 해결할 수 있는 것은 아닙니다.
+
+
+
+12.6 예외 강제 발생
+
+...
+예외를 강제로 발생시키는 이유는 무엇일까요? ...
+예외를 강제로 발생시켜 객체를 사용하는 사용자에게 주의를 줄 수도 있고, 예외와 관련된 처리를 해달라고 부탁할 수도 있습니다. 코드 12-11을 살펴봅시다. 에러와 다르게 예외는 try catch 구문으로 처리할 수 있으므로 그에 대처할 수 있습니다.
+
+
+[code 12-11]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        try {
+            throw 'DivideByZeroException';
+        } catch (exception) {
+            if (exception == 'DivideByZeroException') {
+                alert('ㅇㅁㅇ');
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+
+p.396
+...
+일반적으로는 코드 12-12처럼 사용합니다. 코드 12-12의 divide() 함수는 0으로 대상을 나누지 못하게 합니다. 실제로 자바스크립트는 특정 숫자를 0을 나눈다고 해서 문제가 발생하지 않습니다. 하지만 0으로 나누는 것을 막고 싶고, 그러한 일이 발생하면 알려줄 수 있게 예외를 강제로 발생시킨 것입니다.
+
+[code 12-12]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // 함수를 선언합니다.
+        function divide(alpha, beta) {
+            if (beta == 0) {
+                throw 'DivideByZeroException';
+            } else {
+                return alpha / beta;
+            }
+        }
+        // 출력합니다.
+        try {
+            divide(10, 0);
+        } catch (exception) {
+            alert('Do not divide by zero!');
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+12.7 조금 더 나아가기
+
+
+12.7.1 finally 구문
+
+...
+다음과 같은 경우에 결과가 달라집니다.
+
+* try catch 구문 내부에서 return 키워드를 만날 때
+* try catch 구문 내부에서 break 또는 continue 키워드를 만날 때
+
+사실 catch 구문 내부에서 이와 같은 것들을 사용하면 코드가 꼬이기 때문에 싫어하는 개발자들이 많습니다. 그래서 일부 프로그래밍 언어는 catch 구문에서 return 키워드 등을 사용하지 못하게 하고, finally 구문의 기능을 하는 것이 없는 경우도 있습니다.
+
+
+12.7.2 외부 자바스크립트 파일
+
+
+...
+외부 자바스크립트를 사용할 때는 주의할 점이 있는데, 웹 브라우저는 위에서 아래로 태그를 차레대로 실행합니다. 따라서 코드 12-17처럼 구성하면 웹 브라우저는 세 가지 script 태그를 차례대로 실행합니다.
+
+[code 12-14]
+js/ch12_externalScript.js
+
+function externalFileFunction() {}
+var externalFileVariable = 'Hello World..!';
+alert('Import External Script Complete');
+
+
+[code 12-15,16,17]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <script>
+        console.log(typeof (externalFileVariable));
+        console.log(typeof (externalFileFunction));
+        console.log(externalFileVariable);
+        console.log(externalFileFunction);
+    </script>
+    <script src="ch12_externalScript.js"></script>
+    <script>
+        console.log(typeof (externalFileVariable));
+        console.log(typeof (externalFileFunction));
+        console.log(externalFileVariable);
+        console.log(externalFileFunction);
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+>> undefined
+>> undefined
+>> ReferenceError: externalFileVariable is not defined
+>> string
+>> function
+>> Hello World..!
+>> ƒ externalFileFunction() {}
+
+...
+즉, 외부 자바스크립트 파일을 추가하기 전에는 외부 자바스크립트 파일에 있는 변수나 함수를 사용할 수 없습니다. 따라서 head 태그는 코드 12-18의 순서대로 구성하는 것이 일반적입니다.
+
+
+[code 12-18]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <meta name="" content=""/>
+
+    <link rel="stylesheet" href="외부 스타일시트"/>
+    <style>
+      /* ... */
+    </style>
+    <script src="외부 자바스크립트"></script>
+    <script>
+      // ...
+    </script>
+</head>
+<body>
+
+</body>
+</html>
