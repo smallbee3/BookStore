@@ -1,0 +1,291 @@
+[2 note]
+
+
+181020 square root in JS (제곱근)
+p.63
+Math.sqrt(<number>)
+
+
+181023 setInterval / setTimeout 시간 생략시
+-> 아마 1 millisecond로 계산되어서 계속 실행되는 것 같음. 
+ex)
+<script>   var id = setInterval(function () {
+    alert('1초가 지났습니다.ㅇㅂㅇ');
+  // }, 1000);
+  });
+
+  setTimeout(function () {
+    clearInterval(id);
+    alert('haha')
+  }, 1000);
+</script>
+
+
+181027 Angular2 build
+1. Github clone
+2. Finn-front > src > environments > environments.ts 에서  "apiUrl" 값과 "facebookAppId" 수정
+3. package.json이 있는 폴더 (가장 상위 폴더)에서  npm install 하면 node_modules라는 폴더가 만들어짐
+4. npm install -g @angular/cli 를 통해 ng cli 설치
+5. ng build --prod 로는 에러가 떠서 실패   ERROR in src/app/core/login/auth/services/social-auth.config.ts(17,22): error TS2339: Property 'facebookAppId' does not exist on type '{ production: boolean; }'. ... 
+6. ng build 로 빌드 (개발자 모드에서 빌드 한 것으로 보임)
+7. 가장 상단 폴더에 'dist' 라는 이름의 폴더가 생성됨
+
+
+181205 Multiplying string doesn't work in JS
+
+[JS]
+alert('*' * 4);
+>> NAH
+
+[python]
+print('*' * 4);
+>> ****
+
+
+
+181207  실행순서
+
+1. 선언적 함수
+2. 일반 표현식 == 익명 함수
+
+    함수(); // Error
+    함수1(); // Works
+
+    function 함수1() { alert('함수를 왜 호출했습니까?'); }
+    var 함수 = function() { alert('함수를 왜 호출했습니까?'); }
+
+
+
+181207  parseInt('...e..') (X)
+	      parseFloat('...e..') (O)
+
+e.g.
+console.log(parseFloat('52.273e5')); // 5227300
+console.log(parseInt('52.273e5')); // 52
+
+
+
+181207  Number() and parseInt/Float() return NaN when there is no interable string
+
+e.g.
+console.log(Number('1'))
+console.log(Number('1a'))
+console.log(parseInt('1a'));
+console.log(parseFloat('1a'));
+console.log(parseInt('a'));
+>> 1
+>> NaN
+>> 1
+>> 1
+>> NaN
+
+
+
+181207  parseInt only adjust to the numbers in the front
+e.g.
+console.log(parseInt('123a'));
+console.log(parseInt('a123'));
+>> 123
+>> NaN
+
+
+181207  window object summary
+
+p.163 다만 완전히 차이가 없는 것은 아닙니다. 내부에서 사용하는 this 키워드의 의미가 다릅니다.
+	내부에서 사용하는 this 키워드의 의미
+익명 함수	함수 자체에 바인딩되어 있는 객체
+(window 객체 또는 프로토타입 객체가 될 수도 있습니다)
+화살표 함수
+(Arrow Function)	전역 객체
+(웹 브라우저 환경에서는 window 객체)
+
+p.181  이렇게 객체의 속성 이름과 외부의 변수 이름이 같으면 코드 6-14처럼 with 키워드 내부에서 window 객체의 output 변수를 사용하겠다고 지정해주어야 합니다.
+
+p.182  window object
+window 객체는 이후에 배우는데, 웹 브라우저에서 동작하는 자바스크립트의 최상위 객체입니다. 사실 웹 브라우저에서 동작하는 자바스크립트의 모든 변수와 함수는 window 객체의 속성과 메서드입니다. alert() 함수도 window.alert() 메서드 형태로 사용할 수 있습니다. 이 내용은 9장에서 살펴봅니다.
+
+p.217  ...이전에 잠시 언급했듯이 일반적으로 this 키워드를 사용하면 window 객체를 나타냅니다. 따라서 일반적으로 함수를 호출하듯이 new 키워드를 사용하지 않으면, 함수를 실행하는 동안 window 객체에 속성을 추가한 것이 됩니다. 따라서 그림 7-6처럼 문자열 'Hello'가 출력됩니다.
+하지만 new 키워드로 함수를 호출하면 객체를 위한 공간을 만들고 this 키워드는 해당 공간을 의미하게 됩니다. 중요한 내용은 아니지만 궁금해 할 수도 있는 내용이라 잠시 살펴보았습니다.
+
+
+181208  ISBN
+p.892
+... isbn을 문자열로 만든 것에 대해 의문을 가질 수 있습니다. isbn은 특정한 글자 수를 가지고 있으므로 문자열로 길이를 확인해야 하는 경우가 있고, X 등의 글자가 포함되는 경우가 있어서 숫자로 표현할 수 없는 경우가 있으므로 문자열로 만든 것입니다.
+객체를 만들 때 특정 속성의 의미를 잘 모르겠다면 찾아서 익혀두는 것이 좋습니다. '시작이 반'이라는 말이 있죠? 데이터를 다루는 프로그램에서 시작은 바로 자료형을 결정하는 문제이고, 이것은 정말 중요한 문제입니다.
+
+
+
+181208  기본자료형(숫자,문자열,불) + 메서드 추가
+p.896
+[PRACTICE 02]
+
+let number= 273;
+number.print = function() {
+  console.log(this);
+}; 
+number.print();
+>> TypeError: number.print is not a function
+
+기본 자료형에는 메서드 추가가 안되기 때문에 오류가 발생.
+
+
+
+181209  clone method upgraded
+
+p.198
+6.8.2 참조 복사와 값 복사
+<script>
+    function clone(obj) {
+      var output = {};
+      for (var i in obj){
+        output[i] = obj[i];
+      }
+      return output;
+    }
+</script>
+
+a = [1,2,3];
+b = clone(a);
+>> {0: 1, 1: 2, 2: 3}
+
+
+<script>
+    function clone2(obj) {
+      if (!(obj instanceof Object)) { throw "Input 'object' type data!"; }
+      else if (obj instanceof Array) { var output2 = []; }
+      else { var output2 = {}; }
+
+      for (var i in obj){
+        output2[i] = obj[i];
+      }
+      return output2;
+    }
+</script>
+
+
+a = [1,2,3];
+b = clone2(a);
+>> [1,2,3]
+
+a = 1;
+b = clone2(a);
+>> Input 'object' type data!
+
+
+
+181212 JAVASCRIPT RANDOM SPECIAL
+p.348
+10.10.3 문서 객체와 객체지향을 사용한 움직임 구현
+
+(0) Math.random()
+
+* 0 <= Math.random() < 1
+
+A floating-point, pseudo-random number between 0 (inclusive) and 1 (exclusive).
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+
+(1) random integer creator
+
+* 0 <= Math.random() * limit < limit
+* 0<=Math.round(Math.random()*limit)<=limit
+
+function nextRandomInteger(limit) {
+    return Math.round(Math.random() * limit);
+}
+
+
+(2) random alphber creator
+
+* 0 <= nextRandomInteger(25) <= 25
+* alphabet.length == 26
+
+var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function randomAlphabet() {
+    return alphabet.charAt(nextRandomInteger(25));
+}
+
+
+(3) Math.random()*A - Math.random()*A
+
+* 0 <= Math.random()*A < A
+* -A < -Math.random()*A <= 0
+
+-A < Math.random()*A - Math.random()*A < A
+
+
+
+
+
+181214 이미지 요소노드 객체의 src에 웹주소 작성 가능 / width, height 한 개만 기재
+
+[code 10-7,8]
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>INDEX</title>
+  <script>
+    window.onload = function () {
+      var img = document.createElement('img');
+
+      // img.src = 'penguin.jpeg';
+      img.src = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2-fairy-penguin-little-blue-penguin-1524251364.jpg';
+
+      img.width = 500;
+      // img.height = 350;
+      // img.data_propety = 350; // -> Doesn't appear
+
+      document.body.appendChild(img);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+181214  "undefined" when key doesn't exist!
+
+p.172
+[code 6-3]
+<script>
+    var product = {
+      제1품명: '7D 건조 망고',
+      유형2: '당절임',
+      성분: '망고, 설탕, 메타중아황산나트륨, 치자황색소',
+      원산지: '필리핀',
+      '테스트 space': '테스트 space',
+      123: '숫자'
+    };
+    console.log(product.제1품명);
+    console.log(product.유형2);
+    console.log(product.유형); // -> undefined
+    console.log(product['유형']); // -> undefined
+</script>
+
+>> 7D 건조 망고
+>> 당절임
+>> undefined
+>> undefined
+
+
+
+181214 toString() method that doesn't print itself
+
+p.183
+[code 6-17]
+
+<script>
+      student.toString = function () {
+          var output = '';
+          for (var key in this) {
+              // toString() 메서드는 출력하지 않게 합니다.
+              if (key != 'toString') {
+                  output += key + '\t' + this[key] + '\n';
+              }
+          }
+          return output;
+      };
+</script>
