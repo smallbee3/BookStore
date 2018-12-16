@@ -1,0 +1,285 @@
+[1 words]
+
+p.26
+표현식 : 자바스크립트에서 값을 만들어내는 간단한 코드
+	ex) 273
+	      10 + 20 + 30 * 2
+	      'RintIanTta'
+문장 : 하나 이상의 표현식이 모여 구성되는 코드(를 읽어 들이는 단위가 되는 것)
+	문장 끝에는 마침표를 찍듯이 세미콜론을 찍어 문장의 종결을 알림
+키워드 : 프로그래밍 언어가 처음 만들어질 때 정해진 특별한 의미가 있는 단어
+식별자 : 이름을 붙일 때 사용하는 단어, 예로는 변수명(속성명)과 함수명(메소드명)이 있음.
+변수 :	 값을 저장할 때 사용하는 식별자
+
+재선언 : 같은 이름으로 변수 또는 상수를 다시 선언하는 것  p.75
+
+p.27
+하나의 표현식도 세미콜론만 찍히면 문장이라고 부릅니다.
+
+p.99
+속성 : 어떤 대상이 가진 변수
+메서드 : 어떤 대상이 가진 함수
+
+p.127
+매개변수 : 매개변수라는 이름은 함수를 호출하는 쪽과 함수를 연결하는 매개가 되는 변수이므로 사용하게 된 것입니다.
+
+p.208
+인스턴스 : 생성자 함수를 기반으로 생성한 객체를 인스턴스라고 합니다.
+
+프로토타입 : 생성자 함수로 생성한 객체들이 공동으로 갖는 공간입니다. 일반적으로 메서드를 이러한 공간에 선언합니다.
+
+
+
+[JS vs Python]
+Reference	Python	JS
+181017	str()	String()
+	int()	Number()
+	bool()	Boolean()
+	type()	typeof(), typeof
+181207	type(1) == int	typeof(1) == 'number'
+	index()	indexOf()
+(return -1 if nothing matches)
+	and	&&
+	or	||
+	not	!
+	None	null
+p.63		NaN
+(Not a Number : js로 나타낼 수 없는 숫자를 의미)
+181207		Number('abc')
+>> NaN
+	f'{1+2} is {var}.'	`${1+2} is ${var}.`
+		const constant = 37;
+		let variable = 73;
+	global	var
+	def <name>(...):
+    ....	function <name>(..) {
+    ...
+}
+181018	True	true
+	False	false
+	len(<list>)	<array>.length
+p.99	<list>.append(<element>)	<array>.push(<element>)
+	for a in range(len(list)):
+    ...	for (var a in array) {
+    ...
+}
+	for a in list:
+    ...	for (const a of array) {
+    ...
+}
+	enumerate()	let i = 0
+for (const a of array) {
+    ...
+    i++;
+}
+181020	조건표현식
+<참일경우> if <조건식> else <거짓일 경우>	삼항 연산자
+<불 표현식> ? <참일 때 실행할 문장> : <거짓일 때 실행할 문장>
+	parameter (매개변수)	parameter (매개변수)
+181024	positional arguments	arguments
+	keyword arguments
+181205
+integer division
+https://stackoverflow.com/questions/18928117/ 	5 // 2	Math.floor( 5 / 2 );
+
+
+
+181205
+p.63		Math.sqrt()
+181207	type(..) == type(..) and .. == ..
+type(..) != type(..)	.. === ..
+.. !== ..
+181208	isinstace(a, b)
+
+e.g.
+isinstance(obj, ObjectClass)
+isinstance(dict1, dict)	a instanceof b
+181214	float('inf')
+-float('inf')	infinity
+-infinity
+Number.POSITIVE_INFINITY
+Number.NEGATIVE_INFINITY
+		isFinite()
+181214	adict = {1 : 'a', ...}
+if 1 in adict:
+    print('hi')
+>> hi	if (key in object) {
+    console.log('hi');
+}
+
+
+
+Reference/Shallow/Deep/RealDeep Copy
+p.194, p.200
+대상	기본자료형(숫자,문자열,불)	기본자료형(숫자,문자열,불)
+181207
+Shallow copy
+(Reference assignment)	b = a
+
+e.g.
+a = [1,2,3]
+b = a
+a = [10, 20, 30]
+a
+>> [10, 20, 30]
+b
+>> [10, 20, 30]	let b = a
+
+e.g.
+a = [1,2,3];
+b = a;
+a = [10, 20, 30];
+a;
+>> [10, 20, 30]
+b;
+>> [10, 20, 30]
+대상	배열, 딕셔너리 요소	배열 요소, 객체 속성
+Shallow copy	b = a
+
+e.g.
+a = [1,2,3]
+b = a
+a[0] = 11
+a, b
+>> [11,2,3], [11,2,3]	let b = a;
+
+e.g.
+a = [1,2,3];
+b = a;
+a[0] = 11;
+a;
+>> [11,2,3]
+b;
+>> [11,2,3]
+Deep copy	b = a.copy()
+b = a[:]	1)
+function clone(obj) {
+  let output = {};
+  for (let i in obj) {
+    output[i] = obj[i];
+  }
+  return output;
+}
+let b = clone(a);
+
+2)
+[object]
+(underscore.js clone method)
+let b = clone(a);
+
+3)
+[array]
+let a = [1,2,3];
+let b = [...a];
+
+(Real) Deep copy	b = a.deepcopy()			-
+
+
+[JS words]
+
+p.42
+표 2-8 논리 연산자
+연산자	설명
+!	논리 부정 연산자	참을 거짓, 거짓을 참으로
+&&	논리곱 연산자	좌변과 우변이 모두 참일 때만 참
+||	논리합 연산자	좌변과 우변이 모두 거짓일 때만 거짓이 됩니다.
+
+
+p.30
+표 2-3 자바스크립트 식별자의 종류
+구분	단독으로 사용	다른 식별자와 사용
+식별자 뒤에 괄호 없음	변수
+
+ex. input	속성
+
+Array.length
+식별자 위에 괄호 있음	함수
+
+ex. alert('A')	메서드
+
+ex. Maths.abs(27)
+
+
+구분
+자료형
+- 변수에 저장가능
+- js에는 총 6가지 존재 p.48	string
+number
+bool
+function () {}
+object {}
+undefined
+
+객체 자료형 == {} ? p.131
+기본 자료형
+p.235	string
+number
+bool
+식별자	input
+output
+i
+function
+(단항)연산자	+
+-
+++
+--
+typeof
+!
+(복합)연산자	&&
+||
+
+p.65
+=== (양쪽 변의 자료형과 값이 일치합니다)
+!== (양쪽 변의 자료형과 값이 다릅니다)
+속성	Array.length
+Math.PI
+메서드	Math.abs(-273)
+date.getHours()
+indexOf()
+push()
+함수	confirm()
+(내장) 함수	alert()
+prompt()
+setTimeout(function, millisecond)
+setInterval(function, millisecond)
+clearTimeout(id)
+clearInterval(id)
+(가변 인자) 함수	Array()
+
+키워드	var
+let
+const
+break
+...
+
+
+
+[Keyword Search]
+
+* ECMAScript 5
+break	else	instanceof
+true	case	false
+new	try	catch
+finally	null	typeof
+continue	for	return
+var	defualt	function
+switch	void	delete
+if	this	while
+do	in	throw
+with
+
+* ECMAScript 6, 7
+debugger	super	import
+export	extends	class
+let	const	yield
+
+* Future
+abstract	goto	native
+await	double	implements
+package	synchroized	boolean
+enum	private	throws
+byte	int	protected
+transient	char	interface
+public	volatile	final
+short	float	long
+static
