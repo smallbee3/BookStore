@@ -1,0 +1,382 @@
+[3 error]
+
+10/18 prompt() 함정
+p.58
+"...숫자를 입력했을 때 숫자 자료형으로 바로 인식하게 하는 방법은 없습니다. 입력한 숫자는 우선 문자열 자료형으로 인식하며 숫자 자료형으로 인식하도록 변환해야 합니다."
+
+for문에서 input +  1 구문을 사용했는데 이것이 input이라는 변수(숫자5)에 숫자 1을 더하는게 아니라 문자열에다 덧셈을 함...
+
+let input = 5
+let output = '';
+
+for(let i=1; i<input+1; i++){
+  for(let k=input-i; k>0; k--){
+    output += ' ';
+  }
+  for(let j=0; j<i*2-1; j++){
+    output += '*';
+  }
+  output += '\n';
+}
+alert(output)
+ >> 찌그러진 피라미드 출력
+
+
+let input = 5
+let output = '';
+
+for(let i=1; i<Number(input)+1; i++){
+  for(let k=input-i; k>0; k--){
+    output += ' ';
+  }
+  for(let j=0; j<i*2-1; j++){
+    output += '*';
+  }
+  output += '\n';
+}
+alert(output)
+
+>>  정상적인 피라미드 출력
+
+
+
+181018 Boolean(-1) == true
+	vs indexOf() confusing
+
+p. 64
+다음 다섯 가지 경우는 false로 변환됩니다. 이 다섯 가지를 제외한 모든 경우에 true로 변환됩니다.
+Boolean(0);
+Boolean(NaN);
+Boolean('');
+Boolean(null);
+Boolean(undefined);
+Boolean(false);
+
+
+
+181207  Less than 5 millisecond could make unexpected result when using setTimeout    ?
+p.158
+[code 5-44]
+
+for (var i=0; i<3; i++) {
+  (function (closed_i) {
+    setTimeout(function () {
+      // alert(closed_i);
+      console.log(closed_i);
+    }, 4);
+  })(i);
+}
+>>
+1
+0
+2
+------------------------------
+
+for (var i=0; i<3; i++) {
+  (function (closed_i) {
+    setTimeout(function () {
+      // alert(closed_i);
+      console.log(closed_i);
+    }, 5);
+  })(i);
+}
+>>
+0
+1
+2
+
+
+
+181207  Escape the conversion from number to string using parenthesis
+
+// 6.4.2 with 키워드
+// p.180
+var student = {
+  이름: '연하진',
+  국어: 92, 수학: 98, 영어: 96, 과학: 98
+};
+var output = '';
+with (student) {
+  output += '총점: ' + 국어 + 수학 + 영어 + 과학 + '\n';
+  // 181207
+  // The above line will make an ouput as '92989698'
+  // Because the sum action happens between string and number
+  output += '총점: ' + (국어 + 수학 + 영어 + 과학);
+}
+console.log(output);
+
+>> 총점: 92989698
+>> 총점: 384
+
+
+
+181208  console.log(... ;);  or  alert(...;); raise an error
+
+console.log(rectangle2.getHeight());
+console.log(rectangle2.getArea());
+// console.log(rectangle2.getArea(););  -> SyntaxError: missing ) after argument list
+// alert(rectangle2.getArea(););  -> SyntaxError: missing ) after argument list
+
+
+
+181208  Square.prototype.constructor = Square;
+p.224
+참고로 생성자 함수 Square의 프로토타입 constructor() 메서드에 Square를 다시 넣는 부분이 없어도 정상적으로 작동합니다.
+하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangleㅇ르 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다.
+
+[code 7-16]
+<script>
+
+  function Rectangle2(w, h) {
+  ...   }
+
+  function Square(length) {
+    this.base = Rectangle2;
+    this.base(length, length);
+  }
+
+  Square.prototype = Rectangle2.prototype;
+  Square.prototype.constructor = Square;
+
+  var square = new Square(3);
+  console.log(square);
+  console.log('SQUARE AREA: ' + square.getArea());
+
+
+  console.log(square.constructor()); // undefined
+  console.log(square.constructor);
+  alert(square.constructor);
+</script>
+
+>> undefined
+>>
+ƒ Square(length) {
+      this.base = Rectangle2;
+      this.base(length, length);
+    }
+
+
+
+181208  '_' matters in sub class
+
+There is no difference with and without '_' on class
+
+//set
+rectangle.width = 200;
+rectangle._width = 100;
+// get
+console.log(rectangle.width);
+console.log(rectangle._width);
+>> 100
+>> 100
+
+So, both width and _width work as above example.
+But, it makes difference in sub class
+
+<script>
+  class Square2 extends Rectangle4 {
+    constructor(length) {
+      super(length, length);
+      console.log(this);
+    }
+    set width(input) {
+      this._width = input;
+      this._height = input;
+    }
+    set height(input) {
+      this._width = input;
+      this._height = input;
+    }
+  }
+  const square2 = new Square2(100);
+  console.log(square2._width);
+  console.log(square2.width);  -> undefined
+  console.log(square2.getArea());
+</script>
+
+>>
+100
+undefined
+10000
+
+
+And plus, the mistake in super class
+
+<script>
+    class Rectangle4 {       ...
+      // method
+      getArea() {
+        return this.width * this.height;
+      }
+    }
+</script>
+
+made an error with "console.log(square2.getArea());" >> undefined 
+This took so long time to do debugging.
+
+
+
+181209  Integer cannot be a key of object
+
+p.172
+[code 6-3]
+
+<script>
+    var product = {
+    제품명: '7D 건조 망고',
+    유형: '당절임',
+    성분: '망고, 설탕, 메타중아황산나트륨, 치자황색소',
+    원산지: '필리핀',
+    '테스트 space': '테스트 space',
+    123: '숫자'
+  }; 
+  console.log(producct.123);
+  // -> SyntaxError: missing ) after argument list
+  console.log(producct.'123');
+  // -> SyntaxError: Unexpected string
+  console.log(producct['123']);
+  // -> ReferenceError: producct is not defined
+  console.log(producct[123]);
+  // -> ReferenceError: producct is not defined
+</script>
+
+
+
+181210  console.log( '...' + a == b); mistake
+
+p.273  8.8.1 확인 메서드
+[code 8-44]
+<script>
+    console.log(Array.isArray([1,2,3]));
+    console.log(Array.isArray({}));
+    console.log(Array.isArray(1));
+</script>
+
+->
+p.242  8.2.3 자료형 구분
+[Myway]
+<script>
+    var array = [1,2,3];
+    console.log('[1,2,3]: ' + array.constructor == Array);
+    console.log(array.constructor == Array);
+    console.log(array.constructor == [].constructor);
+    console.log([1,2,3].constructor == [].constructor);
+</script>
+
+>> false
+>> true
+>> true
+>> true
+
+
+'[1,2,3]: ' + array.constructor 와 Array가 비교가 되어 false가 출력되었던 것.
+이 문제는 console.log( ... , ... )으로 해결할 수 있다.
+
+<script>
+    console.log('[1,2,3]: ', array.constructor == Array);
+</script>
+>> [1,2,3]:  true
+
+
+
+181212 The first written 'window.open' doesn't work at all. Don't know the reason at the moment.
+
+<script>
+    window.open('http://hanbit.co.kr', 'child', 'width=600, height=300, location=1, menubar=1', true);
+
+    ....
+
+    var URL = 'https://www.facebook.com/share.php?u=https://www.facebook.com/groups/awskrug/';
+    window.open(URL, 'child', 'width=500, height=500', false);
+</script>
+
+
+
+181213 Closure !?
+
+p.219
+[code 7-13,14]
+
+What is Closure !?
+
+
+p.355
+[code 10-43]
+
+How come is the Clousure more efficient !?
+
+var randomAlphabet = (function () {
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return function () {
+        return alphabet.charAt(nextRandomInteger(25));
+    }
+})();
+
+
+
+181214 exception is object but not iterable through 'for in' because it is empty!
+
+p.392
+[code 12-8]
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        try {
+            var array = new Array(999999999999);
+        } catch (exception) {
+
+            console.log(exception);
+            console.log(typeof exception);
+            console.log(JSON.stringify(exception));
+            console.log(exception.message);
+            console.log(exception.description);
+            console.log(exception.name);
+
+            var output = '';
+            for (var i in exception) {
+                // console.log(i);
+                // console.log(exception[i]);
+                output += i + ': ' + exception[i] + '\n';
+            }
+            alert(output);
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
+
+>> RangeError: Invalid array length
+    at ch12.html:67
+>> object
+>> {}
+>> Invalid array length
+>> undefined
+>> RangeError
+
+
+
+181214 array doesn't make an error when index doesn't exist!
+
+p.402
+[PRACTICE 02]
+
+<script>
+      // (2) No Error
+      console.log('(2)')
+      try {
+        let array = [1,2,3,4,5];
+        console.log(array[-100]);
+      } catch(except) {
+        console.log(except)
+        console.log(except.message)
+        console.log(except.name)
+
+      } finally {
+        console.log('')
+      }
+</script>
+
+>> undefiend
