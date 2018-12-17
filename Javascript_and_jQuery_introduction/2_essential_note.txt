@@ -91,6 +91,7 @@ console.log(parseInt('a123'));
 
 181207  window object summary
 
+1 )
 p.163 다만 완전히 차이가 없는 것은 아닙니다. 내부에서 사용하는 this 키워드의 의미가 다릅니다.
 	내부에서 사용하는 this 키워드의 의미
 익명 함수	함수 자체에 바인딩되어 있는 객체
@@ -99,13 +100,46 @@ p.163 다만 완전히 차이가 없는 것은 아닙니다. 내부에서 사용
 (Arrow Function)	전역 객체
 (웹 브라우저 환경에서는 window 객체)
 
+2 )
 p.181  이렇게 객체의 속성 이름과 외부의 변수 이름이 같으면 코드 6-14처럼 with 키워드 내부에서 window 객체의 output 변수를 사용하겠다고 지정해주어야 합니다.
 
+3 )
 p.182  window object
 window 객체는 이후에 배우는데, 웹 브라우저에서 동작하는 자바스크립트의 최상위 객체입니다. 사실 웹 브라우저에서 동작하는 자바스크립트의 모든 변수와 함수는 window 객체의 속성과 메서드입니다. alert() 함수도 window.alert() 메서드 형태로 사용할 수 있습니다. 이 내용은 9장에서 살펴봅니다.
 
+4 )
 p.217  ...이전에 잠시 언급했듯이 일반적으로 this 키워드를 사용하면 window 객체를 나타냅니다. 따라서 일반적으로 함수를 호출하듯이 new 키워드를 사용하지 않으면, 함수를 실행하는 동안 window 객체에 속성을 추가한 것이 됩니다. 따라서 그림 7-6처럼 문자열 'Hello'가 출력됩니다.
 하지만 new 키워드로 함수를 호출하면 객체를 위한 공간을 만들고 this 키워드는 해당 공간을 의미하게 됩니다. 중요한 내용은 아니지만 궁금해 할 수도 있는 내용이라 잠시 살펴보았습니다.
+
+
+
+181217 'this' special
+
+1 )
+p.175
+자기 자신이 가진 속성을 표시할 때 this 키워드 사용
+자기 자신이 가진 속성이라는 것을 표시할 때는 코드 6-7처럼 this 키워드를 사용합니다.
+
+[code 6-7]
+<script>
+    var person = {
+        name: '윤인성',
+        eat: function (food) {
+            alert(this.name + '이 ' + food + '을/를 먹습니다.');
+        }
+    };
+    person.eat('밥');
+</script>
+
+
+2 )
+7.1  p.209
+생성자 함수 안의 this 키워드
+생성자 함수 안에서는 this 키워드를 통해 생성자 함수로 생성될 객체의 속성을 지칭합니다.
+
+
+
+
 
 
 181208  ISBN
@@ -127,7 +161,8 @@ number.print();
 >> TypeError: number.print is not a function
 
 기본 자료형에는 메서드 추가가 안되기 때문에 오류가 발생.
-
+-> but 기본 자료형의 생성자함수의 prototype에 메서드를 추가
+p.237
 
 
 181209  clone method upgraded
@@ -245,8 +280,8 @@ function randomAlphabet() {
 </html>
 
 
-
-181214  "undefined" when key doesn't exist!
+(undefined 1)
+181214  "undefined" doesn't make an error when key doesn't exist!
 
 p.172
 [code 6-3]
@@ -271,6 +306,30 @@ p.172
 >> undefined
 
 
+(undefined 2)
+181214 array doesn't make an error when index doesn't exist!
+
+p.402
+[PRACTICE 02]
+
+<script>
+      // (2) No Error
+      console.log('(2)')
+      try {
+        let array = [1,2,3,4,5];
+        console.log(array[-100]);
+      } catch(except) {
+        console.log(except)
+        console.log(except.message)
+        console.log(except.name)
+
+      } finally {
+        console.log('')
+      }
+</script>
+
+>> undefiend
+
 
 181214 toString() method that doesn't print itself
 
@@ -288,4 +347,19 @@ p.183
           }
           return output;
       };
+</script>
+
+
+
+181217 'function' can be save to variable
+p.272
+8.7 Math 객체
+...
+자바스크립트의 기술을 하나 알아봅시다. 자바스크립트의 함수는 하나의 자료형이므로 변수에 저장할 수 있습니다. 따라서 코드 8-43처럼 Math 객체의 메서드를 변수에 저장해서 함수처럼 쉽게 사용할 수 있습니다.
+
+[code 8-43]
+<script>
+    var max = Math.max;
+    console.log('max: ' + max(52,273, 103, 57, 32));
+    console.log('Math.max: ' + Math.max(52,273, 103, 57, 32));
 </script>

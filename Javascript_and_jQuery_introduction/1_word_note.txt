@@ -95,8 +95,8 @@ e.g.
 isinstance(obj, ObjectClass)
 isinstance(dict1, dict)	a instanceof b
 181214	float('inf')
--float('inf')	infinity
--infinity
+-float('inf')	Infinity
+-Infinity
 Number.POSITIVE_INFINITY
 Number.NEGATIVE_INFINITY
 		isFinite()
@@ -152,9 +152,14 @@ a;
 b;
 >> [11,2,3]
 Deep copy	b = a.copy()
-b = a[:]	1)
+b = a[:]	1) [object, array]
 function clone(obj) {
-  let output = {};
+  let output;
+  if (obj instanceof Array) {
+      output = [];
+  } else {
+      output = {};
+  }
   for (let i in obj) {
     output[i] = obj[i];
   }
@@ -163,9 +168,11 @@ function clone(obj) {
 let b = clone(a);
 
 2)
-[object]
-(underscore.js clone method)
-let b = clone(a);
+[object, array]
+(underscore.js clone method) p.199
+let b = _.clone(a);
+
+
 
 3)
 [array]
@@ -207,7 +214,7 @@ ex. Maths.abs(27)
 number
 bool
 function () {}
-object {}
+object {} (array)
 undefined
 
 객체 자료형 == {} ? p.131
@@ -245,12 +252,8 @@ setInterval(function, millisecond)
 clearTimeout(id)
 clearInterval(id)
 (가변 인자) 함수	Array()
-
-키워드	var
-let
-const
-break
-...
+(그 자체로) 객체(object)	MATH  p.270
+JSON  p.284
 
 
 

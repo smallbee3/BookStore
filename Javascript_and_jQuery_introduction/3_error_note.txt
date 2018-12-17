@@ -122,7 +122,7 @@ console.log(rectangle2.getArea());
 181208  Square.prototype.constructor = Square;
 p.224
 참고로 생성자 함수 Square의 프로토타입 constructor() 메서드에 Square를 다시 넣는 부분이 없어도 정상적으로 작동합니다.
-하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangleㅇ르 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다.
+하지만 직접 square 객체의 constructor() 메서드를 출력해보세요. 생성자 함수 Square가 아니라 생성자 함수 Rectangle를 가리킵니다. 따라서 프로토타입의 생성자 함수를 재정의한 것입니다.
 
 [code 7-16]
 <script>
@@ -158,7 +158,7 @@ p.224
 
 
 181208  '_' matters in sub class
-
+p.229
 There is no difference with and without '_' on class
 
 //set
@@ -214,6 +214,8 @@ And plus, the mistake in super class
 made an error with "console.log(square2.getArea());" >> undefined 
 This took so long time to do debugging.
 
+>         return this._width * this._height;
+
 
 
 181209  Integer cannot be a key of object
@@ -239,6 +241,10 @@ p.172
   console.log(producct[123]);
   // -> ReferenceError: producct is not defined
 </script>
+
+>
+p.173
+객체의 키는 식별자 또는 문자열을 모두 사용할 수 있습니다.
 
 
 
@@ -358,25 +364,58 @@ p.392
 
 
 
-181214 array doesn't make an error when index doesn't exist!
+181217  Be careful with using 'let'
 
-p.402
-[PRACTICE 02]
+0 ) no problem with var
+function clone(obj) {
+  if (!(obj instanceof Object)) {
+    throw "Input 'object' type data!";
+  } else if (obj instanceof Array) {
+      var output = [];
+  } else {
+      var output = {};
+  }
+  for (let i in obj) {
+    output[i] = obj[i];
+  }
+  return output;
+}
 
-<script>
-      // (2) No Error
-      console.log('(2)')
-      try {
-        let array = [1,2,3,4,5];
-        console.log(array[-100]);
-      } catch(except) {
-        console.log(except)
-        console.log(except.message)
-        console.log(except.name)
 
-      } finally {
-        console.log('')
-      }
-</script>
+1 ) something wrong with 'let'
+function clone(obj) {
+  if (!(obj instanceof Object)) {
+    throw "Input 'object' type data!";
+  } else if (obj instanceof Array) {
+      let output = [];
+  } else {
+      let output = {};
+  }
+  for (let i in obj) {
+    output[i] = obj[i];
+  }
+  return output;
+}
+>> "text"
+???
 
->> undefiend
+
+2 ) fix
+function clone(obj) {
+  let output;
+  if (!(obj instanceof Object)) {
+    throw "Input 'object' type data!";
+  } else if (obj instanceof Array) {
+      output = [];
+  } else {
+      output = {};
+  }
+  for (let i in obj) {
+    output[i] = obj[i];
+  }
+  return output;
+}
+// object
+>> d = clone(c);
+>> d;
+{a: 1, b: 2}
