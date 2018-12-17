@@ -35,6 +35,29 @@ toLocaleString()	객체를 호스트 환경에 맞는 언어의 문자열로 변
 toString()	객체를 문자열로 바꿈
 valueOf()	객체의 값을 나타냄
 
+[code 8-4]
+<script>
+    // 변수를 만듭니다.
+    var object = { property: 273 };
+    // 출력합니다.
+    var output = '';
+    output += "HOP('property'): " + object.hasOwnProperty('property') + '\n';
+    output += "HOP('constructor'): " + object.hasOwnProperty('constructor') + '\n';
+    output += "PIE('property'): " + object.propertyIsEnumerable('property') + '\n';
+    output += "PIE('constructor'): " + object.propertyIsEnumerable('constructor');
+    alert(output);
+    // for in 반복문을 사용합니다.
+    for (var key in object) {
+        alert(object[key]);
+    }
+</script>
+>>
+HOP('property'): true
+HOP('constructor'): false
+PIE('property'): true
+PIE('constructor'): false
+
+
 
 p.242
 8.2.3 자료형 구분
@@ -108,7 +131,7 @@ toPrecision(number)	숫자를 길이에 따라 지수 표시 또는 고정 소�
 
 
 // 1) toFixed
-var nubmer = 273.5210332;
+var number = 273.5210332;
 
 var output = ''
 output += number.toFixed(1) + '\n';
@@ -122,19 +145,18 @@ console.log(output);
 // NOTE_ 직접 호출
 var fixedNumber = (273.5210332).toFixed(2);
 console.log(fixedNumber);
-
+>> 273.52
 
 // 2) toExponential
-console.log(nubmer.toExponential(1));
-console.log(nubmer.toExponential(2));
->> 273.52
+console.log(number.toExponential(1));
+console.log(number.toExponential(2));
 >> 2.7e+2
 >> 2.74e+2
 
 
 // 3) toPrecision
-console.log(nubmer.toPrecision(1));
-console.log(nubmer.toPrecision(2));
+console.log(number.toPrecision(1));
+console.log(number.toPrecision(2));
 >> 3e+2
 >> 2.7e+2
 
@@ -155,7 +177,7 @@ console.log(nubmer.toPrecision(2));
 >> ƒ () {}
 
 
-[Myway] - function
+[Myway] - normal function
 <script>
     function test() {}
     test.property = 1;
@@ -283,7 +305,7 @@ String 객체의 메서드들은 자기 자신의 내용을 바꾸지 않고 리
 <script>
     // with 'Method Chainning'
     var output = 'Hello World..!';
-    output = output.toLowerCase().substring(0, 10).anchor('name');
+    output = output.toLowerCase().substring(0, 10).anchor('haha');
     console.log(output);
 </script>
->> <a name="name">hello worl</a>
+>> <a name="haha">hello worl</a>

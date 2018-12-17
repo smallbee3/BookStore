@@ -12,6 +12,7 @@ NOTE_ 생성자 함수의 이름
 
 
 p.209
+7.1
 생성자 함수 안의 this 키워드
 생성자 함수 안에서는 this 키워드를 통해 생성자 함수로 생성될 객체의 속성을 지칭합니다.
 
@@ -74,6 +75,17 @@ p.219
 코드 7-13의 생성자 함수 안에서 변수 width와 height를 정의했습니다. 이제 외부에서는 지역 변수 width와 height를 사용할 수 없고(?) 오직 getOO() 형태의 메서드와 setOO() 형태의 메서드를 사용해야 합니다.
 ...
 throw 키워드는 강제로 오류를 발생시키는 키워드입니다. 11장에서 다루겠지만 간단하게 사용해봅시다. setOO() 형태의 메서드를 사용할 때 매개변수로 입력받은 값이 0 이하이면 강제로 throw 키워드를 실행하게 했습니다.
+
+
++ 181217
+이제 외부에서는 지역 변수 width와 height를 사용할 수 없고(?)
+-> p.142
+함수 안에 있는 변수는 지역 변수이므로 함수 외부에서 사용할 수 없습니다. 지역 변수는 함수가 실행될 때 생성되고 종료될 때 사라지기 때문입니다.
+
++ 181217 var global scope vs var in function
+'var' exist in global scope != 'var' will be disappear when the function finished
+
+
 
 [code 7-14]
 <!DOCTYPE html>
