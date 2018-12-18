@@ -10,8 +10,9 @@ Errata of the books one the list
 [5. SQL더쉽게,더깊게](https://github.com/smallbee3/BookStore#5-sql%EB%8D%94%EC%89%BD%EA%B2%8C%EB%8D%94%EA%B9%8A%EA%B2%8C) &nbsp;&nbsp;&nbsp; (3쇄 기준, 2017.8.31) \
 [6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8) &nbsp;&nbsp;&nbsp; (초판 1쇄 기준, 2018.10.24) \
 [7. 하루 3분 네트워크 교실](https://github.com/smallbee3/BookStore#7-%ED%95%98%EB%A3%A8-3%EB%B6%84-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B5%90%EC%8B%A4) &nbsp;&nbsp;&nbsp; (1판 2쇄 기준, 2017.8.4) \
-[8. 그림으로 배우는 HTTP & Network Basic](https://github.com/smallbee3/BookStore#8-%EA%B7%B8%EB%A6%BC%EC%9C%BC%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-http--network-basic) &nbsp;&nbsp;&nbsp; (1판 4쇄 기준, 2017.4.3)
-[9. 데이터베이스 개론]() &nbsp;&nbsp;&nbsp; ()
+[8. 그림으로 배우는 HTTP & Network Basic](https://github.com/smallbee3/BookStore#8-%EA%B7%B8%EB%A6%BC%EC%9C%BC%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-http--network-basic) &nbsp;&nbsp;&nbsp; (1판 4쇄 기준, 2017.4.3) \
+[9. 데이터베이스 개론](https://github.com/smallbee3/BookStore#9-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EA%B0%9C%EB%A1%A0) &nbsp;&nbsp;&nbsp; (8쇄 기준, 2018.09.06) \
+[10. Do it! Vue.js 입문](https://github.com/smallbee3/BookStore#10-do-it-vuejs-%EC%9E%85%EB%AC%B8) &nbsp;&nbsp;&nbsp; (1판 2쇄 기준, 2018.5.16)
 
 
 <br><br><br><br><br><br>
@@ -574,7 +575,7 @@ HEAD 메소드를 사용한 리퀘스트/리스폰스 예 \
 
 
 # 9. 데이터베이스 개론
-* 기준, *
+*8쇄 기준, 2018.09.06*
 
 
 ### p.100
@@ -586,4 +587,48 @@ HEAD 메소드를 사용한 리퀘스트/리스폰스 예 \
 
 
 <br>
+<br>
+
+
+
+# 10. Do it! Vue.js 입문
+*1판 2쇄 기준, 2018.5.16*
+
+
+### p.55
+지역 컴포넌트 등록하기
+
+```javascript
+<script>
+  ...
+
+  new Vue({
+    el: '#app'
+    components: {
+      'my-local-component': cmp
+    }
+  });
+</script>
+```
+
+> el: '#app',
+
+<br>
+
+
+### p.59
+(아래서3번째줄)
+
+<my-local-component> 태그는 두 번째 인스턴스의 유효 범위 안에 있더라도 이 컴포넌트가 등록된 `첫 번째 유효 범위를` 벗어나기 때문에
+
+> 첫 번째 인스턴스의 유효 범위를
+
+
+<br>
+<br>
+
+
+
+
+
 
