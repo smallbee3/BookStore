@@ -11,6 +11,7 @@ Errata of the books one the list
 [6. 필수 알고리즘 with 파이썬](https://github.com/smallbee3/Study-Algorithm#%ED%95%84%EC%88%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-with-%ED%8C%8C%EC%9D%B4%EC%8D%AC--%EC%A0%95%EC%98%A4%ED%91%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8) &nbsp;&nbsp;&nbsp; (초판 1쇄 기준, 2018.10.24) \
 [7. 하루 3분 네트워크 교실](https://github.com/smallbee3/BookStore#7-%ED%95%98%EB%A3%A8-3%EB%B6%84-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B5%90%EC%8B%A4) &nbsp;&nbsp;&nbsp; (1판 2쇄 기준, 2017.8.4) \
 [8. 그림으로 배우는 HTTP & Network Basic](https://github.com/smallbee3/BookStore#8-%EA%B7%B8%EB%A6%BC%EC%9C%BC%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-http--network-basic) &nbsp;&nbsp;&nbsp; (1판 4쇄 기준, 2017.4.3)
+[9. 데이터베이스 개론]() &nbsp;&nbsp;&nbsp; ()
 
 
 <br><br><br><br><br><br>
@@ -272,6 +273,16 @@ OOTo() 형태의 메서드는 절대적인 기준으로 속성을 `변화하는`
 코드 9-11은 `window 객체가` 로드가 완료되고 자동으로 할당한 함수를 실행합니다.
 
 > window 객체의
+
+<br>
+
+
+### p.847
+(아래서2번째줄)
+
+페이스북이든 네이버든 크롬으로 접속하고 검사의 `Resources 탭을` 선택합니다.
+
+> Application 탭을
 
 <br>
 <br>
@@ -558,3 +569,21 @@ HEAD 메소드를 사용한 리퀘스트/리스폰스 예 \
 리스폰스를 반환한 서버가 정말로 URI에서 지정된 지정된 호스트인지 아닌지, 리퀘스트를 보낸 클라이언트가 정말로 리퀘스를 출력한 클라이언트인지..."
 
 <br>
+<br>
+
+
+
+# 9. 데이터베이스 개론
+* 기준, *
+
+
+### p.100
+(아래서3번째줄)
+
+일반적으로 데이터베이스 관리 시스템은 논리적 데이터 모델만 하나만 지원한다.
+
+> 모델을
+
+
+<br>
+
